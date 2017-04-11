@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from braid import Client, VertexQuery, EdgeQuery, Transaction, EdgeKey
+from braid import Client, VertexQuery, EdgeQuery, EdgeKey
 
 class ClientTestCase(unittest.TestCase):
     def setUp(self):

@@ -1,3 +1,5 @@
+import iso8601
+
 DEFAULT_LIMIT = 1000
 
 class Vertex(object):
@@ -11,6 +13,18 @@ class Vertex(object):
         """
         self.id = id
         self.type = type
+
+    def __eq__(self, other):
+        if not isinstance(other, Vertex):
+            return False
+        if self.id != other.id:
+            return False
+        if self.type != other.type:
+            return False
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def to_dict(self):
         return dict(id=self.id, type=self.type)
@@ -36,6 +50,20 @@ class EdgeKey(object):
         self.outbound_id = outbound_id
         self.type = type
         self.inbound_id = inbound_id
+
+    def __eq__(self, other):
+        if not isinstance(other, EdgeKey):
+            return False
+        if self.outbound_id != other.outbound_id:
+            return False
+        if self.type != other.type:
+            return False
+        if self.inbound_id != other.inbound_id:
+            return False
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def to_dict(self):
         return dict(outbound_id=self.outbound_id, type=self.type, inbound_id=self.inbound_id)
@@ -66,8 +94,22 @@ class Edge(object):
         self.weight = weight
         self.update_datetime = update_datetime
 
+    def __eq__(self, other):
+        if not isinstance(other, Edge):
+            return False
+        if self.key != other.key:
+            return False
+        if self.weight != other.weight:
+            return False
+        if self.update_datetime != other.update_datetime:
+            return False
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def to_dict(self):
-        return dict(key=self.key.to_dict(), weight=self.weight, update_datetime=self.update_datetime)
+        return dict(key=self.key.to_dict(), weight=self.weight, update_datetime=self.update_datetime.isoformat())
 
     @classmethod
     def from_dict(cls, d):
@@ -75,7 +117,7 @@ class Edge(object):
         return cls(
             key=EdgeKey.from_dict(d["key"]),
             weight=d["weight"],
-            update_datetime=d["update_datetime"],
+            update_datetime=iso8601.parse_date(d["update_datetime"]),
         )
 
 class VertexQuery(object):
@@ -87,6 +129,16 @@ class VertexQuery(object):
         the class methods.
         """
         self._query = query
+
+    def __eq__(self, other):
+        if not isinstance(other, VertexQuery):
+            return False
+        if self._query != other._query:
+            return False
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     @classmethod
     def all(cls, from_id, limit=DEFAULT_LIMIT):
@@ -171,6 +223,16 @@ class EdgeQuery(object):
         class methods.
         """
         self._query = query
+
+    def __eq__(self, other):
+        if not isinstance(other, VertexQuery):
+            return False
+        if self._query != other._query:
+            return False
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     @classmethod
     def edge(cls, key):

@@ -10,6 +10,7 @@ setup(
     ],
 
     install_requires = [
-        "requests==2.1.0",
+        "requests>=2.1.0",
+        "iso8601>=0.1.11"
     ]
 )
