@@ -2,3 +2,5 @@ __pycache__
 *.pyc
 *.pyo
 *.egg-info
+*.rdb
+venv

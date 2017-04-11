@@ -12,6 +12,9 @@ class Vertex(object):
         self.id = id
         self.type = type
 
+    def to_dict(self):
+        return dict(id=self.id, type=self.type)
+
     @classmethod
     def from_dict(cls, d):
         """
@@ -33,6 +36,9 @@ class EdgeKey(object):
         self.outbound_id = outbound_id
         self.type = type
         self.inbound_id = inbound_id
+
+    def to_dict(self):
+        return dict(outbound_id=self.outbound_id, type=self.type, inbound_id=self.inbound_id)
 
     @classmethod
     def from_dict(cls, d):
@@ -59,6 +65,9 @@ class Edge(object):
         self.key = key
         self.weight = weight
         self.update_datetime = update_datetime
+
+    def to_dict(self):
+        return dict(key=self.key.to_dict(), weight=self.weight, update_datetime=self.update_datetime)
 
     @classmethod
     def from_dict(cls, d):
@@ -170,7 +179,7 @@ class EdgeQuery(object):
 
         `key` represents the `EdgeKey` that identifies the edge.
         """
-        return cls(dict(edge=key))
+        return cls(dict(edge=key.to_dict()))
 
     @classmethod
     def edges(cls, keys):
@@ -180,7 +189,7 @@ class EdgeQuery(object):
 
         `keys` represents the `EdgeKey`s that identifies the edges.
         """
-        return cls(dict(edges=keys))
+        return cls(dict(edges=[key.to_dict() for key in keys]))
 
     @classmethod
     def _pipe(cls, query, query_type_converter, type=None, high=None, low=None, limit=DEFAULT_LIMIT):

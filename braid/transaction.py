@@ -1,6 +1,9 @@
 class Transaction(object):
     """
-    A transaction.
+    A transaction. This class uses the builder pattern, so that you can easily
+    chain queries together, e.g.:
+    
+    >>> Transaction().create_edge(...).get_vertices(...)
     """
 
     def __init__(self):
@@ -17,6 +20,7 @@ class Transaction(object):
         dashes, and underscores.
         """
         self._add(action="create_vertex", type=type)
+        return self
 
     def get_vertices(self, query):
         """
@@ -25,8 +29,9 @@ class Transaction(object):
         `query` specifies the `VertexQuery` to use.
         """
         self._add(action="get_vertices", query=query._query)
+        return self
 
-    def set_vertices(self, query, weight):
+    def set_vertices(self, query, type):
         """
         Updates existing vertices by a given query with a new type.
 
@@ -34,7 +39,8 @@ class Transaction(object):
         than 256 characters long, and can only contain letters, numbers,
         dashes, and underscores.
         """
-        self._add(action="set_vertices", query=query._query, weight=weight)
+        self._add(action="set_vertices", query=query._query, type=type)
+        return self
 
     def delete_vertices(self, query):
         """
@@ -43,6 +49,7 @@ class Transaction(object):
         `query` specifies the `VertexQuery` to use.
         """
         self._add(action="delete_vertices", query=query._query)
+        return self
 
     def create_edge(self, key, weight):
         """
@@ -51,8 +58,8 @@ class Transaction(object):
         `key` is the `EdgeKey` that identifies the edge. `weight` is the weight to set the edge to; it must be between
         -1.0 and 1.0.
         """
-        key_dict = dict(outbound_id=key.outbound_id, type=key.type, inbound_id=key.inbound_id)
-        self._add(action="create_edge", key=key_dict, weight=weight)
+        self._add(action="create_edge", key=key.to_dict(), weight=weight)
+        return self
 
     def get_edges(self, query):
         """
@@ -61,6 +68,7 @@ class Transaction(object):
         `query` specifies the `EdgeQuery` to use.
         """
         self._add(action="get_edges", query=query._query)
+        return self
 
     def get_edge_count(self, query):
         """
@@ -69,6 +77,7 @@ class Transaction(object):
         `query` specifies the `EdgeQuery` to use.
         """
         self._add(action="get_edge_count", query=query._query)
+        return self
 
     def set_edges(self, query, weight):
         """
@@ -78,6 +87,7 @@ class Transaction(object):
         and 1.0.
         """
         self._add(action="set_edges", query=query._query, weight=weight)
+        return self
 
     def delete_edges(self, query):
         """
@@ -86,6 +96,7 @@ class Transaction(object):
         `query` specifies the `EdgeQuery` to use.
         """
         self._add(action="delete_edges", query=query._query)
+        return self
 
     def run_script(self, name, payload):
         """
@@ -95,3 +106,4 @@ class Transaction(object):
         include the `.lua` extension of the file. `payload` is a JSON-serializable payload to send to the script.
         """
         self._add(action="run_script", name=name, payload=payload)
+        return self
