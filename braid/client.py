@@ -36,7 +36,7 @@ class Client(object):
             self.host = (parts[0], int(parts[1]))
 
         self.scheme = scheme
-        self.auth = auth
+        self.account_id = account_id
         self.secret = secret
         self.request_timeout = request_timeout
         self.raise_on_error = raise_on_error

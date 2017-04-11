@@ -1,5 +1,7 @@
 class Transaction(object):
-    """A transaction."""
+    """
+    A transaction.
+    """
 
     def __init__(self):
         self.payload = []
