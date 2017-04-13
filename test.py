@@ -9,6 +9,7 @@ import sys
 import os
 import time
 import subprocess
+import shutil
 from contextlib import contextmanager
 
 ACCOUNT_ID_MATCHER = re.compile("Account ID: (.+)")
@@ -58,34 +59,45 @@ def create_account(env):
     secret = ACCOUNT_SECRET_MATCHER.search(create_user_output_str).groups()[0]
     return account_id, secret
 
-def main():
-    with tempfile.TemporaryDirectory(prefix="braid-python-client") as rdb_dir:
-        env = dict(os.environ)
+def run(rdb_dir):
+    env = dict(os.environ)
 
+    env.update({
+        "RUST_BACKTRACE": "1",
+        "DATABASE_URL": "rocksdb://%s" % rdb_dir,
+        "BRAID_SCRIPT_ROOT": "%s/test_scripts" % os.getcwd(),
+        "BRAID_HOST": "localhost:8000",
+    })
+
+    account_id, secret = create_account(env)
+
+    with server(env):
         env.update({
-            "RUST_BACKTRACE": "1",
-            "DATABASE_URL": "rocksdb://%s" % rdb_dir,
-            "BRAID_SCRIPT_ROOT": "%s/test_scripts" % os.getcwd(),
-            "BRAID_HOST": "localhost:8000",
+            "BRAID_ACCOUNT_ID": account_id,
+            "BRAID_SECRET": secret,
         })
 
-        account_id, secret = create_account(env)
+        proc = subprocess.Popen(
+            ["nosetests", "braid.test"],
+            stdout=sys.stdout,
+            stderr=sys.stderr,
+            env=env
+        )
 
-        with server(env):
-            env.update({
-                "BRAID_ACCOUNT_ID": account_id,
-                "BRAID_SECRET": secret,
-            })
+        return proc.wait()
+    
+    raise Exception("This code path should not get hit")
 
-            proc = subprocess.Popen(
-                ["nosetests", "braid.test"],
-                stdout=sys.stdout,
-                stderr=sys.stderr,
-                env=env
-            )
+def main():
+    temp_dir = tempfile.mkdtemp("braid-python-client")
+    return_code = -1
+    
+    try:
+        return_code = run(temp_dir)
+    finally:
+        shutil.rmtree(temp_dir)
 
-            rc = proc.wait()
-            sys.exit(rc)
+    sys.exit(return_code)
 
 if __name__ == "__main__":
     main()
