@@ -21,7 +21,7 @@ script:
   - tox
 env:
   global:
-    - PATH=server/target/debug:$PATH
+    - PATH=server/target/debug:/home/travis/.cargo/bin:$PATH
   matrix:
     - TOXENV=py2
     - TOXENV=py3
