@@ -1,6 +1,6 @@
 # braid python client
 
-Braid's python client, which uses the REST API to enable graph queries and manipulation from python code. At the moment this only works on python 3.
+Braid's python client, which uses the REST API to enable graph queries and manipulation from python code.
 
 See the [api doc](https://braidery.github.io/apis/python-client/braid/index.html) for more info.
 
