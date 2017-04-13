@@ -10,7 +10,7 @@ dist: trusty
 install:
   - sudo apt-get -qq update
   - sudo apt-get install -y lua5.1 liblua5.1-0-dev
-  - if [ ! -d "~/rust-1.16.0-x86_64-unknown-linux-gnu" ]; then wget https://static.rust-lang.org/dist/rust-1.16.0-x86_64-unknown-linux-gnu.tar.gz && tar -xf rust-1.16.0-x86_64-unknown-linux-gnu.tar.gz -C ~ &&  fi
+  - if [ ! -d "~/rust-1.16.0-x86_64-unknown-linux-gnu" ]; then wget https://static.rust-lang.org/dist/rust-1.16.0-x86_64-unknown-linux-gnu.tar.gz && tar -xf rust-1.16.0-x86_64-unknown-linux-gnu.tar.gz -C ~; fi
   - if [ ! -d "server/target/debug" ]; then git clone https://github.com/braidery/braid.git server && cd server && cargo build; fi
   - pip install tox nose requests
 script:
