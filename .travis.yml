@@ -4,18 +4,14 @@ cache:
   directories:
     - .tox
     - /home/travis/.cargo/bin
+    - server
 sudo: required
 dist: trusty
 install:
   - sudo apt-get -qq update
   - sudo apt-get install -y lua5.1 liblua5.1-0-dev
-  - curl https://sh.rustup.rs -sSf > rustup-init
-  - chmod +x rustup-init
-  - ./rustup-init -y
-  - rustc --version
-  - cargo --version
-  - git clone https://github.com/braidery/braid.git server
-  - cd server && cargo build
+  - which cargo || (curl https://sh.rustup.rs -sSf > rustup-init && chmod +x rustup-init && ./rustup-init -y)
+  - if [ ! -d "server" ]; then git clone https://github.com/braidery/braid.git server && cd server && cargo build; fi
   - pip install tox
 script:
   - tox
