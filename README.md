@@ -6,11 +6,8 @@ See the [api doc](https://braidery.github.io/apis/python-client/braid/index.html
 
 ## Tests
 
-To run tests:
+To run tests, make sure you have tox installed, then run:
 
 ```bash
-virtualenv --no-site-packages -p python3
-source venv/bin/activate
-pip install requests iso8601
-PATH=path/to/braid/apps:$PATH ./test.py
+PATH=path/to/braid/apps:$PATH tox
 ```
