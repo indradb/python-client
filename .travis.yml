@@ -1,8 +1,5 @@
 language: python
-cache:
-  pip
-  directories:
-    - .tox
+cache: pip
 sudo: required
 dist: trusty
 install:
