@@ -12,7 +12,7 @@ install:
   - curl https://sh.rustup.rs -sSf > rustup-init
   - chmod +x rustup-init
   - ./rustup-init -y
-  - git clone git@github.com:braidery/braid.git server
+  - git clone https://github.com/braidery/braid.git server
   - cd server && cargo build
   - pip install tox
 script:
