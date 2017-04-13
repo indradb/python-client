@@ -12,7 +12,7 @@ dist: trusty
 install:
   - sudo apt-get -qq update
   - sudo apt-get install -y lua5.1 liblua5.1-0-dev
-  - if [ ! -d "server/target/debug" ]; then git clone https://github.com/braidery/braid.git server && cd server && cargo build; fi
+  - if [ ! -d "server/target/debug" ]; then git clone https://github.com/braidery/braid.git server && pushd server && cargo build && popd; fi
   - pip install tox nose requests
 script:
   - tox
