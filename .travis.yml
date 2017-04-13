@@ -10,7 +10,7 @@ dist: trusty
 install:
   - sudo apt-get -qq update
   - sudo apt-get install -y lua5.1 liblua5.1-0-dev
-  - which cargo || (curl https://sh.rustup.rs -sSf > rustup-init && chmod +x rustup-init && ./rustup-init -y)
+  - which cargo || (curl https://sh.rustup.rs -sSf > rustup-init && chmod +x rustup-init && ./rustup-init -y && mkdir -p ~/.multirust)
   - if [ ! -d "server/target/debug" ]; then git clone https://github.com/braidery/braid.git server && cd server && cargo build; fi
   - pip install tox nose requests
 script:
@@ -18,6 +18,7 @@ script:
 env:
   global:
     - PATH=server/target/debug:/home/travis/.cargo/bin:$PATH
+    - RUSTUP_HOME=~/.multirust
   matrix:
     - TOXENV=py2
     - TOXENV=py3
