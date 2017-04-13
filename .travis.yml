@@ -1,11 +1,15 @@
 language: python
-cache: pip
+cache:
+  pip: true
+  directories:
+    - .tox
+    - /home/travis/.cargo/bin
 sudo: required
 dist: trusty
 install:
   - sudo apt-get -qq update
   - sudo apt-get install -y lua5.1 liblua5.1-0-dev
-  - curl https://sh.rustup.rs -sSf | sh
+  - curl https://sh.rustup.rs -sSf | sh -- -y
   - git clone git@github.com:braidery/braid.git server
   - cd server && cargo build
   - pip install tox
