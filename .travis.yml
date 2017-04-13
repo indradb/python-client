@@ -9,7 +9,9 @@ dist: trusty
 install:
   - sudo apt-get -qq update
   - sudo apt-get install -y lua5.1 liblua5.1-0-dev
-  - curl https://sh.rustup.rs -sSf | sh -- -y
+  - curl https://sh.rustup.rs -sSf > rustup-init
+  - chmod +x rustup-init
+  - ./rustup-init -y
   - git clone git@github.com:braidery/braid.git server
   - cd server && cargo build
   - pip install tox
