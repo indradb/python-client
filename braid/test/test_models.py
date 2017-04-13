@@ -1,10 +1,10 @@
 import os
 import unittest
-import datetime
+import arrow
 
 from braid import Vertex, EdgeKey, Edge, VertexQuery, EdgeQuery
 
-FIXED_DATETIME = datetime.datetime(year=2017, month=4, day=10, hour=23, minute=20, second=0, tzinfo=datetime.timezone.utc)
+FIXED_DATETIME = arrow.get("2017-04-10T23:20:00+00.00")
 
 class VertexTestCase(unittest.TestCase):
     def test_to_dict(self):

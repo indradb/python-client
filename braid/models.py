@@ -1,4 +1,4 @@
-import iso8601
+import arrow
 
 DEFAULT_LIMIT = 1000
 
@@ -117,7 +117,7 @@ class Edge(object):
         return cls(
             key=EdgeKey.from_dict(d["key"]),
             weight=d["weight"],
-            update_datetime=iso8601.parse_date(d["update_datetime"]),
+            update_datetime=arrow.get(d["update_datetime"]),
         )
 
 class VertexQuery(object):
