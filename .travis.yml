@@ -12,6 +12,8 @@ install:
   - curl https://sh.rustup.rs -sSf > rustup-init
   - chmod +x rustup-init
   - ./rustup-init -y
+  - rustc --version
+  - cargo --version
   - git clone https://github.com/braidery/braid.git server
   - cd server && cargo build
   - pip install tox
