@@ -1,0 +1,23 @@
+language: python
+cache:
+  pip
+  directories:
+    - .tox
+sudo: required
+dist: trusty
+install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y lua5.1 liblua5.1-0-dev
+  - curl https://sh.rustup.rs -sSf | sh
+  - git clone git@github.com:braidery/braid.git server
+  - cd server && cargo build
+  - pip install tox
+script:
+  - tox
+env:
+  global:
+    - PATH=server/target/debug:$PATH
+  matrix:
+    - TOXENV=py2
+    - TOXENV=py3
+    - TOXENV=pypy
