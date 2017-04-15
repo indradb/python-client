@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
 import tempfile
-import random
-import string
 import requests
 import re
 import sys
@@ -50,9 +48,7 @@ def server(env):
 
 def create_account(env):
     """Creates a braid account"""
-    random_value = "".join(random.sample(string.ascii_letters + string.digits, 10))
-    email = "%s@braidery.github.io" % random_value
-    create_user_proc = subprocess.Popen(["braid-user", "add", email], env=env, stdout=subprocess.PIPE, stderr=sys.stderr)
+    create_user_proc = subprocess.Popen(["braid-account", "add"], env=env, stdout=subprocess.PIPE, stderr=sys.stderr)
     create_user_output, _ = create_user_proc.communicate()
     create_user_output_str = create_user_output.decode("utf-8")
     account_id = ACCOUNT_ID_MATCHER.search(create_user_output_str).groups()[0]
