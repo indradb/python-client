@@ -31,17 +31,6 @@ class Transaction(object):
         self._add(action="get_vertices", query=query._query)
         return self
 
-    def set_vertices(self, query, type):
-        """
-        Updates existing vertices by a given query with a new type.
-
-        `query` specifies the `VertexQuery` to use. `type` specifies the new type for the vertices; it must be less
-        than 256 characters long, and can only contain letters, numbers,
-        dashes, and underscores.
-        """
-        self._add(action="set_vertices", query=query._query, type=type)
-        return self
-
     def delete_vertices(self, query):
         """
         Deletes vertices by a given query.
@@ -77,16 +66,6 @@ class Transaction(object):
         `query` specifies the `EdgeQuery` to use.
         """
         self._add(action="get_edge_count", query=query._query)
-        return self
-
-    def set_edges(self, query, weight):
-        """
-        Updates existing edges that match a given query with a new weight.
-
-        `query` specifies the `EdgeQuery` to use. `weight` is the weight to set the edges to; it must be between -1.0
-        and 1.0.
-        """
-        self._add(action="set_edges", query=query._query, weight=weight)
         return self
 
     def delete_edges(self, query):
