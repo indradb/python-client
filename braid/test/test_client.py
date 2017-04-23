@@ -16,14 +16,6 @@ class ClientTestCase(unittest.TestCase):
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].id, uuid)
 
-    def test_set_vertices(self):
-        uuid = self.client.create_vertex("foo")
-        self.client.set_vertices(VertexQuery.vertices([uuid]), "bar")
-        results = self.client.get_vertices(VertexQuery.vertex(uuid))
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].id, uuid)
-        self.assertEqual(results[0].type, "bar")
-
     def test_delete_vertices(self):
         uuid = self.client.create_vertex("foo")
         self.client.delete_vertices(VertexQuery.vertex(uuid))
@@ -49,19 +41,6 @@ class ClientTestCase(unittest.TestCase):
         self.client.create_edge(key, 0.5)
         count = self.client.get_edge_count(EdgeQuery.edge(key))
         self.assertEqual(count, 1)
-
-    def test_set_edges(self):
-        outbound_id = self.client.create_vertex("foo")
-        inbound_id = self.client.create_vertex("foo")
-        key = EdgeKey(outbound_id, "bar", inbound_id)
-        self.client.create_edge(key, 0.5)
-        self.client.set_edges(EdgeQuery.edge(key), 1.0)
-        results = self.client.get_edges(EdgeQuery.edge(key))
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].key.outbound_id, outbound_id)
-        self.assertEqual(results[0].key.type, "bar")
-        self.assertEqual(results[0].key.inbound_id, inbound_id)
-        self.assertEqual(results[0].weight, 1.0)
 
     def test_delete_edges(self):
         outbound_id = self.client.create_vertex("foo")

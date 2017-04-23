@@ -19,13 +19,6 @@ class TransactionTestCase(unittest.TestCase):
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].id, uuid)
 
-    def test_set_vertices(self):
-        uuid = self.single(Transaction().create_vertex("foo"))
-        [_, results] = self.client.transaction(Transaction().set_vertices(VertexQuery.vertices([uuid]), "bar").get_vertices(VertexQuery.vertex(uuid)))
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].id, uuid)
-        self.assertEqual(results[0].type, "bar")
-
     def test_delete_vertices(self):
         uuid = self.single(Transaction().create_vertex("foo"))
         [_, results] = self.client.transaction(Transaction().delete_vertices(VertexQuery.vertex(uuid)).get_vertices(VertexQuery.vertex(uuid)))
@@ -46,16 +39,6 @@ class TransactionTestCase(unittest.TestCase):
         key = EdgeKey(outbound_id, "bar", inbound_id)
         [_, count] = self.client.transaction(Transaction().create_edge(key, 0.5).get_edge_count(EdgeQuery.edge(key)))
         self.assertEqual(count, 1)
-
-    def test_set_edges(self):
-        [outbound_id, inbound_id] = self.client.transaction(Transaction().create_vertex("foo").create_vertex("foo"))
-        key = EdgeKey(outbound_id, "bar", inbound_id)
-        [_, _, results] = self.client.transaction(Transaction().create_edge(key, 0.5).set_edges(EdgeQuery.edge(key), 1.0).get_edges(EdgeQuery.edge(key)))
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].key.outbound_id, outbound_id)
-        self.assertEqual(results[0].key.type, "bar")
-        self.assertEqual(results[0].key.inbound_id, inbound_id)
-        self.assertEqual(results[0].weight, 1.0)
 
     def test_delete_edges(self):
         [outbound_id, inbound_id] = self.client.transaction(Transaction().create_vertex("foo").create_vertex("foo"))
