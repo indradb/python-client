@@ -28,7 +28,7 @@ class Transaction(object):
 
         `query` specifies the `VertexQuery` to use.
         """
-        self._add(action="get_vertices", query=query._query)
+        self._add(action="get_vertices", query=query.to_dict())
         return self
 
     def delete_vertices(self, query):
@@ -37,7 +37,7 @@ class Transaction(object):
 
         `query` specifies the `VertexQuery` to use.
         """
-        self._add(action="delete_vertices", query=query._query)
+        self._add(action="delete_vertices", query=query.to_dict())
         return self
 
     def create_edge(self, key, weight):
@@ -56,7 +56,7 @@ class Transaction(object):
 
         `query` specifies the `EdgeQuery` to use.
         """
-        self._add(action="get_edges", query=query._query)
+        self._add(action="get_edges", query=query.to_dict())
         return self
 
     def get_edge_count(self, query):
@@ -65,7 +65,7 @@ class Transaction(object):
 
         `query` specifies the `EdgeQuery` to use.
         """
-        self._add(action="get_edge_count", query=query._query)
+        self._add(action="get_edge_count", query=query.to_dict())
         return self
 
     def delete_edges(self, query):
@@ -74,7 +74,7 @@ class Transaction(object):
 
         `query` specifies the `EdgeQuery` to use.
         """
-        self._add(action="delete_edges", query=query._query)
+        self._add(action="delete_edges", query=query.to_dict())
         return self
 
     def run_script(self, name, payload):

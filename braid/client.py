@@ -84,7 +84,7 @@ class Client(object):
 
         `query` specifies the `VertexQuery` to use.
         """
-        query_params = dict(q=json.dumps(query._query))
+        query_params = dict(q=json.dumps(query.to_dict()))
         response = self._request("GET", "/vertex", query_params=query_params)
         return [Vertex.from_dict(item) for item in response]
 
@@ -94,7 +94,7 @@ class Client(object):
 
         `query` specifies the `VertexQuery` to use.
         """
-        query_params = dict(q=json.dumps(query._query))
+        query_params = dict(q=json.dumps(query.to_dict()))
         return self._request("DELETE", "/vertex", query_params=query_params)
 
     def create_edge(self, key, weight):
@@ -113,7 +113,7 @@ class Client(object):
 
         `query` specifies the `EdgeQuery` to use.
         """
-        query_params = dict(q=json.dumps(query._query))
+        query_params = dict(q=json.dumps(query.to_dict()))
         response = self._request("GET", "/edge", query_params=query_params)
         return [Edge.from_dict(item) for item in response]
 
@@ -123,7 +123,7 @@ class Client(object):
 
         `query` specifies the `EdgeQuery` to use.
         """
-        query_params = dict(action="count", q=json.dumps(query._query))
+        query_params = dict(action="count", q=json.dumps(query.to_dict()))
         return self._request("GET", "/edge", query_params=query_params)
 
     def delete_edges(self, query):
@@ -132,7 +132,7 @@ class Client(object):
 
         `query` specifies the `EdgeQuery` to use.
         """
-        query_params = dict(q=json.dumps(query._query))
+        query_params = dict(q=json.dumps(query.to_dict()))
         return self._request("DELETE", "/edge", query_params=query_params)
 
     def transaction(self, transaction):

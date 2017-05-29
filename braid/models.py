@@ -82,17 +82,17 @@ class Edge(object):
     An edge, which represents a relationship between things, and have types, weights, and when they were last updated.
     """
 
-    def __init__(self, key, weight, update_datetime):
+    def __init__(self, key, weight, created_datetime):
         """
         Creates a new edge.
 
-        `key` is the `EdgeKey` to the edge. `weight` is the weight of the edge. `update_datetime` is when the edge's
-        weight was last updated.
+        `key` is the `EdgeKey` to the edge. `weight` is the weight of the edge. `created_datetime` is when the edge
+        was created.
         """
 
         self.key = key
         self.weight = weight
-        self.update_datetime = update_datetime
+        self.created_datetime = created_datetime
 
     def __eq__(self, other):
         if not isinstance(other, Edge):
@@ -101,7 +101,7 @@ class Edge(object):
             return False
         if self.weight != other.weight:
             return False
-        if self.update_datetime != other.update_datetime:
+        if self.created_datetime != other.created_datetime:
             return False
         return True
 
@@ -109,47 +109,55 @@ class Edge(object):
         return not self.__eq__(other)
 
     def to_dict(self):
-        return dict(key=self.key.to_dict(), weight=self.weight, update_datetime=self.update_datetime.isoformat())
+        return dict(key=self.key.to_dict(), weight=self.weight, created_datetime=self.created_datetime.isoformat())
 
     @classmethod
     def from_dict(cls, d):
         """Converts a dict to an `Edge`. Useful for JSON deserialization."""
+
         return cls(
             key=EdgeKey.from_dict(d["key"]),
             weight=d["weight"],
-            update_datetime=arrow.get(d["update_datetime"]),
+            created_datetime=arrow.get(d["created_datetime"]),
         )
 
-class VertexQuery(object):
-    """A query for vertices."""
+class Query(object):
+    """Abstract class that represents a query"""
 
-    def __init__(self, query):
+    def __init__(self, type, **kwargs):
         """
-        Creates a new vertex query. Generally you shouldn't construct `VertexQuery` objects directly, but rather use
+        Creates a new query. Generally you shouldn't construct a query objects directly, but rather use
         the class methods.
         """
-        self._query = query
+        self.type = type
+        self.payload = kwargs
 
     def __eq__(self, other):
-        if not isinstance(other, VertexQuery):
+        if self.type != getattr(other, "type"):
             return False
-        if self._query != other._query:
+        if self.payload != getattr(other, "payload"):
             return False
         return True
 
     def __ne__(self, other):
         return not self.__eq__(other)
 
+    def to_dict(self):
+        return dict(type=self.type, **self.payload)
+
+class VertexQuery(Query):
+    """A query for vertices."""
+
     @classmethod
-    def all(cls, from_id, limit=DEFAULT_LIMIT):
+    def all(cls, start_id, limit=DEFAULT_LIMIT):
         """
         Gets all vertices, filtered only the input arguments. Generally this query is useful when you want to iterate
         over all of the vertices in the datastore - e.g. to build an in-memory representation of the data.
 
-        `from_id` represents the vertex UUID from which to start for the returned range (exclusive.) `limit` sets the
+        `start_id` represents the vertex UUID from which to start for the returned range (exclusive.) `limit` sets the
         limit of the number vertices to return.
         """
-        return cls(dict(all=(from_id, limit)))
+        return cls("all", start_id=start_id, limit=limit)
 
     @classmethod
     def vertex(cls, id):
@@ -158,7 +166,7 @@ class VertexQuery(object):
 
         `id` represents the vertex UUID to get.
         """
-        return cls(dict(vertex=id))
+        return cls("vertex", id=id)
 
     @classmethod
     def vertices(cls, ids):
@@ -168,71 +176,46 @@ class VertexQuery(object):
 
         `ids` is the set of vertex UUIDs to get.
         """
-        return cls(dict(vertices=ids))
+        return cls("vertices", ids=ids)
 
-    @classmethod
-    def _pipe(cls, query, query_type_converter, limit=DEFAULT_LIMIT):
-        """
-        Creates a vertex query off of an edge query.
-
-        `query` is the `EdgeQuery`. `query_type_converter` is a string - either `outbound` or `inbound` - specifying
-        which end of vertices to get from the edges returned by the query. `limit` limits the number of vertices.
-        """
-        return cls(dict(pipe=(query, query_type_converter, limit)))
-
-    def outbound_edges(self, type=None, high=None, low=None, limit=DEFAULT_LIMIT):
+    def outbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=DEFAULT_LIMIT):
         """
         Get the edges outbounding from the vertices returned by this query.
 
-        `type` optionally filters those edges to only have a specific type. `high` optionally filters those edges to
-        only get ones updated at or before the given datetime. `low` optionally filters those edges to only get ones
-        updated at or after the given datetime. `limit` limits the number of returned edges.
+        `type_filter` optionally filters those edges to only have a specific type. `high_filter` optionally filters
+        those edges to only get ones updated at or before the given datetime. `low_filter` optionally filters those
+        edges to only get ones updated at or after the given datetime. `limit` limits the number of returned edges.
         """
-        return EdgeQuery._pipe(
-            self._query,
-            "outbound",
-            type=type,
-            high=high.isoformat() if high else None,
-            low=low.isoformat() if low else None,
+        return EdgeQuery(
+            "pipe",
+            vertex_query=self.to_dict(),
+            converter="outbound",
+            type_filter=type_filter,
+            high_filter=high_filter.isoformat() if high_filter else None,
+            low_filter=low_filter.isoformat() if low_filter else None,
             limit=limit
         )
 
-    def inbound_edges(self, type=None, high=None, low=None, limit=DEFAULT_LIMIT):
+    def inbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=DEFAULT_LIMIT):
         """
         Get the edges inbounding from the vertices returned by this query.
 
-        `type` optionally filters those edges to only have a specific type. `high` optionally filters those edges to
-        only get ones updated at or before the given datetime. `low` optionally filters those edges to only get ones
-        updated at or after the given datetime. `limit` limits the number of returned edges.
+        `type_filter` optionally filters those edges to only have a specific type. `high_filter` optionally filters
+        those edges to only get ones updated at or before the given datetime. `low_filter` optionally filters those
+        edges to only get ones updated at or after the given datetime. `limit` limits the number of returned edges.
         """
-        return EdgeQuery._pipe(
-            self._query,
-            "inbound",
-            type=type,
-            high=high.isoformat() if high else None,
-            low=low.isoformat() if low else None,
+        return EdgeQuery(
+            "pipe",
+            vertex_query=self.to_dict(),
+            converter="inbound",
+            type_filter=type_filter,
+            high_filter=high_filter.isoformat() if high_filter else None,
+            low_filter=low_filter.isoformat() if low_filter else None,
             limit=limit
         )
 
-class EdgeQuery(object):
+class EdgeQuery(Query):
     """A query for edges."""
-
-    def __init__(self, query):
-        """
-        Creates a new edge query. Generally you shouldn't construct `EdgeQuery` objects directly, but rather use the
-        class methods.
-        """
-        self._query = query
-
-    def __eq__(self, other):
-        if not isinstance(other, VertexQuery):
-            return False
-        if self._query != other._query:
-            return False
-        return True
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
 
     @classmethod
     def edge(cls, key):
@@ -241,7 +224,7 @@ class EdgeQuery(object):
 
         `key` represents the `EdgeKey` that identifies the edge.
         """
-        return cls(dict(edge=key.to_dict()))
+        return cls("edge", key=key.to_dict())
 
     @classmethod
     def edges(cls, keys):
@@ -251,20 +234,7 @@ class EdgeQuery(object):
 
         `keys` represents the `EdgeKey`s that identifies the edges.
         """
-        return cls(dict(edges=[key.to_dict() for key in keys]))
-
-    @classmethod
-    def _pipe(cls, query, query_type_converter, type=None, high=None, low=None, limit=DEFAULT_LIMIT):
-        """
-        Creates an edge query off of a vertex query.
-
-        `query` is the `VertexQuery`. `query_type_converter` is a string - either `outbound` or `inbound` - specifying
-        which end of edges to get from the vertices returned by the query. `type` optionally filters those edges to
-        only have a specific type. `high` optionally filters those edges to only get ones updated at or before the
-        given datetime. `low` optionally filters those edges to only get ones updated at or after the given datetime.
-        `limit` limits the number of returned edges.
-        """
-        return cls(dict(pipe=(query, query_type_converter, type, high, low, limit)))
+        return cls("edges", keys=[key.to_dict() for key in keys])
 
     def outbound_vertices(self, limit=DEFAULT_LIMIT):
         """
@@ -272,7 +242,7 @@ class EdgeQuery(object):
 
         `limit` limits the number of returned vertices.
         """
-        return VertexQuery._pipe(self._query, "outbound", limit=limit)
+        return VertexQuery("pipe", edge_query=self.to_dict(), converter="outbound", limit=limit)
 
     def inbound_vertices(self, limit=DEFAULT_LIMIT):
         """
@@ -280,4 +250,4 @@ class EdgeQuery(object):
 
         `limit` limits the number of returned vertices.
         """
-        return VertexQuery._pipe(self._query, "inbound", limit=limit)
+        return VertexQuery("pipe", edge_query=self.to_dict(), converter="inbound", limit=limit)
