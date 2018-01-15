@@ -1,13 +1,13 @@
 import os
 import unittest
 
-from braid import Client, VertexQuery, EdgeQuery, EdgeKey
+from indradb import Client, VertexQuery, EdgeQuery, EdgeKey
 
 class ClientTestCase(unittest.TestCase):
     def setUp(self):
-        host = os.environ["BRAID_HOST"]
-        account_id = os.environ["BRAID_ACCOUNT_ID"]
-        secret = os.environ["BRAID_SECRET"]
+        host = os.environ["INDRADB_HOST"]
+        account_id = os.environ["INDRADB_ACCOUNT_ID"]
+        secret = os.environ["INDRADB_SECRET"]
         self.client = Client(host, account_id, secret, scheme="http")
 
     def test_get_vertices(self):

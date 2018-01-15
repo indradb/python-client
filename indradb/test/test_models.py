@@ -2,7 +2,7 @@ import os
 import unittest
 import arrow
 
-from braid import Vertex, EdgeKey, Edge, VertexQuery, EdgeQuery
+from indradb import Vertex, EdgeKey, Edge, VertexQuery, EdgeQuery
 
 FIXED_DATETIME = arrow.get("2017-04-10T23:20:00+00.00")
 

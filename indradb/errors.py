@@ -1,4 +1,4 @@
-class BraidError(Exception):
+class Error(Exception):
     def __init__(self, code, error):
         super().__init__()
         self.code = code
