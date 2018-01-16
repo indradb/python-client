@@ -2,7 +2,7 @@ import requests
 import json
 import itertools
 from .models import Vertex, Edge
-from .errors import BraidError
+from .errors import Error
 
 # Default time in seconds before a request times out
 DEFAULT_REQUEST_TIMEOUT = 60
@@ -11,7 +11,7 @@ DEFAULT_REQUEST_TIMEOUT = 60
 _path = lambda *parts: "/%s" % "/".join(parts)
 
 class Client(object):
-    """Represents a connection to a braid server"""
+    """Represents a connection to IndraDB"""
 
     def __init__(self, host, account_id, secret, request_timeout=DEFAULT_REQUEST_TIMEOUT, raise_on_error=True, scheme="https"):
         """
@@ -62,9 +62,9 @@ class Client(object):
                 body = None
 
             if isinstance(body, dict) and body.get("error") != None:
-                raise BraidError(response.status_code, body.get("error"))
+                raise Error(response.status_code, body.get("error"))
             else:
-                raise BraidError(response.status_code, "Unexpected response code")
+                raise Error(response.status_code, "Unexpected response code")
 
         return response.json()
 
@@ -137,7 +137,7 @@ class Client(object):
 
     def transaction(self, transaction):
         """
-        Executes several braid requests in one HTTP request, as part of a
+        Executes several requests in one HTTP request, as part of a
         single transaction.
 
         `transaction` specifies the `Transaction` to execute.
@@ -148,7 +148,7 @@ class Client(object):
             # Raise the first errored request
             for sub_response in response:
                 if isinstance(sub_response, dict) and sub_response.get("error") != None:
-                    raise BraidError(sub_response.get("code"), sub_response.get("error"))
+                    raise Error(sub_response.get("code"), sub_response.get("error"))
 
         # Handle special serialization cases
         serialized_response = []

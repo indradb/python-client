@@ -1,12 +1,12 @@
-# braid python client [![Build Status](https://travis-ci.org/braidery/python-client.svg?branch=master)](https://travis-ci.org/braidery/python-client)
+# IndraDB python client [![Build Status](https://travis-ci.org/indradb/python-client.svg?branch=master)](https://travis-ci.org/indradb/python-client)
 
-Braid's python client, which uses the REST API to enable graph queries and manipulation from python code.
+IndraDB's python client, which uses the REST API to enable graph queries and manipulation from python code.
 
-See the [api doc](https://braidery.github.io/apis/python-client/braid/index.html) for more info.
+See the [api doc](https://indradb.github.io/apis/python-client/indradb/index.html) for more info.
 
 ## Tests
 
-To run tests, ensure you have the braid applications in your `PATH`, then run:
+To run tests, ensure you have the IndraDB applications in your `PATH`, then run:
 
 ```bash
 virtualenv --no-site-packages venv

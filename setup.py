@@ -1,12 +1,12 @@
 from setuptools import setup
 
 setup(
-    name = "braid-client",
+    name = "indradb-client",
     version = "0.2.0",
     author = "Yusuf Simonson",
 
     packages = [
-        "braid",
+        "indradb",
     ],
 
     install_requires = [

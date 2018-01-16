@@ -160,15 +160,6 @@ class VertexQuery(Query):
         return cls("all", start_id=start_id, limit=limit)
 
     @classmethod
-    def vertex(cls, id):
-        """
-        Gets a single vertex.
-
-        `id` represents the vertex UUID to get.
-        """
-        return cls("vertex", id=id)
-
-    @classmethod
     def vertices(cls, ids):
         """
         Gets a set of vertices. Generally this query is useful when you have a set of vertices from a previous query
@@ -216,15 +207,6 @@ class VertexQuery(Query):
 
 class EdgeQuery(Query):
     """A query for edges."""
-
-    @classmethod
-    def edge(cls, key):
-        """
-        Gets a single edge.
-
-        `key` represents the `EdgeKey` that identifies the edge.
-        """
-        return cls("edge", key=key.to_dict())
 
     @classmethod
     def edges(cls, keys):
