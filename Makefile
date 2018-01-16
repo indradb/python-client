@@ -1,10 +1,7 @@
-.PHONY: lint release
+.PHONY: release
 
 doc:
 	PYTHONPATH=.:$(PYTHONPATH) pdoc --html --html-dir ./doc ./indradb
-
-lint:
-	pylint -d line-too-long indradb
 
 release:
 	git checkout master
