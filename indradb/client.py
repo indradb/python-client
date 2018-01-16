@@ -1,8 +1,8 @@
 import requests
 import json
 import itertools
-from .models import Vertex, Edge
-from .errors import Error
+from indradb.models import Vertex, Edge
+from indradb.errors import Error
 
 # Default time in seconds before a request times out
 DEFAULT_REQUEST_TIMEOUT = 60
