@@ -16,7 +16,7 @@ install:
   - if [ ! -d "server/target/debug" ]; then git clone https://github.com/indradb/indradb.git server && pushd server && cargo build && popd; fi
   - if [ ! -d "venv" ]; then virtualenv -p python3 venv && source venv/bin/activate && pip install tox nose requests; fi
 script:
-  - tox
+  - source venv/bin/activate && tox
 env:
   global:
     - PATH=server/target/debug:$PATH
