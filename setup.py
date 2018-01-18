@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name = "indradb-client",
+    name = "indradb",
     version = "0.2.0",
     author = "Yusuf Simonson",
 
