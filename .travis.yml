@@ -14,7 +14,7 @@ install:
   - sudo apt-get -qq update
   - sudo apt-get install -y lua5.1 liblua5.1-0-dev python3
   - if [ ! -d "server/target/debug" ]; then git clone https://github.com/indradb/indradb.git server && pushd server && cargo build && popd; fi
-  - if [ ! -d "venv" ]; then virtualenv -p python3 venv && source venv/bin/activate && pip install tox nose requests; fi
+  - virtualenv -p python3 venv && source venv/bin/activate && pip install tox nose requests
 script:
   - source venv/bin/activate && tox
 env:
