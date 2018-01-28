@@ -76,13 +76,3 @@ class Transaction(object):
         """
         self._add(action="delete_edges", query=query.to_dict())
         return self
-
-    def run_script(self, name, payload):
-        """
-        Executes a lua script.
-
-        `name` specifies the name of the lua script, which should be in the server's script root directory. It should
-        include the `.lua` extension of the file. `payload` is a JSON-serializable payload to send to the script.
-        """
-        self._add(action="run_script", name=name, payload=payload)
-        return self
