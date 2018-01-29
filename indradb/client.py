@@ -170,3 +170,12 @@ class Client(object):
         include the `.lua` extension of the file. `payload` is a JSON-serializable payload to send to the script.
         """
         return self._request("POST", _path("script", name), body=payload)
+
+    def run_mapreduce(self, name, payload):
+        """
+        Executes a lua mapreduce script.
+
+        `name` specifies the name of the lua script, which should be in the server's script root directory. It should
+        include the `.lua` extension of the file. `payload` is a JSON-serializable payload to send to the script.
+        """
+        return self._request("POST", _path("mapreduce", name), body=payload)
