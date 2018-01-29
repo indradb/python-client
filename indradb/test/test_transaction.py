@@ -45,7 +45,3 @@ class TransactionTestCase(unittest.TestCase):
         key = EdgeKey(outbound_id, "bar", inbound_id)
         [_, _, count] = self.client.transaction(Transaction().create_edge(key, 0.5).delete_edges(EdgeQuery.edges([key])).get_edge_count(EdgeQuery.edges([key])))
         self.assertEqual(count, 0)
-
-    def test_run_script(self):
-        result = self.single(Transaction().run_script("echo.lua", dict(foo="bar")))
-        self.assertEqual(result, dict(foo="bar"))
