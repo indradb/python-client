@@ -51,6 +51,6 @@ class ClientTestCase(unittest.TestCase):
         count = self.client.get_edge_count(EdgeQuery.edges([key]))
         self.assertEqual(count, 0)
 
-    def test_run_script(self):
-        result = self.client.run_script("echo.lua", dict(foo="bar"))
+    def test_script(self):
+        result = self.client.script("echo.lua", dict(foo="bar"))
         self.assertEqual(result, dict(foo="bar"))

@@ -42,7 +42,7 @@ class Client(object):
         self.raise_on_error = raise_on_error
         self._session = requests.Session()
 
-    def _request(self, method, endpoint, query_params=None, body=None):
+    def _request(self, method, endpoint, query_params=None, body=None, stream=False):
         """Makes a request"""
 
         response = self._session.request(method, "%s://%s:%s%s" % (self.scheme, self.host[0], self.host[1], endpoint),
@@ -50,6 +50,7 @@ class Client(object):
             data=json.dumps(body) if body else None,
             timeout=self.request_timeout,
             auth=(self.account_id, self.secret),
+            stream=stream,
             headers={
                 "content-type": "application/json"
             }
@@ -66,7 +67,11 @@ class Client(object):
             else:
                 raise Error(response.status_code, "Unexpected response code")
 
-        return response.json()
+        if stream:
+            for line in response.iter_lines(decode_unicode=True):
+                yield json.loads(line)
+        else:
+            return response.json()
 
     def create_vertex(self, type):
         """
@@ -162,7 +167,7 @@ class Client(object):
 
         return serialized_response
 
-    def run_script(self, name, payload):
+    def script(self, name, payload):
         """
         Executes a lua script.
 
@@ -171,11 +176,11 @@ class Client(object):
         """
         return self._request("POST", _path("script", name), body=payload)
 
-    def run_mapreduce(self, name, payload):
+    def mapreduce(self, name, payload):
         """
         Executes a lua mapreduce script.
 
         `name` specifies the name of the lua script, which should be in the server's script root directory. It should
         include the `.lua` extension of the file. `payload` is a JSON-serializable payload to send to the script.
         """
-        return self._request("POST", _path("mapreduce", name), body=payload)
+        return self._request("POST", _path("mapreduce", name), body=payload, stream=True)
