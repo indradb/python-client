@@ -10,18 +10,19 @@ DEFAULT_REQUEST_TIMEOUT = 60
 # Convenience function for building a path
 _path = lambda *parts: "/%s" % "/".join(parts)
 
+def stream_response(response):
+    for line in response.iter_lines(decode_unicode=True):
+        yield json.loads(line)
+
 class Client(object):
     """Represents a connection to IndraDB"""
 
-    def __init__(self, host, account_id, secret, request_timeout=DEFAULT_REQUEST_TIMEOUT, raise_on_error=True, scheme="https"):
+    def __init__(self, host, request_timeout=DEFAULT_REQUEST_TIMEOUT, raise_on_error=True, scheme="https"):
         """
         Creates a new client.
 
         `host` specifies the hostname and port of the server, specified either as a tuple or a string of the format
         `hostname:port`.
-
-        `account_id` and `secret` specify the authentication credentials of the
-        account making the request.
 
         The optional `request_timeout` sets how many seconds to wait before a request times out (defaults to 60
         seconds.) The optional `raise_on_error` specifies whether to raise an error if a non-200 response is received.
@@ -36,8 +37,6 @@ class Client(object):
             self.host = (parts[0], int(parts[1]))
 
         self.scheme = scheme
-        self.account_id = account_id
-        self.secret = secret
         self.request_timeout = request_timeout
         self.raise_on_error = raise_on_error
         self._session = requests.Session()
@@ -49,7 +48,6 @@ class Client(object):
             params=query_params,
             data=json.dumps(body) if body else None,
             timeout=self.request_timeout,
-            auth=(self.account_id, self.secret),
             stream=stream,
             headers={
                 "content-type": "application/json"
@@ -68,8 +66,7 @@ class Client(object):
                 raise Error(response.status_code, "Unexpected response code")
 
         if stream:
-            for line in response.iter_lines(decode_unicode=True):
-                yield json.loads(line)
+            return stream_response(response)
         else:
             return response.json()
 

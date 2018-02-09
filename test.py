@@ -10,9 +10,6 @@ import subprocess
 import shutil
 from contextlib import contextmanager
 
-ACCOUNT_ID_MATCHER = re.compile("Account ID: (.+)")
-ACCOUNT_SECRET_MATCHER = re.compile("Account secret: (.+)")
-
 @contextmanager
 def server(env):
     """
@@ -29,7 +26,7 @@ def server(env):
         try:
             res = requests.get("http://localhost:8000", timeout=1)
 
-            if res.status_code == 401:
+            if res.status_code == 404:
                 break
         except requests.exceptions.RequestException:
             pass
@@ -46,33 +43,17 @@ def server(env):
     finally:
         server_proc.terminate()
 
-def create_account(env):
-    """Creates an IndraDB account"""
-    create_user_proc = subprocess.Popen(["indradb-account", "add"], env=env, stdout=subprocess.PIPE, stderr=sys.stderr)
-    create_user_output, _ = create_user_proc.communicate()
-    create_user_output_str = create_user_output.decode("utf-8")
-    account_id = ACCOUNT_ID_MATCHER.search(create_user_output_str).groups()[0]
-    secret = ACCOUNT_SECRET_MATCHER.search(create_user_output_str).groups()[0]
-    return account_id, secret
-
-def run(rdb_dir):
+def main():
     env = dict(os.environ)
 
     env.update({
         "RUST_BACKTRACE": "1",
-        "DATABASE_URL": "rocksdb://%s" % rdb_dir,
+        "DATABASE_URL": "memory://",
         "INDRADB_SCRIPT_ROOT": "%s/test_scripts" % os.getcwd(),
         "INDRADB_HOST": "localhost:8000",
     })
 
-    account_id, secret = create_account(env)
-
     with server(env):
-        env.update({
-            "INDRADB_ACCOUNT_ID": account_id,
-            "INDRADB_SECRET": secret,
-        })
-
         proc = subprocess.Popen(
             ["nosetests", "indradb.test"],
             stdout=sys.stdout,
@@ -80,20 +61,9 @@ def run(rdb_dir):
             env=env
         )
 
-        return proc.wait()
+        sys.exit(proc.wait())
     
     raise Exception("This code path should not get hit")
-
-def main():
-    temp_dir = tempfile.mkdtemp("indradb-python-client")
-    return_code = -1
-    
-    try:
-        return_code = run(temp_dir)
-    finally:
-        shutil.rmtree(temp_dir)
-
-    sys.exit(return_code)
 
 if __name__ == "__main__":
     main()

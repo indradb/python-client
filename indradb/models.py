@@ -79,27 +79,24 @@ class EdgeKey(object):
 
 class Edge(object):
     """
-    An edge, which represents a relationship between things, and have types, weights, and when they were last updated.
+    An edge, which represents a relationship between things, and have types and when they were last updated.
     """
 
-    def __init__(self, key, weight, created_datetime):
+    def __init__(self, key, created_datetime):
         """
         Creates a new edge.
 
-        `key` is the `EdgeKey` to the edge. `weight` is the weight of the edge. `created_datetime` is when the edge
+        `key` is the `EdgeKey` to the edge. `created_datetime` is when the edge
         was created.
         """
 
         self.key = key
-        self.weight = weight
         self.created_datetime = created_datetime
 
     def __eq__(self, other):
         if not isinstance(other, Edge):
             return False
         if self.key != other.key:
-            return False
-        if self.weight != other.weight:
             return False
         if self.created_datetime != other.created_datetime:
             return False
@@ -109,7 +106,7 @@ class Edge(object):
         return not self.__eq__(other)
 
     def to_dict(self):
-        return dict(key=self.key.to_dict(), weight=self.weight, created_datetime=self.created_datetime.isoformat())
+        return dict(key=self.key.to_dict(), created_datetime=self.created_datetime.isoformat())
 
     @classmethod
     def from_dict(cls, d):
@@ -117,7 +114,6 @@ class Edge(object):
 
         return cls(
             key=EdgeKey.from_dict(d["key"]),
-            weight=d["weight"],
             created_datetime=arrow.get(d["created_datetime"]),
         )
 

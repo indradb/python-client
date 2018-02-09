@@ -26,20 +26,18 @@ class EdgeKeyTestCase(unittest.TestCase):
 
 class EdgeTestCase(unittest.TestCase):
     def test_to_dict(self):
-        edge = Edge(EdgeKey(3, "foo", 4), 0.5, FIXED_DATETIME)
+        edge = Edge(EdgeKey(3, "foo", 4), FIXED_DATETIME)
         self.assertEqual(edge.to_dict(), dict(
             key=dict(outbound_id=3, type="foo", inbound_id=4),
-            weight=0.5,
             created_datetime="2017-04-10T23:20:00+00:00",
         ))
 
     def test_from_dict(self):
         d = dict(
             key=dict(outbound_id=3, type="foo", inbound_id=4),
-            weight=0.5,
             created_datetime="2017-04-10T23:20:00",
         )
-        self.assertEqual(Edge.from_dict(d), Edge(EdgeKey(3, "foo", 4), 0.5, FIXED_DATETIME))
+        self.assertEqual(Edge.from_dict(d), Edge(EdgeKey(3, "foo", 4), FIXED_DATETIME))
 
 class VertexQueryTestCase(unittest.TestCase):
     def test_all(self):

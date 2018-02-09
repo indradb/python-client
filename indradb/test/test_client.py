@@ -6,9 +6,7 @@ from indradb import Client, VertexQuery, EdgeQuery, EdgeKey
 class ClientTestCase(unittest.TestCase):
     def setUp(self):
         host = os.environ["INDRADB_HOST"]
-        account_id = os.environ["INDRADB_ACCOUNT_ID"]
-        secret = os.environ["INDRADB_SECRET"]
-        self.client = Client(host, account_id, secret, scheme="http")
+        self.client = Client(host, scheme="http")
 
     def test_get_vertices(self):
         uuid = self.client.create_vertex("foo")
@@ -32,7 +30,6 @@ class ClientTestCase(unittest.TestCase):
         self.assertEqual(results[0].key.outbound_id, outbound_id)
         self.assertEqual(results[0].key.type, "bar")
         self.assertEqual(results[0].key.inbound_id, inbound_id)
-        self.assertEqual(results[0].weight, 0.5)
 
     def test_get_edge_count(self):
         outbound_id = self.client.create_vertex("foo")
