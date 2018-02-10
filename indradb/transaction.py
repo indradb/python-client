@@ -59,6 +59,15 @@ class Transaction(object):
         self._add(action="get_edges", query=query.to_dict())
         return self
 
+    def delete_edges(self, query):
+        """
+        Deletes edges by a given query.
+
+        `query` specifies the `EdgeQuery` to use.
+        """
+        self._add(action="delete_edges", query=query.to_dict())
+        return self
+
     def get_edge_count(self, query):
         """
         Gets the number of edges that match a given query.
@@ -68,11 +77,90 @@ class Transaction(object):
         self._add(action="get_edge_count", query=query.to_dict())
         return self
 
-    def delete_edges(self, query):
+    def get_global_metadata(self, name):
         """
-        Deletes edges by a given query.
+        Gets global metadata.
 
-        `query` specifies the `EdgeQuery` to use.
+        `name` specifies name of the global metadata to get.
         """
-        self._add(action="delete_edges", query=query.to_dict())
+        self._add(action="get_global_metadata", name=name)
+        return self
+
+    def set_global_metadata(self, name, value):
+        """
+        Sets global metadata.
+
+        `name` specifies name of the global metadata to get. `value` specifies
+        the value to set.
+        """
+        self._add(action="set_global_metadata", name=name, value=value)
+        return self
+
+    def delete_global_metadata(self, name):
+        """
+        Deletes global metadata.
+
+        `name` specifies name of the global metadata to delete.
+        """
+        self._add(action="delete_global_metadata", name=name)
+        return self
+
+    def get_vertex_metadata(self, query, name):
+        """
+        Gets vertex metadata.
+
+        `query` specifies the vertex query to run. `name` specifies name of
+        the metadata to get.
+        """
+        self._add(action="get_vertex_metadata", name=name)
+        return self
+
+    def set_vertex_metadata(self, query, name, value):
+        """
+        Sets vertex metadata.
+
+        `query` specifies the edge query to run. `name` specifies name of the
+        metadata to get. `value` specifies the value to set.
+        """
+        self._add(action="set_vertex_metadata", name=name, value=value)
+        return self
+
+    def delete_vertex_metadata(self, query, name):
+        """
+        Deletes vertex metadata.
+
+        `query` specifies the vertex query to run. `name` specifies name of
+        the metadata to delete.
+        """
+        self._add(action="delete_vertex_metadata", name=name)
+        return self
+
+    def get_edge_metadata(self, query, name):
+        """
+        Gets edge metadata.
+
+        `query` specifies the edge query to run. `name` specifies name of the
+        metadata to get.
+        """
+        self._add(action="get_edge_metadata", name=name)
+        return self
+
+    def set_edge_metadata(self, query, name, value):
+        """
+        Sets edge metadata.
+
+        `query` specifies the edge query to run. `name` specifies name of the
+        metadata to get. `value` specifies the value to set.
+        """
+        self._add(action="set_edge_metadata", name=name, value=value)
+        return self
+
+    def delete_edge_metadata(self, query, name):
+        """
+        Deletes global metadata.
+
+        `query` specifies the edge query to run. `name` specifies name of the
+        metadata to delete.
+        """
+        self._add(action="delete_edge_metadata", name=name)
         return self
