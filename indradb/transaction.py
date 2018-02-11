@@ -40,14 +40,14 @@ class Transaction(object):
         self._add(action="delete_vertices", query=query.to_dict())
         return self
 
-    def create_edge(self, key, weight):
+    def create_edge(self, key):
         """
         Creates a new edge.
 
-        `key` is the `EdgeKey` that identifies the edge. `weight` is the weight to set the edge to; it must be between
+        `key` is the `EdgeKey` that identifies the edge.
         -1.0 and 1.0.
         """
-        self._add(action="create_edge", key=key.to_dict(), weight=weight)
+        self._add(action="create_edge", key=key.to_dict())
         return self
 
     def get_edges(self, query):
@@ -112,7 +112,7 @@ class Transaction(object):
         `query` specifies the vertex query to run. `name` specifies name of
         the metadata to get.
         """
-        self._add(action="get_vertex_metadata", name=name)
+        self._add(action="get_vertex_metadata", query=query.to_dict(), name=name)
         return self
 
     def set_vertex_metadata(self, query, name, value):
@@ -122,7 +122,7 @@ class Transaction(object):
         `query` specifies the edge query to run. `name` specifies name of the
         metadata to get. `value` specifies the value to set.
         """
-        self._add(action="set_vertex_metadata", name=name, value=value)
+        self._add(action="set_vertex_metadata", query=query.to_dict(), name=name, value=value)
         return self
 
     def delete_vertex_metadata(self, query, name):
@@ -132,7 +132,7 @@ class Transaction(object):
         `query` specifies the vertex query to run. `name` specifies name of
         the metadata to delete.
         """
-        self._add(action="delete_vertex_metadata", name=name)
+        self._add(action="delete_vertex_metadata", query=query.to_dict(), name=name)
         return self
 
     def get_edge_metadata(self, query, name):
@@ -142,7 +142,7 @@ class Transaction(object):
         `query` specifies the edge query to run. `name` specifies name of the
         metadata to get.
         """
-        self._add(action="get_edge_metadata", name=name)
+        self._add(action="get_edge_metadata", query=query.to_dict(), name=name)
         return self
 
     def set_edge_metadata(self, query, name, value):
@@ -152,7 +152,7 @@ class Transaction(object):
         `query` specifies the edge query to run. `name` specifies name of the
         metadata to get. `value` specifies the value to set.
         """
-        self._add(action="set_edge_metadata", name=name, value=value)
+        self._add(action="set_edge_metadata", query=query.to_dict(), name=name, value=value)
         return self
 
     def delete_edge_metadata(self, query, name):
@@ -162,5 +162,5 @@ class Transaction(object):
         `query` specifies the edge query to run. `name` specifies name of the
         metadata to delete.
         """
-        self._add(action="delete_edge_metadata", name=name)
+        self._add(action="delete_edge_metadata", query=query.to_dict(), name=name)
         return self

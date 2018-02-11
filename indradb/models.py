@@ -117,6 +117,80 @@ class Edge(object):
             created_datetime=arrow.get(d["created_datetime"]),
         )
 
+class VertexMetadata(object):
+    """
+    Metadata attached to a vertex
+    """
+
+    def __init__(self, id, value):
+        """
+        Creates a new vertex metadata.
+
+        `id` is the vertex ID that the metadata is attached to. `value`
+        represents the metadata value.
+        """
+
+        self.id = id
+        self.value = value
+
+    def __eq__(self, other):
+        if not isinstance(other, VertexMetadata):
+            return False
+        if self.id != other.id:
+            return False
+        if self.value != other.value:
+            return False
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    @classmethod
+    def from_dict(cls, d):
+        """Converts a dict to `VertexMetadata`. Useful for JSON deserialization."""
+
+        return cls(
+            id=d["id"],
+            value=d["value"]
+        )
+
+class EdgeMetadata(object):
+    """
+    Metadata attached to an edge
+    """
+
+    def __init__(self, key, value):
+        """
+        Creates a new edge metadata.
+
+        `key` is the edge key that the metadata is attached to. `value`
+        represents the metadata value.
+        """
+
+        self.key = key
+        self.value = value
+
+    def __eq__(self, other):
+        if not isinstance(other, EdgeMetadata):
+            return False
+        if self.key != other.key:
+            return False
+        if self.value != other.value:
+            return False
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    @classmethod
+    def from_dict(cls, d):
+        """Converts a dict to `VertexMetadata`. Useful for JSON deserialization."""
+
+        return cls(
+            key=EdgeKey.from_dict(d["key"]),
+            value=d["value"]
+        )
+
 class Query(object):
     """Abstract class that represents a query"""
 
