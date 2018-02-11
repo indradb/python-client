@@ -219,7 +219,7 @@ class VertexQuery(Query):
     """A query for vertices."""
 
     @classmethod
-    def all(cls, start_id, limit=DEFAULT_LIMIT):
+    def all(cls, start_id=None, limit=DEFAULT_LIMIT):
         """
         Gets all vertices, filtered only the input arguments. Generally this query is useful when you want to iterate
         over all of the vertices in the datastore - e.g. to build an in-memory representation of the data.
