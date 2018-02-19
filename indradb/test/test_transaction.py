@@ -52,9 +52,9 @@ class TransactionTestCase(unittest.TestCase):
             .get_global_metadata("foo")
         )
 
-        self.assertIsInstance(first, Error)
+        self.assertEqual(first, None)
         self.assertEqual(second, 42)
-        self.assertIsInstance(third, Error)
+        self.assertEqual(third, None)
 
     def test_vertex_metadata(self):
         [uuid] = self.r(Transaction().create_vertex("foo"))

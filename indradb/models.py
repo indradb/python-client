@@ -191,6 +191,33 @@ class EdgeMetadata(object):
             value=d["value"]
         )
 
+class MapReducePing(object):
+    """An update from a mapreduce call."""
+
+    def __init__(self, finished, processing, sent):
+        """
+        Creates a new mapreduce ping.
+
+        `finished` is how many mapreduce tasks have finished.
+        `processing` is how many mapreduce tasks are currently being
+        processed. `sent` is how many mapreduce tasks have been sent to be
+        processed.
+        """
+
+        self.finished = finished
+        self.processing = processing
+        self.sent = sent
+
+    @classmethod
+    def from_dict(cls, d):
+        """Converts a dict to `MapReducePing`. Useful for JSON deserialization."""
+
+        return cls(
+            finished=d["finished"],
+            processing=d["processing"],
+            sent=d["sent"]
+        )
+    
 class Query(object):
     """Abstract class that represents a query"""
 

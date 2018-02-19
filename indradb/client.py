@@ -1,7 +1,7 @@
 import requests
 import json
 import itertools
-from indradb.models import Vertex, Edge, VertexMetadata, EdgeMetadata
+from indradb.models import Vertex, Edge, VertexMetadata, EdgeMetadata, MapReducePing
 from indradb.errors import Error
 
 # Default time in seconds before a request times out
@@ -115,4 +115,12 @@ class Client(object):
         `name` specifies the name of the lua script, which should be in the server's script root directory. It should
         include the `.lua` extension of the file. `payload` is a JSON-serializable payload to send to the script.
         """
-        return self._request("POST", _path("mapreduce", name), body=payload, stream=True)
+
+        for update in self._request("POST", _path("mapreduce", name), body=payload, stream=True):
+            if "ping" in update:
+                yield MapReducePing.from_dict(update["ping"])
+            elif "ok" in update:
+                yield update["ok"]
+                return
+            elif "error" in update:
+                raise Error(update["error"])

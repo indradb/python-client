@@ -23,7 +23,6 @@ class ClientTestCase(unittest.TestCase):
         # Run a mapreduce script that should, with the argument supplied,
         # yield 2 * the number of certices
         results = list(self.client.mapreduce("count.lua", 2))
-
         self.assertTrue(len(results) > 0)
-        self.assertTrue("ok" in results[-1])
-        self.assertEqual(results[-1]["ok"], len(vertices) * 2)
+        self.assertIsNotInstance(results[-1], Error)
+        self.assertEqual(results[-1], len(vertices) * 2)
