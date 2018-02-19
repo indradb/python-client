@@ -68,13 +68,16 @@ class Transaction(object):
         self._add(action="delete_edges", query=query.to_dict())
         return self
 
-    def get_edge_count(self, query):
+    def get_edge_count(self, id, type_filter, direction):
         """
-        Gets the number of edges that match a given query.
+        Gets the number of edges related to a vertex.
 
-        `query` specifies the `EdgeQuery` to use.
+        `id` specifies the ID of the vertex. `type_filter` specifies which
+        type of edges to count - set this to `None` if all edges should be
+        counted. `direction` specifies the direction of edges to count -
+        either `outbound` or `inbound`.
         """
-        self._add(action="get_edge_count", query=query.to_dict())
+        self._add(action="get_edge_count", id=id, type_filter=type_filter, direction=direction)
         return self
 
     def get_global_metadata(self, name):

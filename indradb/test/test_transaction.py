@@ -34,13 +34,13 @@ class TransactionTestCase(unittest.TestCase):
     def test_delete_edges(self):
         [outbound_id, inbound_id] = self.r(Transaction().create_vertex("foo").create_vertex("foo"))
         key = EdgeKey(outbound_id, "bar", inbound_id)
-        [_, _, count] = self.r(Transaction().create_edge(key).delete_edges(EdgeQuery.edges([key])).get_edge_count(EdgeQuery.edges([key])))
+        [_, _, count] = self.r(Transaction().create_edge(key).delete_edges(EdgeQuery.edges([key])).get_edge_count(outbound_id, None, "outbound"))
         self.assertEqual(count, 0)
 
     def test_get_edge_count(self):
         [outbound_id, inbound_id] = self.r(Transaction().create_vertex("foo").create_vertex("foo"))
         key = EdgeKey(outbound_id, "bar", inbound_id)
-        [_, count] = self.r(Transaction().create_edge(key).get_edge_count(EdgeQuery.edges([key])))
+        [_, count] = self.r(Transaction().create_edge(key).get_edge_count(outbound_id, None, "outbound"))
         self.assertEqual(count, 1)
 
     def test_global_metadata(self):

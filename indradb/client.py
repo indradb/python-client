@@ -124,3 +124,5 @@ class Client(object):
                 return
             elif "error" in update:
                 raise Error(update["error"])
+            else:
+                raise Error("Unexpected update: %s" % update)

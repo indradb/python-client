@@ -3,6 +3,7 @@ function map(vertex)
 end
 
 function reduce(first, second)
+    first = first or 0.0
     return first + second
 end
 

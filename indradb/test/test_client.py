@@ -24,5 +24,4 @@ class ClientTestCase(unittest.TestCase):
         # yield 2 * the number of certices
         results = list(self.client.mapreduce("count.lua", 2))
         self.assertTrue(len(results) > 0)
-        self.assertIsNotInstance(results[-1], Error)
-        self.assertEqual(results[-1], len(vertices) * 2)
+        self.assertEqual(results[-1], len(vertices) * 2, results[-1])
