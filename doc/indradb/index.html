@@ -1100,7 +1100,7 @@ table {
   <div id="source-indradb" class="source">
     <pre><code>from indradb.client import Client
 from indradb.errors import Error
-from indradb.models import Vertex, Edge, VertexQuery, EdgeQuery, EdgeKey, VertexMetadata, EdgeMetadata
+from indradb.models import Vertex, Edge, VertexQuery, EdgeQuery, EdgeKey, VertexMetadata, EdgeMetadata, MapReducePing
 from indradb.transaction import Transaction
 
 __all__ = ["Client", "Error", "Vertex", "Edge", "VertexQuery", "EdgeQuery", "EdgeKey", "Transaction"]
@@ -1223,7 +1223,17 @@ __all__ = ["Client", "Error", "Vertex", "Edge", "VertexQuery", "EdgeQuery", "Edg
         `name` specifies the name of the lua script, which should be in the server's script root directory. It should
         include the `.lua` extension of the file. `payload` is a JSON-serializable payload to send to the script.
         """
-        return self._request("POST", _path("mapreduce", name), body=payload, stream=True)
+
+        for update in self._request("POST", _path("mapreduce", name), body=payload, stream=True):
+            if "ping" in update:
+                yield MapReducePing.from_dict(update["ping"])
+            elif "ok" in update:
+                yield update["ok"]
+                return
+            elif "error" in update:
+                raise Error(update["error"])
+            else:
+                raise Error("Unexpected update: %s" % update)
 </code></pre>
   </div>
 </div>
@@ -1298,7 +1308,16 @@ include the <code>.lua</code> extension of the file. <code>payload</code> is a J
     `name` specifies the name of the lua script, which should be in the server's script root directory. It should
     include the `.lua` extension of the file. `payload` is a JSON-serializable payload to send to the script.
     """
-    return self._request("POST", _path("mapreduce", name), body=payload, stream=True)
+    for update in self._request("POST", _path("mapreduce", name), body=payload, stream=True):
+        if "ping" in update:
+            yield MapReducePing.from_dict(update["ping"])
+        elif "ok" in update:
+            yield update["ok"]
+            return
+        elif "error" in update:
+            raise Error(update["error"])
+        else:
+            raise Error("Unexpected update: %s" % update)
 </code></pre>
   </div>
 </div>
@@ -2093,13 +2112,16 @@ chain queries together, e.g.:</p>
         self._add(action="delete_edges", query=query.to_dict())
         return self
 
-    def get_edge_count(self, query):
+    def get_edge_count(self, id, type_filter, direction):
         """
-        Gets the number of edges that match a given query.
+        Gets the number of edges related to a vertex.
 
-        `query` specifies the `EdgeQuery` to use.
+        `id` specifies the ID of the vertex. `type_filter` specifies which
+        type of edges to count - set this to `None` if all edges should be
+        counted. `direction` specifies the direction of edges to count -
+        either `outbound` or `inbound`.
         """
-        self._add(action="get_edge_count", query=query.to_dict())
+        self._add(action="get_edge_count", id=id, type_filter=type_filter, direction=direction)
         return self
 
     def get_global_metadata(self, name):
@@ -2422,23 +2444,29 @@ the metadata to delete.</p></div>
             
   <div class="item">
     <div class="name def" id="indradb.Transaction.get_edge_count">
-    <p>def <span class="ident">get_edge_count</span>(</p><p>self, query)</p>
+    <p>def <span class="ident">get_edge_count</span>(</p><p>self, id, type_filter, direction)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Gets the number of edges that match a given query.</p>
-<p><code>query</code> specifies the <code>EdgeQuery</code> to use.</p></div>
+    <div class="desc"><p>Gets the number of edges related to a vertex.</p>
+<p><code>id</code> specifies the ID of the vertex. <code>type_filter</code> specifies which
+type of edges to count - set this to <code>None</code> if all edges should be
+counted. <code>direction</code> specifies the direction of edges to count -
+either <code>outbound</code> or <code>inbound</code>.</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.get_edge_count', this);">Show source &equiv;</a></p>
   <div id="source-indradb.Transaction.get_edge_count" class="source">
-    <pre><code>def get_edge_count(self, query):
+    <pre><code>def get_edge_count(self, id, type_filter, direction):
     """
-    Gets the number of edges that match a given query.
-    `query` specifies the `EdgeQuery` to use.
+    Gets the number of edges related to a vertex.
+    `id` specifies the ID of the vertex. `type_filter` specifies which
+    type of edges to count - set this to `None` if all edges should be
+    counted. `direction` specifies the direction of edges to count -
+    either `outbound` or `inbound`.
     """
-    self._add(action="get_edge_count", query=query.to_dict())
+    self._add(action="get_edge_count", id=id, type_filter=type_filter, direction=direction)
     return self
 </code></pre>
   </div>
