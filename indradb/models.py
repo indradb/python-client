@@ -79,27 +79,24 @@ class EdgeKey(object):
 
 class Edge(object):
     """
-    An edge, which represents a relationship between things, and have types, weights, and when they were last updated.
+    An edge, which represents a relationship between things, and have types and when they were last updated.
     """
 
-    def __init__(self, key, weight, created_datetime):
+    def __init__(self, key, created_datetime):
         """
         Creates a new edge.
 
-        `key` is the `EdgeKey` to the edge. `weight` is the weight of the edge. `created_datetime` is when the edge
+        `key` is the `EdgeKey` to the edge. `created_datetime` is when the edge
         was created.
         """
 
         self.key = key
-        self.weight = weight
         self.created_datetime = created_datetime
 
     def __eq__(self, other):
         if not isinstance(other, Edge):
             return False
         if self.key != other.key:
-            return False
-        if self.weight != other.weight:
             return False
         if self.created_datetime != other.created_datetime:
             return False
@@ -109,7 +106,7 @@ class Edge(object):
         return not self.__eq__(other)
 
     def to_dict(self):
-        return dict(key=self.key.to_dict(), weight=self.weight, created_datetime=self.created_datetime.isoformat())
+        return dict(key=self.key.to_dict(), created_datetime=self.created_datetime.isoformat())
 
     @classmethod
     def from_dict(cls, d):
@@ -117,10 +114,110 @@ class Edge(object):
 
         return cls(
             key=EdgeKey.from_dict(d["key"]),
-            weight=d["weight"],
             created_datetime=arrow.get(d["created_datetime"]),
         )
 
+class VertexMetadata(object):
+    """
+    Metadata attached to a vertex
+    """
+
+    def __init__(self, id, value):
+        """
+        Creates a new vertex metadata.
+
+        `id` is the vertex ID that the metadata is attached to. `value`
+        represents the metadata value.
+        """
+
+        self.id = id
+        self.value = value
+
+    def __eq__(self, other):
+        if not isinstance(other, VertexMetadata):
+            return False
+        if self.id != other.id:
+            return False
+        if self.value != other.value:
+            return False
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    @classmethod
+    def from_dict(cls, d):
+        """Converts a dict to `VertexMetadata`. Useful for JSON deserialization."""
+
+        return cls(
+            id=d["id"],
+            value=d["value"]
+        )
+
+class EdgeMetadata(object):
+    """
+    Metadata attached to an edge
+    """
+
+    def __init__(self, key, value):
+        """
+        Creates a new edge metadata.
+
+        `key` is the edge key that the metadata is attached to. `value`
+        represents the metadata value.
+        """
+
+        self.key = key
+        self.value = value
+
+    def __eq__(self, other):
+        if not isinstance(other, EdgeMetadata):
+            return False
+        if self.key != other.key:
+            return False
+        if self.value != other.value:
+            return False
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    @classmethod
+    def from_dict(cls, d):
+        """Converts a dict to `VertexMetadata`. Useful for JSON deserialization."""
+
+        return cls(
+            key=EdgeKey.from_dict(d["key"]),
+            value=d["value"]
+        )
+
+class MapReducePing(object):
+    """An update from a mapreduce call."""
+
+    def __init__(self, finished, processing, sent):
+        """
+        Creates a new mapreduce ping.
+
+        `finished` is how many mapreduce tasks have finished.
+        `processing` is how many mapreduce tasks are currently being
+        processed. `sent` is how many mapreduce tasks have been sent to be
+        processed.
+        """
+
+        self.finished = finished
+        self.processing = processing
+        self.sent = sent
+
+    @classmethod
+    def from_dict(cls, d):
+        """Converts a dict to `MapReducePing`. Useful for JSON deserialization."""
+
+        return cls(
+            finished=d["finished"],
+            processing=d["processing"],
+            sent=d["sent"]
+        )
+    
 class Query(object):
     """Abstract class that represents a query"""
 
@@ -149,7 +246,7 @@ class VertexQuery(Query):
     """A query for vertices."""
 
     @classmethod
-    def all(cls, start_id, limit=DEFAULT_LIMIT):
+    def all(cls, start_id=None, limit=DEFAULT_LIMIT):
         """
         Gets all vertices, filtered only the input arguments. Generally this query is useful when you want to iterate
         over all of the vertices in the datastore - e.g. to build an in-memory representation of the data.
