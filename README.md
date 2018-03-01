@@ -2,7 +2,7 @@
 
 IndraDB's python client, which uses the REST API to enable graph queries and manipulation from python code.
 
-See the [api doc](https://htmlpreview.github.io/?https://github.com/indradb/python-client/blob/develop/doc/indradb/index.html) for more info.
+See the [api doc](https://htmlpreview.github.io/?https://github.com/indradb/python-client/blob/master/doc/indradb/index.html) for more info.
 
 ## Tests
 
