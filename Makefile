@@ -5,6 +5,5 @@ doc:
 
 release:
 	git checkout master
-	git merge develop
 	git push origin master
 	python setup.py clean build sdist upload
