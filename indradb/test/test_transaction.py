@@ -1,7 +1,8 @@
 import os
+import uuid
 import unittest
 
-from indradb import Client, Error, VertexQuery, EdgeQuery, Transaction, EdgeKey, VertexMetadata, EdgeMetadata
+from indradb import Client, Error, Vertex, VertexQuery, EdgeQuery, Transaction, EdgeKey, VertexMetadata, EdgeMetadata
 
 class TransactionTestCase(unittest.TestCase):
     def setUp(self):
@@ -11,19 +12,25 @@ class TransactionTestCase(unittest.TestCase):
     def r(self, trans):
         return self.client.transaction(trans)
 
-    def test_get_vertices(self):
-        [uuid] = self.r(Transaction().create_vertex("foo"))
-        [results] = self.r(Transaction().get_vertices(VertexQuery.vertices([uuid])))
+    def test_create_vertex(self):
+        id = str(uuid.uuid4())
+        vertex = Vertex(id, "foo")
+        [_, results] = self.r(Transaction().create_vertex(vertex).get_vertices(VertexQuery.vertices([id])))
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].id, uuid)
+
+    def test_get_vertices(self):
+        [id] = self.r(Transaction().create_vertex_from_type("foo"))
+        [results] = self.r(Transaction().get_vertices(VertexQuery.vertices([id])))
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].id, id)
 
     def test_delete_vertices(self):
-        [uuid] = self.r(Transaction().create_vertex("foo"))
-        [_, results] = self.r(Transaction().delete_vertices(VertexQuery.vertices([uuid])).get_vertices(VertexQuery.vertices([uuid])))
+        [id] = self.r(Transaction().create_vertex_from_type("foo"))
+        [_, results] = self.r(Transaction().delete_vertices(VertexQuery.vertices([id])).get_vertices(VertexQuery.vertices([id])))
         self.assertEqual(len(results), 0)
 
     def test_get_edges(self):
-        [outbound_id, inbound_id] = self.r(Transaction().create_vertex("foo").create_vertex("foo"))
+        [outbound_id, inbound_id] = self.r(Transaction().create_vertex_from_type("foo").create_vertex_from_type("foo"))
         key = EdgeKey(outbound_id, "bar", inbound_id)
         [_, results] = self.r(Transaction().create_edge(key).get_edges(EdgeQuery.edges([key])))
         self.assertEqual(len(results), 1)
@@ -32,13 +39,13 @@ class TransactionTestCase(unittest.TestCase):
         self.assertEqual(results[0].key.inbound_id, inbound_id)
 
     def test_delete_edges(self):
-        [outbound_id, inbound_id] = self.r(Transaction().create_vertex("foo").create_vertex("foo"))
+        [outbound_id, inbound_id] = self.r(Transaction().create_vertex_from_type("foo").create_vertex_from_type("foo"))
         key = EdgeKey(outbound_id, "bar", inbound_id)
         [_, _, count] = self.r(Transaction().create_edge(key).delete_edges(EdgeQuery.edges([key])).get_edge_count(outbound_id, None, "outbound"))
         self.assertEqual(count, 0)
 
     def test_get_edge_count(self):
-        [outbound_id, inbound_id] = self.r(Transaction().create_vertex("foo").create_vertex("foo"))
+        [outbound_id, inbound_id] = self.r(Transaction().create_vertex_from_type("foo").create_vertex_from_type("foo"))
         key = EdgeKey(outbound_id, "bar", inbound_id)
         [_, count] = self.r(Transaction().create_edge(key).get_edge_count(outbound_id, None, "outbound"))
         self.assertEqual(count, 1)
@@ -57,8 +64,8 @@ class TransactionTestCase(unittest.TestCase):
         self.assertEqual(third, None)
 
     def test_vertex_metadata(self):
-        [uuid] = self.r(Transaction().create_vertex("foo"))
-        query = VertexQuery.vertices([uuid])
+        [id] = self.r(Transaction().create_vertex_from_type("foo"))
+        query = VertexQuery.vertices([id])
 
         [first, _, second, _, third] = self.r(Transaction()
             .get_vertex_metadata(query, "foo")
@@ -70,11 +77,11 @@ class TransactionTestCase(unittest.TestCase):
 
         self.assertEqual(len(first), 0)
         self.assertEqual(len(second), 1)
-        self.assertEqual(second[0], VertexMetadata(uuid, 42))
+        self.assertEqual(second[0], VertexMetadata(id, 42))
         self.assertEqual(len(third), 0)
 
     def test_edge_metadata(self):
-        [outbound_id, inbound_id] = self.r(Transaction().create_vertex("foo").create_vertex("foo"))
+        [outbound_id, inbound_id] = self.r(Transaction().create_vertex_from_type("foo").create_vertex_from_type("foo"))
         key = EdgeKey(outbound_id, "bar", inbound_id)
         self.r(Transaction().create_edge(key))
         query = EdgeQuery.edges([key])

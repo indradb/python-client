@@ -18,7 +18,16 @@ class Transaction(object):
 
         `vertex` specifies the `Vertex` to create.
         """
-        self._add(action="create_vertex", vertex=vertex)
+        self._add(action="create_vertex", vertex=vertex.to_dict())
+        return self
+
+    def create_vertex_from_type(self, type):
+        """
+        Creates a new vertex from a type.
+
+        `type` specifies the new vertex's type.
+        """
+        self._add(action="create_vertex_from_type", type=type)
         return self
 
     def get_vertices(self, query):
