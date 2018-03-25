@@ -1,7 +1,7 @@
 class Transaction(object):
     """
-    A transaction. This class uses the builder pattern, so that you can easily
-    chain queries together, e.g.:
+    A transaction. This class uses the builder pattern so that you can chain
+    queries together, e.g.:
     
     >>> Transaction().create_edge(...).get_vertices(...)
     """
@@ -12,14 +12,22 @@ class Transaction(object):
     def _add(self, **kwargs):
         self.payload.append(kwargs)
 
-    def create_vertex(self, type):
+    def create_vertex(self, vertex):
         """
         Creates a new vertex.
 
-        `type` specifies the vertex type. Must be less than 256 characters long, and can only contain letters, numbers,
-        dashes, and underscores.
+        `vertex` specifies the `Vertex` to create.
         """
-        self._add(action="create_vertex", type=type)
+        self._add(action="create_vertex", vertex=vertex.to_dict())
+        return self
+
+    def create_vertex_from_type(self, type):
+        """
+        Creates a new vertex from a type.
+
+        `type` specifies the new vertex's type.
+        """
+        self._add(action="create_vertex_from_type", type=type)
         return self
 
     def get_vertices(self, query):

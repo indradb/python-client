@@ -16,7 +16,7 @@ class ClientTestCase(unittest.TestCase):
         # Insert at least 1 vertex so we have something to work with. Then
         # grab all the vertices, so we know how many to expect.
         vertices = self.client.transaction(Transaction()
-            .create_vertex("foo")
+            .create_vertex_from_type("foo")
             .get_vertices(VertexQuery.all())
         )[1]
 
