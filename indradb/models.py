@@ -2,8 +2,9 @@ import json
 import uuid
 import datetime
 
-import capnp
-import indradb_capnp
+from .hook import get_schema
+
+capnp, indradb_capnp = get_schema()
 
 class Utc(datetime.tzinfo):
     def utcoffset(self, dt):

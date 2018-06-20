@@ -1,9 +1,9 @@
-import capnp
-import indradb_capnp
-
 import json
 import itertools
 from .transaction import Transaction
+from .hook import get_schema
+
+capnp, indradb_capnp = get_schema()
 
 class Client(object):
     """Represents a connection to IndraDB"""

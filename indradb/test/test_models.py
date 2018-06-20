@@ -1,12 +1,12 @@
-import capnp
-import indradb_capnp
-
 import os
 import uuid
 import datetime
 import unittest
 
 from indradb import Vertex, EdgeKey, Edge, VertexQuery, EdgeQuery
+from indradb.hook import get_schema
+
+capnp, indradb_capnp = get_schema()
 
 class Utc(datetime.tzinfo):
     def utcoffset(self, dt):
