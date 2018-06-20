@@ -10,7 +10,6 @@ setup(
     ],
 
     install_requires = [
-        "requests>=2.1.0",
-        "arrow>=0.10.0"
+        "pycapnp>=0.6.3"
     ]
 )

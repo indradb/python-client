@@ -1,6 +1,29 @@
-import arrow
+import json
+import uuid
+import datetime
 
-DEFAULT_LIMIT = 1000
+import capnp
+import indradb_capnp
+
+class Utc(datetime.tzinfo):
+    def utcoffset(self, dt):
+        return datetime.timedelta(0)
+
+    def tzname(self, dt):
+        return "UTC"
+
+    def dst(self, dt):
+        return datetime.timedelta(0)
+
+UTC = Utc()
+EPOCH = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=UTC)
+NANOS_PER_SEC = 1000000000
+
+def to_timestamp(dt):
+    return (dt - EPOCH).total_seconds() * NANOS_PER_SEC
+
+def from_timestamp(ts):
+    return datetime.datetime.utcfromtimestamp(ts / NANOS_PER_SEC).replace(tzinfo=UTC)
 
 class Vertex(object):
     """A vertex, which represents things. Vertices have types and UUIDs."""
@@ -11,6 +34,7 @@ class Vertex(object):
 
         `id` is the vertex UUID. `type` is the vertex type.
         """
+
         self.id = id
         self.type = type
 
@@ -26,15 +50,18 @@ class Vertex(object):
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    def to_dict(self):
-        return dict(id=self.id, type=self.type)
+    def to_message(self):
+        return indradb_capnp.Vertex.new_message(
+            id=self.id.bytes,
+            type=self.type
+        )
 
     @classmethod
-    def from_dict(cls, d):
-        """
-        Converts a dict to a `Vertex`. Useful for JSON deserialization.
-        """
-        return cls(id=d["id"], type=d["type"])
+    def from_message(cls, message):
+        return cls(
+            id=uuid.UUID(bytes=message.id),
+            type=message.type
+        )
 
 class EdgeKey(object):
     """Identifies an edge."""
@@ -65,16 +92,19 @@ class EdgeKey(object):
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    def to_dict(self):
-        return dict(outbound_id=self.outbound_id, type=self.type, inbound_id=self.inbound_id)
+    def to_message(self):
+        return indradb_capnp.EdgeKey.new_message(
+            outboundId=self.outbound_id.bytes,
+            type=self.type,
+            inboundId=self.inbound_id.bytes
+        )
 
     @classmethod
-    def from_dict(cls, d):
-        """Converts a dict to an `EdgeKey`. Useful for JSON deserialization."""
+    def from_message(cls, message):
         return cls(
-            outbound_id=d["outbound_id"],
-            type=d["type"],
-            inbound_id=d["inbound_id"]
+            outbound_id=uuid.UUID(bytes=message.outboundId),
+            type=message.type,
+            inbound_id=uuid.UUID(bytes=message.inboundId)
         )
 
 class Edge(object):
@@ -105,16 +135,17 @@ class Edge(object):
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    def to_dict(self):
-        return dict(key=self.key.to_dict(), created_datetime=self.created_datetime.isoformat())
+    def to_message(self):
+        return indradb_capnp.Edge.new_message(
+            key=self.key.to_message(),
+            createdDatetime=to_timestamp(self.created_datetime)
+        )
 
     @classmethod
-    def from_dict(cls, d):
-        """Converts a dict to an `Edge`. Useful for JSON deserialization."""
-
+    def from_message(cls, message):
         return cls(
-            key=EdgeKey.from_dict(d["key"]),
-            created_datetime=arrow.get(d["created_datetime"]),
+            key=EdgeKey.from_message(message.key),
+            created_datetime=from_timestamp(message.createdDatetime)
         )
 
 class VertexMetadata(object):
@@ -146,12 +177,10 @@ class VertexMetadata(object):
         return not self.__eq__(other)
 
     @classmethod
-    def from_dict(cls, d):
-        """Converts a dict to `VertexMetadata`. Useful for JSON deserialization."""
-
+    def from_message(cls, message):
         return cls(
-            id=d["id"],
-            value=d["value"]
+            id=uuid.UUID(bytes=message.id),
+            value=json.loads(message.value)
         )
 
 class EdgeMetadata(object):
@@ -183,41 +212,12 @@ class EdgeMetadata(object):
         return not self.__eq__(other)
 
     @classmethod
-    def from_dict(cls, d):
-        """Converts a dict to `VertexMetadata`. Useful for JSON deserialization."""
-
+    def from_message(cls, message):
         return cls(
-            key=EdgeKey.from_dict(d["key"]),
-            value=d["value"]
+            key=EdgeKey.from_message(message.key),
+            value=json.loads(message.value)
         )
 
-class MapReducePing(object):
-    """An update from a mapreduce call."""
-
-    def __init__(self, finished, processing, sent):
-        """
-        Creates a new mapreduce ping.
-
-        `finished` is how many mapreduce tasks have finished.
-        `processing` is how many mapreduce tasks are currently being
-        processed. `sent` is how many mapreduce tasks have been sent to be
-        processed.
-        """
-
-        self.finished = finished
-        self.processing = processing
-        self.sent = sent
-
-    @classmethod
-    def from_dict(cls, d):
-        """Converts a dict to `MapReducePing`. Useful for JSON deserialization."""
-
-        return cls(
-            finished=d["finished"],
-            processing=d["processing"],
-            sent=d["sent"]
-        )
-    
 class Query(object):
     """Abstract class that represents a query"""
 
@@ -239,14 +239,41 @@ class Query(object):
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    def to_dict(self):
-        return dict(type=self.type, **self.payload)
-
 class VertexQuery(Query):
     """A query for vertices."""
 
+    def to_message(self):
+        message = indradb_capnp.VertexQuery.new_message()
+
+        if self.type == "all":
+            all = message.init("all")
+            
+            start_id = self.payload["start_id"]
+            all.startId = start_id.bytes if start_id is not None else b""
+            
+            limit = self.payload["limit"]
+            all.limit = limit if limit is not None else 0
+        elif self.type == "vertices":
+            payload_ids = self.payload["ids"]
+            vertices = message.init("vertices")
+            ids = vertices.init("ids", len(payload_ids))
+
+            for i, id in enumerate(payload_ids):
+                ids[i] = id.bytes
+        elif self.type == "pipe":
+            pipe = message.init("pipe")
+            pipe.edgeQuery = self.payload["edge_query"].to_message()
+            pipe.converter = self.payload["converter"]
+
+            limit = self.payload["limit"]
+            pipe.limit = limit if limit is not None else 0
+        else:
+            raise ValueError("Unknown type for vertex query")
+
+        return message
+
     @classmethod
-    def all(cls, start_id=None, limit=DEFAULT_LIMIT):
+    def all(cls, start_id=None, limit=None):
         """
         Gets all vertices, filtered only the input arguments. Generally this query is useful when you want to iterate
         over all of the vertices in the datastore - e.g. to build an in-memory representation of the data.
@@ -266,7 +293,7 @@ class VertexQuery(Query):
         """
         return cls("vertices", ids=ids)
 
-    def outbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=DEFAULT_LIMIT):
+    def outbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=None):
         """
         Get the edges outbounding from the vertices returned by this query.
 
@@ -276,15 +303,15 @@ class VertexQuery(Query):
         """
         return EdgeQuery(
             "pipe",
-            vertex_query=self.to_dict(),
+            vertex_query=self,
             converter="outbound",
             type_filter=type_filter,
-            high_filter=high_filter.isoformat() if high_filter else None,
-            low_filter=low_filter.isoformat() if low_filter else None,
+            high_filter=high_filter,
+            low_filter=low_filter,
             limit=limit
         )
 
-    def inbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=DEFAULT_LIMIT):
+    def inbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=None):
         """
         Get the edges inbounding from the vertices returned by this query.
 
@@ -294,16 +321,47 @@ class VertexQuery(Query):
         """
         return EdgeQuery(
             "pipe",
-            vertex_query=self.to_dict(),
+            vertex_query=self,
             converter="inbound",
             type_filter=type_filter,
-            high_filter=high_filter.isoformat() if high_filter else None,
-            low_filter=low_filter.isoformat() if low_filter else None,
+            high_filter=high_filter,
+            low_filter=low_filter,
             limit=limit
         )
 
 class EdgeQuery(Query):
     """A query for edges."""
+
+    def to_message(self):
+        message = indradb_capnp.EdgeQuery.new_message()
+
+        if self.type == "edges":
+            payload_keys = self.payload["keys"]
+            edges = message.init("edges")
+            keys = edges.init("keys", len(payload_keys))
+
+            for i, key in enumerate(payload_keys):
+                keys[i] = key.to_message()
+        elif self.type == "pipe":
+            pipe = message.init("pipe")
+            pipe.vertexQuery = self.payload["vertex_query"].to_message()
+            pipe.converter = self.payload["converter"]
+
+            type_filter = self.payload["type_filter"]
+            pipe.typeFilter = type_filter if type_filter is not None else ""
+            
+            high_filter = self.payload["high_filter"]
+            pipe.highFilter = to_timestamp(high_filter) if high_filter is not None else 0
+            
+            low_filter = self.payload["low_filter"]
+            pipe.lowFilter = to_timestamp(low_filter) if low_filter is not None else 0
+            
+            limit = self.payload["limit"]
+            pipe.limit = limit if limit is not None else 0
+        else:
+            raise ValueError("Unknown type for vertex query")
+
+        return message
 
     @classmethod
     def edges(cls, keys):
@@ -313,20 +371,20 @@ class EdgeQuery(Query):
 
         `keys` represents the `EdgeKey`s that identifies the edges.
         """
-        return cls("edges", keys=[key.to_dict() for key in keys])
+        return cls("edges", keys=keys)
 
-    def outbound_vertices(self, limit=DEFAULT_LIMIT):
+    def outbound_vertices(self, limit=None):
         """
         Get the vertices outbounding from the edges returned by this query.
 
         `limit` limits the number of returned vertices.
         """
-        return VertexQuery("pipe", edge_query=self.to_dict(), converter="outbound", limit=limit)
+        return VertexQuery("pipe", edge_query=self, converter="outbound", limit=limit)
 
-    def inbound_vertices(self, limit=DEFAULT_LIMIT):
+    def inbound_vertices(self, limit=None):
         """
         Get the vertices inbounding from the edges returned by this query.
 
         `limit` limits the number of returned vertices.
         """
-        return VertexQuery("pipe", edge_query=self.to_dict(), converter="inbound", limit=limit)
+        return VertexQuery("pipe", edge_query=self, converter="inbound", limit=limit)
