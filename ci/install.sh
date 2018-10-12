@@ -12,10 +12,6 @@ git submodule update --init --recursive
 sudo apt-get -qq update
 sudo apt-get install -y python3
 
-if [ $TOXENV = pypy ]; then
-    sudo apt-get install -y pypy;
-fi
-
 virtualenv -p python3 venv && source venv/bin/activate && pip install tox nose requests
 
 curl -O https://capnproto.org/capnproto-c++-0.6.1.tar.gz
