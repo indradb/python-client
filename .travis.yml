@@ -10,22 +10,11 @@ cache:
 sudo: required
 dist: trusty
 
-# Use sed to replace the SSH URL with the public URL, then initialize
-# submodules. This is done because TravisCI can't pull from the SSH
-# URI. Via https://stackoverflow.com/questions/15674064/how-to-fix-a-permission-denied-publickey-error-for-a-git-submodule-update-in-t
 git:
   submodules: false
-before_install:
-  - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
-  - git submodule update --init --recursive
 
-install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y python3
-  - if [ $TOXENV = pypy ]; then sudo apt-get install -y pypy; fi
-  - virtualenv -p python3 venv && source venv/bin/activate && pip install tox nose requests
-script:
-  - source venv/bin/activate && make test
+install: ./ci/install.sh
+script: source venv/bin/activate && make test
 env:
   matrix:
     - TOXENV=py2
