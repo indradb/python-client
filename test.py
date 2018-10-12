@@ -5,6 +5,7 @@ import os
 import time
 import socket
 import subprocess
+import os
 from contextlib import contextmanager
 
 from indradb import Client
@@ -21,7 +22,13 @@ def server(env):
     """
 
     # Start the process
-    server_proc = subprocess.Popen(["indradb"], stdout=sys.stdout, stderr=sys.stderr, env=env)
+    server_proc = subprocess.Popen(
+        ["cargo", "run"],
+        cwd=os.path.join(".", "indradb_server", "bin"),
+        stdout=sys.stdout,
+        stderr=sys.stderr,
+        env=env
+    )
     
     while True:
         try:
