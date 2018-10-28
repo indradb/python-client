@@ -1,16 +1,10 @@
+from .models import Vertex, Edge, VertexMetadata, EdgeMetadata
+import uuid
+import json
+
 class Transaction(object):
-    """
-    A transaction. This class uses the builder pattern so that you can chain
-    queries together, e.g.:
-    
-    >>> Transaction().create_edge(...).get_vertices(...)
-    """
-
-    def __init__(self):
-        self.payload = []
-
-    def _add(self, **kwargs):
-        self.payload.append(kwargs)
+    def __init__(self, trans):
+        self.trans = trans
 
     def create_vertex(self, vertex):
         """
@@ -18,8 +12,8 @@ class Transaction(object):
 
         `vertex` specifies the `Vertex` to create.
         """
-        self._add(action="create_vertex", vertex=vertex.to_dict())
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.createVertex(vertex.to_message()).then(deserialize)
 
     def create_vertex_from_type(self, type):
         """
@@ -27,8 +21,9 @@ class Transaction(object):
 
         `type` specifies the new vertex's type.
         """
-        self._add(action="create_vertex_from_type", type=type)
-        return self
+
+        deserialize = lambda message: uuid.UUID(bytes=message.result)
+        return self.trans.createVertexFromType(type).then(deserialize)
 
     def get_vertices(self, query):
         """
@@ -36,8 +31,8 @@ class Transaction(object):
 
         `query` specifies the `VertexQuery` to use.
         """
-        self._add(action="get_vertices", query=query.to_dict())
-        return self
+        deserialize = lambda message: [Vertex.from_message(v) for v in message.result]
+        return self.trans.getVertices(query.to_message()).then(deserialize)
 
     def delete_vertices(self, query):
         """
@@ -45,18 +40,24 @@ class Transaction(object):
 
         `query` specifies the `VertexQuery` to use.
         """
-        self._add(action="delete_vertices", query=query.to_dict())
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.deleteVertices(query.to_message()).then(deserialize)
+
+    def get_vertex_count(self):
+        """
+        Gets the total number of vertices in the datastore.
+        """
+        deserialize = lambda message: message.result
+        return self.trans.getVertexCount().then(deserialize)
 
     def create_edge(self, key):
         """
         Creates a new edge.
 
         `key` is the `EdgeKey` that identifies the edge.
-        -1.0 and 1.0.
         """
-        self._add(action="create_edge", key=key.to_dict())
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.createEdge(key.to_message()).then(deserialize)
 
     def get_edges(self, query):
         """
@@ -64,8 +65,8 @@ class Transaction(object):
 
         `query` specifies the `EdgeQuery` to use.
         """
-        self._add(action="get_edges", query=query.to_dict())
-        return self
+        deserialize = lambda message: [Edge.from_message(e) for e in message.result]
+        return self.trans.getEdges(query.to_message()).then(deserialize)
 
     def delete_edges(self, query):
         """
@@ -73,8 +74,8 @@ class Transaction(object):
 
         `query` specifies the `EdgeQuery` to use.
         """
-        self._add(action="delete_edges", query=query.to_dict())
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.deleteEdges(query.to_message()).then(deserialize)
 
     def get_edge_count(self, id, type_filter, direction):
         """
@@ -85,36 +86,8 @@ class Transaction(object):
         counted. `direction` specifies the direction of edges to count -
         either `outbound` or `inbound`.
         """
-        self._add(action="get_edge_count", id=id, type_filter=type_filter, direction=direction)
-        return self
-
-    def get_global_metadata(self, name):
-        """
-        Gets global metadata.
-
-        `name` specifies name of the global metadata to get.
-        """
-        self._add(action="get_global_metadata", name=name)
-        return self
-
-    def set_global_metadata(self, name, value):
-        """
-        Sets global metadata.
-
-        `name` specifies name of the global metadata to get. `value` specifies
-        the value to set.
-        """
-        self._add(action="set_global_metadata", name=name, value=value)
-        return self
-
-    def delete_global_metadata(self, name):
-        """
-        Deletes global metadata.
-
-        `name` specifies name of the global metadata to delete.
-        """
-        self._add(action="delete_global_metadata", name=name)
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.getEdgeCount(id.bytes, type_filter or "", direction).then(deserialize)
 
     def get_vertex_metadata(self, query, name):
         """
@@ -123,8 +96,8 @@ class Transaction(object):
         `query` specifies the vertex query to run. `name` specifies name of
         the metadata to get.
         """
-        self._add(action="get_vertex_metadata", query=query.to_dict(), name=name)
-        return self
+        deserialize = lambda message: [VertexMetadata.from_message(m) for m in message.result]
+        return self.trans.getVertexMetadata(query.to_message(), name).then(deserialize)
 
     def set_vertex_metadata(self, query, name, value):
         """
@@ -133,8 +106,8 @@ class Transaction(object):
         `query` specifies the edge query to run. `name` specifies name of the
         metadata to get. `value` specifies the value to set.
         """
-        self._add(action="set_vertex_metadata", query=query.to_dict(), name=name, value=value)
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.setVertexMetadata(query.to_message(), name, json.dumps(value)).then(deserialize)
 
     def delete_vertex_metadata(self, query, name):
         """
@@ -143,8 +116,8 @@ class Transaction(object):
         `query` specifies the vertex query to run. `name` specifies name of
         the metadata to delete.
         """
-        self._add(action="delete_vertex_metadata", query=query.to_dict(), name=name)
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.deleteVertexMetadata(query.to_message(), name).then(deserialize)
 
     def get_edge_metadata(self, query, name):
         """
@@ -153,8 +126,8 @@ class Transaction(object):
         `query` specifies the edge query to run. `name` specifies name of the
         metadata to get.
         """
-        self._add(action="get_edge_metadata", query=query.to_dict(), name=name)
-        return self
+        deserialize = lambda message: [EdgeMetadata.from_message(m) for m in message.result]
+        return self.trans.getEdgeMetadata(query.to_message(), name).then(deserialize)
 
     def set_edge_metadata(self, query, name, value):
         """
@@ -163,8 +136,8 @@ class Transaction(object):
         `query` specifies the edge query to run. `name` specifies name of the
         metadata to get. `value` specifies the value to set.
         """
-        self._add(action="set_edge_metadata", query=query.to_dict(), name=name, value=value)
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.setEdgeMetadata(query.to_message(), name, json.dumps(value)).then(deserialize)
 
     def delete_edge_metadata(self, query, name):
         """
@@ -173,5 +146,5 @@ class Transaction(object):
         `query` specifies the edge query to run. `name` specifies name of the
         metadata to delete.
         """
-        self._add(action="delete_edge_metadata", query=query.to_dict(), name=name)
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.deleteEdgeMetadata(query.to_message(), name).then(deserialize)

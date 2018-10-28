@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 
-import tempfile
-import requests
-import re
 import sys
 import os
 import time
+import socket
 import subprocess
-import shutil
+import os
 from contextlib import contextmanager
+
+from indradb import Client
+
+PORT = 27615
+HOST = "localhost:%s" % PORT
 
 @contextmanager
 def server(env):
@@ -19,19 +22,24 @@ def server(env):
     """
 
     # Start the process
-    server_proc = subprocess.Popen(["indradb-server"], stdout=sys.stdout, stderr=sys.stderr, env=env)
+    server_proc = subprocess.Popen(
+        ["cargo", "run"],
+        cwd=os.path.join(".", "indradb_server", "bin"),
+        stdout=sys.stdout,
+        stderr=sys.stderr,
+        env=env
+    )
     
     while True:
-        # Check if the server is now responding to HTTP requests
         try:
-            res = requests.get("http://localhost:8000", timeout=1)
-
-            if res.status_code == 404:
+            client = Client(HOST)
+            
+            if client.ping().wait().ready:
                 break
-        except requests.exceptions.RequestException:
-            pass
+        except socket.error as e:
+            print(e)
 
-        # Server is not yet responding to HTTP requests - let's make sure it's
+        # Server is not yet responding to requests - let's make sure it's
         # running in the first place
         if server_proc.poll() != None:
             raise Exception("Server failed to start")
@@ -47,10 +55,10 @@ def main():
     env = dict(os.environ)
 
     env.update({
+        "PORT": str(PORT),
         "RUST_BACKTRACE": "1",
         "DATABASE_URL": "memory://",
-        "INDRADB_SCRIPT_ROOT": "%s/test_scripts" % os.getcwd(),
-        "INDRADB_HOST": "localhost:8000",
+        "INDRADB_HOST": HOST
     })
 
     with server(env):
