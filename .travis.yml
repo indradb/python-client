@@ -14,7 +14,7 @@ git:
   submodules: false
 
 install: ./ci/install.sh
-script: source venv/bin/activate && make test
+script: make test
 env:
   matrix:
     - TOXENV=py2
