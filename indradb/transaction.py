@@ -1,4 +1,4 @@
-from .models import Vertex, Edge, VertexMetadata, EdgeMetadata
+from .models import Vertex, Edge, VertexProperty, EdgeProperty
 import uuid
 import json
 
@@ -89,62 +89,62 @@ class Transaction(object):
         deserialize = lambda message: message.result
         return self.trans.getEdgeCount(id.bytes, type_filter or "", direction).then(deserialize)
 
-    def get_vertex_metadata(self, query, name):
+    def get_vertex_properties(self, query, name):
         """
-        Gets vertex metadata.
+        Gets vertex properties.
 
         `query` specifies the vertex query to run. `name` specifies name of
-        the metadata to get.
+        the properties to get.
         """
-        deserialize = lambda message: [VertexMetadata.from_message(m) for m in message.result]
-        return self.trans.getVertexMetadata(query.to_message(), name).then(deserialize)
+        deserialize = lambda message: [VertexProperty.from_message(m) for m in message.result]
+        return self.trans.getVertexProperties(query.to_message(), name).then(deserialize)
 
-    def set_vertex_metadata(self, query, name, value):
+    def set_vertex_properties(self, query, name, value):
         """
-        Sets vertex metadata.
+        Sets vertex properties.
 
         `query` specifies the edge query to run. `name` specifies name of the
-        metadata to get. `value` specifies the value to set.
+        properties to get. `value` specifies the value to set.
         """
         deserialize = lambda message: message.result
-        return self.trans.setVertexMetadata(query.to_message(), name, json.dumps(value)).then(deserialize)
+        return self.trans.setVertexProperties(query.to_message(), name, json.dumps(value)).then(deserialize)
 
-    def delete_vertex_metadata(self, query, name):
+    def delete_vertex_properties(self, query, name):
         """
-        Deletes vertex metadata.
+        Deletes vertex properties.
 
         `query` specifies the vertex query to run. `name` specifies name of
-        the metadata to delete.
+        the properties to delete.
         """
         deserialize = lambda message: message.result
-        return self.trans.deleteVertexMetadata(query.to_message(), name).then(deserialize)
+        return self.trans.deleteVertexProperties(query.to_message(), name).then(deserialize)
 
-    def get_edge_metadata(self, query, name):
+    def get_edge_properties(self, query, name):
         """
-        Gets edge metadata.
+        Gets edge properties.
 
         `query` specifies the edge query to run. `name` specifies name of the
-        metadata to get.
+        properties to get.
         """
-        deserialize = lambda message: [EdgeMetadata.from_message(m) for m in message.result]
-        return self.trans.getEdgeMetadata(query.to_message(), name).then(deserialize)
+        deserialize = lambda message: [EdgeProperty.from_message(m) for m in message.result]
+        return self.trans.getEdgeProperties(query.to_message(), name).then(deserialize)
 
-    def set_edge_metadata(self, query, name, value):
+    def set_edge_properties(self, query, name, value):
         """
-        Sets edge metadata.
+        Sets edge properties.
 
         `query` specifies the edge query to run. `name` specifies name of the
-        metadata to get. `value` specifies the value to set.
+        properties to get. `value` specifies the value to set.
         """
         deserialize = lambda message: message.result
-        return self.trans.setEdgeMetadata(query.to_message(), name, json.dumps(value)).then(deserialize)
+        return self.trans.setEdgeProperties(query.to_message(), name, json.dumps(value)).then(deserialize)
 
-    def delete_edge_metadata(self, query, name):
+    def delete_edge_properties(self, query, name):
         """
-        Deletes global metadata.
+        Deletes global properties.
 
         `query` specifies the edge query to run. `name` specifies name of the
-        metadata to delete.
+        properties to delete.
         """
         deserialize = lambda message: message.result
-        return self.trans.deleteEdgeMetadata(query.to_message(), name).then(deserialize)
+        return self.trans.deleteEdgeProperties(query.to_message(), name).then(deserialize)

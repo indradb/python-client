@@ -2,7 +2,7 @@ import os
 import uuid
 import unittest
 
-from indradb import Client, Vertex, VertexQuery, EdgeQuery, Transaction, EdgeKey, VertexMetadata, EdgeMetadata
+from indradb import Client, Vertex, VertexQuery, EdgeQuery, Transaction, EdgeKey, VertexProperty, EdgeProperty
 
 class TransactionTestCase(unittest.TestCase):
     def setUp(self):
@@ -59,22 +59,22 @@ class TransactionTestCase(unittest.TestCase):
         count = trans.get_edge_count(outbound_id, None, "outbound").wait()
         self.assertEqual(count, 1)
 
-    def test_vertex_metadata(self):
+    def test_vertex_properties(self):
         trans = self.client.transaction()
         id = trans.create_vertex_from_type("foo").wait()
         query = VertexQuery.vertices([id])
 
-        m1 = trans.get_vertex_metadata(query, "foo").wait()
-        trans.set_vertex_metadata(query, "foo", 42).wait()
-        m2 = trans.get_vertex_metadata(query, "foo").wait()
-        trans.delete_vertex_metadata(query, "foo").wait()
-        m3 = trans.get_vertex_metadata(query, "foo").wait()
+        m1 = trans.get_vertex_properties(query, "foo").wait()
+        trans.set_vertex_properties(query, "foo", 42).wait()
+        m2 = trans.get_vertex_properties(query, "foo").wait()
+        trans.delete_vertex_properties(query, "foo").wait()
+        m3 = trans.get_vertex_properties(query, "foo").wait()
 
         self.assertEqual(m1, [])
-        self.assertEqual(m2, [VertexMetadata(id, 42)])
+        self.assertEqual(m2, [VertexProperty(id, 42)])
         self.assertEqual(m3, [])
 
-    def test_edge_metadata(self):
+    def test_edge_properties(self):
         trans = self.client.transaction()
         outbound_id = trans.create_vertex_from_type("foo").wait()
         inbound_id = trans.create_vertex_from_type("foo").wait()
@@ -82,12 +82,12 @@ class TransactionTestCase(unittest.TestCase):
         trans.create_edge(key).wait()
         query = EdgeQuery.edges([key])
 
-        m1 = trans.get_edge_metadata(query, "foo").wait()
-        trans.set_edge_metadata(query, "foo", 42).wait()
-        m2 = trans.get_edge_metadata(query, "foo").wait()
-        trans.delete_edge_metadata(query, "foo").wait()
-        m3 = trans.get_edge_metadata(query, "foo").wait()
+        m1 = trans.get_edge_properties(query, "foo").wait()
+        trans.set_edge_properties(query, "foo", 42).wait()
+        m2 = trans.get_edge_properties(query, "foo").wait()
+        trans.delete_edge_properties(query, "foo").wait()
+        m3 = trans.get_edge_properties(query, "foo").wait()
 
         self.assertEqual(m1, [])
-        self.assertEqual(m2, [EdgeMetadata(key, 42)])
+        self.assertEqual(m2, [EdgeProperty(key, 42)])
         self.assertEqual(m3, [])

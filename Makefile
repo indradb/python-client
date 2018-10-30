@@ -1,4 +1,4 @@
-.PHONY: release
+.PHONY: release test
 
 doc:
 	PYTHONPATH=.:$(PYTHONPATH) pdoc --html --html-dir ./doc ./indradb
@@ -10,7 +10,7 @@ release:
 
 venv:
 	virtualenv --no-site-packages venv
-	source venv/bin/activate && pip install tox nose requests
+	source venv/bin/activate && pip install tox nose
 
 indradb_server/Cargo.toml:
 	git submodule update --init --recursive
