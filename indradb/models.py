@@ -149,24 +149,24 @@ class Edge(object):
             created_datetime=from_timestamp(message.createdDatetime)
         )
 
-class VertexMetadata(object):
+class VertexProperty(object):
     """
-    Metadata attached to a vertex
+    Property attached to a vertex
     """
 
     def __init__(self, id, value):
         """
-        Creates a new vertex metadata.
+        Creates a new vertex property.
 
-        `id` is the vertex ID that the metadata is attached to. `value`
-        represents the metadata value.
+        `id` is the vertex ID that the property is attached to. `value`
+        represents the property value.
         """
 
         self.id = id
         self.value = value
 
     def __eq__(self, other):
-        if not isinstance(other, VertexMetadata):
+        if not isinstance(other, VertexProperty):
             return False
         if self.id != other.id:
             return False
@@ -184,24 +184,24 @@ class VertexMetadata(object):
             value=json.loads(message.value)
         )
 
-class EdgeMetadata(object):
+class EdgeProperty(object):
     """
-    Metadata attached to an edge
+    Property attached to an edge
     """
 
     def __init__(self, key, value):
         """
-        Creates a new edge metadata.
+        Creates a new edge property.
 
-        `key` is the edge key that the metadata is attached to. `value`
-        represents the metadata value.
+        `key` is the edge key that the property is attached to. `value`
+        represents the property value.
         """
 
         self.key = key
         self.value = value
 
     def __eq__(self, other):
-        if not isinstance(other, EdgeMetadata):
+        if not isinstance(other, EdgeProperty):
             return False
         if self.key != other.key:
             return False

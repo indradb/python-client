@@ -8,11 +8,8 @@ set -ex
 sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
 git submodule update --init --recursive
 
-
 sudo apt-get -qq update
 sudo apt-get install -y python3
-
-virtualenv -p python3 venv && source venv/bin/activate && pip install tox nose requests
 
 curl -O https://capnproto.org/capnproto-c++-0.6.1.tar.gz
 tar zxf capnproto-c++-0.6.1.tar.gz

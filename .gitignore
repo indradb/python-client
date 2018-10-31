@@ -3,5 +3,7 @@ __pycache__
 *.pyo
 *.egg-info
 *.rdb
-venv
 .tox
+/venv
+/build
+/dist

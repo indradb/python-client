@@ -1,22 +1,19 @@
-.PHONY: release
+.PHONY: init release test
+
+init:
+	virtualenv --no-site-packages venv
+	. venv/bin/activate && pip install tox nose pdoc
+	git submodule update --init --recursive
+	cp indradb_server/bin/indradb.capnp indradb/
 
 doc:
-	PYTHONPATH=.:$(PYTHONPATH) pdoc --html --html-dir ./doc ./indradb
+	. venv/bin/activate && python setup.py clean build install
+	. venv/bin/activate && pdoc --html --html-dir ./doc ./indradb
 
 release:
 	git checkout master
 	git push origin master
 	python setup.py clean build sdist upload
 
-venv:
-	virtualenv --no-site-packages venv
-	source venv/bin/activate && pip install tox nose requests
-
-indradb_server/Cargo.toml:
-	git submodule update --init --recursive
-
-indradb_server/target: indradb_server/Cargo.toml
-	cd indradb_server/bin && cargo build
-
-test: venv indradb_server/target
-	tox
+test:
+	. venv/bin/activate && tox

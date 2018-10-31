@@ -4,6 +4,7 @@ setup(
     name = "indradb",
     version = "0.3.0",
     author = "Yusuf Simonson",
+    package_data={"": ["indradb.capnp"]},
 
     packages = [
         "indradb",

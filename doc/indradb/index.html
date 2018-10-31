@@ -979,8 +979,7 @@ table {
           
   <ul>
     <li class="mono"><a href="#indradb.Client.__init__">__init__</a></li>
-    <li class="mono"><a href="#indradb.Client.mapreduce">mapreduce</a></li>
-    <li class="mono"><a href="#indradb.Client.script">script</a></li>
+    <li class="mono"><a href="#indradb.Client.ping">ping</a></li>
     <li class="mono"><a href="#indradb.Client.transaction">transaction</a></li>
   </ul>
 
@@ -991,8 +990,8 @@ table {
           
   <ul>
     <li class="mono"><a href="#indradb.Edge.__init__">__init__</a></li>
-    <li class="mono"><a href="#indradb.Edge.to_dict">to_dict</a></li>
-    <li class="mono"><a href="#indradb.Edge.from_dict">from_dict</a></li>
+    <li class="mono"><a href="#indradb.Edge.from_message">from_message</a></li>
+    <li class="mono"><a href="#indradb.Edge.to_message">to_message</a></li>
   </ul>
 
         </li>
@@ -1002,8 +1001,8 @@ table {
           
   <ul>
     <li class="mono"><a href="#indradb.EdgeKey.__init__">__init__</a></li>
-    <li class="mono"><a href="#indradb.EdgeKey.to_dict">to_dict</a></li>
-    <li class="mono"><a href="#indradb.EdgeKey.from_dict">from_dict</a></li>
+    <li class="mono"><a href="#indradb.EdgeKey.from_message">from_message</a></li>
+    <li class="mono"><a href="#indradb.EdgeKey.to_message">to_message</a></li>
   </ul>
 
         </li>
@@ -1013,19 +1012,10 @@ table {
           
   <ul>
     <li class="mono"><a href="#indradb.EdgeQuery.__init__">__init__</a></li>
+    <li class="mono"><a href="#indradb.EdgeQuery.edges">edges</a></li>
     <li class="mono"><a href="#indradb.EdgeQuery.inbound_vertices">inbound_vertices</a></li>
     <li class="mono"><a href="#indradb.EdgeQuery.outbound_vertices">outbound_vertices</a></li>
-    <li class="mono"><a href="#indradb.EdgeQuery.to_dict">to_dict</a></li>
-    <li class="mono"><a href="#indradb.EdgeQuery.edges">edges</a></li>
-  </ul>
-
-        </li>
-        <li class="mono">
-        <span class="class_name"><a href="#indradb.Error">Error</a></span>
-        
-          
-  <ul>
-    <li class="mono"><a href="#indradb.Error.__init__">__init__</a></li>
+    <li class="mono"><a href="#indradb.EdgeQuery.to_message">to_message</a></li>
   </ul>
 
         </li>
@@ -1037,20 +1027,19 @@ table {
     <li class="mono"><a href="#indradb.Transaction.__init__">__init__</a></li>
     <li class="mono"><a href="#indradb.Transaction.create_edge">create_edge</a></li>
     <li class="mono"><a href="#indradb.Transaction.create_vertex">create_vertex</a></li>
-    <li class="mono"><a href="#indradb.Transaction.delete_edge_metadata">delete_edge_metadata</a></li>
+    <li class="mono"><a href="#indradb.Transaction.create_vertex_from_type">create_vertex_from_type</a></li>
+    <li class="mono"><a href="#indradb.Transaction.delete_edge_properties">delete_edge_properties</a></li>
     <li class="mono"><a href="#indradb.Transaction.delete_edges">delete_edges</a></li>
-    <li class="mono"><a href="#indradb.Transaction.delete_global_metadata">delete_global_metadata</a></li>
-    <li class="mono"><a href="#indradb.Transaction.delete_vertex_metadata">delete_vertex_metadata</a></li>
+    <li class="mono"><a href="#indradb.Transaction.delete_vertex_properties">delete_vertex_properties</a></li>
     <li class="mono"><a href="#indradb.Transaction.delete_vertices">delete_vertices</a></li>
     <li class="mono"><a href="#indradb.Transaction.get_edge_count">get_edge_count</a></li>
-    <li class="mono"><a href="#indradb.Transaction.get_edge_metadata">get_edge_metadata</a></li>
+    <li class="mono"><a href="#indradb.Transaction.get_edge_properties">get_edge_properties</a></li>
     <li class="mono"><a href="#indradb.Transaction.get_edges">get_edges</a></li>
-    <li class="mono"><a href="#indradb.Transaction.get_global_metadata">get_global_metadata</a></li>
-    <li class="mono"><a href="#indradb.Transaction.get_vertex_metadata">get_vertex_metadata</a></li>
+    <li class="mono"><a href="#indradb.Transaction.get_vertex_count">get_vertex_count</a></li>
+    <li class="mono"><a href="#indradb.Transaction.get_vertex_properties">get_vertex_properties</a></li>
     <li class="mono"><a href="#indradb.Transaction.get_vertices">get_vertices</a></li>
-    <li class="mono"><a href="#indradb.Transaction.set_edge_metadata">set_edge_metadata</a></li>
-    <li class="mono"><a href="#indradb.Transaction.set_global_metadata">set_global_metadata</a></li>
-    <li class="mono"><a href="#indradb.Transaction.set_vertex_metadata">set_vertex_metadata</a></li>
+    <li class="mono"><a href="#indradb.Transaction.set_edge_properties">set_edge_properties</a></li>
+    <li class="mono"><a href="#indradb.Transaction.set_vertex_properties">set_vertex_properties</a></li>
   </ul>
 
         </li>
@@ -1060,8 +1049,8 @@ table {
           
   <ul>
     <li class="mono"><a href="#indradb.Vertex.__init__">__init__</a></li>
-    <li class="mono"><a href="#indradb.Vertex.to_dict">to_dict</a></li>
-    <li class="mono"><a href="#indradb.Vertex.from_dict">from_dict</a></li>
+    <li class="mono"><a href="#indradb.Vertex.from_message">from_message</a></li>
+    <li class="mono"><a href="#indradb.Vertex.to_message">to_message</a></li>
   </ul>
 
         </li>
@@ -1071,10 +1060,10 @@ table {
           
   <ul>
     <li class="mono"><a href="#indradb.VertexQuery.__init__">__init__</a></li>
+    <li class="mono"><a href="#indradb.VertexQuery.all">all</a></li>
     <li class="mono"><a href="#indradb.VertexQuery.inbound_edges">inbound_edges</a></li>
     <li class="mono"><a href="#indradb.VertexQuery.outbound_edges">outbound_edges</a></li>
-    <li class="mono"><a href="#indradb.VertexQuery.to_dict">to_dict</a></li>
-    <li class="mono"><a href="#indradb.VertexQuery.all">all</a></li>
+    <li class="mono"><a href="#indradb.VertexQuery.to_message">to_message</a></li>
     <li class="mono"><a href="#indradb.VertexQuery.vertices">vertices</a></li>
   </ul>
 
@@ -1099,8 +1088,7 @@ table {
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb', this);">Show source &equiv;</a></p>
   <div id="source-indradb" class="source">
     <pre><code>from indradb.client import Client
-from indradb.errors import Error
-from indradb.models import Vertex, Edge, VertexQuery, EdgeQuery, EdgeKey, VertexMetadata, EdgeMetadata, MapReducePing
+from indradb.models import Vertex, Edge, VertexQuery, EdgeQuery, EdgeKey, VertexProperty, EdgeProperty
 from indradb.transaction import Transaction
 
 __all__ = ["Client", "Error", "Vertex", "Edge", "VertexQuery", "EdgeQuery", "EdgeKey", "Transaction"]
@@ -1125,115 +1113,27 @@ __all__ = ["Client", "Error", "Vertex", "Edge", "VertexQuery", "EdgeQuery", "Edg
     <pre><code>class Client(object):
     """Represents a connection to IndraDB"""
 
-    def __init__(self, host, request_timeout=DEFAULT_REQUEST_TIMEOUT, scheme="https"):
+    def __init__(self, host):
         """
         Creates a new client.
 
-        `host` specifies the hostname and port of the server, specified either as a tuple or a string of the format
+        `host` is a string that specifies the server location, in the format
         `hostname:port`.
 
         The optional `request_timeout` sets how many seconds to wait before a request times out (defaults to 60
-        seconds.) The optional `scheme` sets what protocol to use (`http` or `https`.) This defaults to `https`,
-        but if your server does not accept https requests, you will get an error.
+        seconds.)
         """
 
-        if isinstance(host, tuple):
-            self.host = host
-        else:
-            parts = host.split(":")
-            self.host = (parts[0], int(parts[1]))
+        self.host = host
+        self.client = capnp.TwoPartyClient(self.host)
+        self.service = self.client.bootstrap().cast_as(indradb_capnp.Service)
 
-        self.scheme = scheme
-        self.request_timeout = request_timeout
-        self._session = requests.Session()
+    def ping(self):
+        return self.service.ping()
 
-    def _request(self, method, endpoint, query_params=None, body=None, stream=False):
-        """Makes a request"""
-
-        response = self._session.request(method, "%s://%s:%s%s" % (self.scheme, self.host[0], self.host[1], endpoint),
-            params=query_params,
-            data=json.dumps(body) if body else None,
-            timeout=self.request_timeout,
-            stream=stream,
-            headers={
-                "content-type": "application/json"
-            }
-        )
-
-        if response.status_code < 200 or response.status_code > 299:
-            try:
-                body = response.json()
-            except Exception as e:
-                body = None
-
-            if isinstance(body, dict) and body.get("error") != None:
-                raise Error(body.get("error"), code=response.status_code)
-            else:
-                raise Error("Unexpected response code", code=response.status_code)
-
-        if stream:
-            return stream_response(response)
-        else:
-            return response.json()
-
-    def transaction(self, transaction):
-        """
-        Executes several requests in one HTTP request, as part of a
-        single transaction.
-
-        `transaction` specifies the `Transaction` to execute.
-        """
-        response = self._request("POST", "/transaction", body=transaction.payload)
-
-        # Handle special serialization cases
-        serialized_response = []
-
-        for (req, res) in zip(transaction.payload, response):
-            if isinstance(res, dict) and "error" in res:
-                serialized_response.append(Error(res["error"]))
-            else:
-                action = req["action"]
-
-                if action == "get_vertices":
-                    serialized_response.append([Vertex.from_dict(item) for item in res])
-                elif action == "get_edges":
-                    serialized_response.append([Edge.from_dict(item) for item in res])
-                elif action == "get_vertex_metadata":
-                    serialized_response.append([VertexMetadata.from_dict(item) for item in res])
-                elif action == "get_edge_metadata":
-                    serialized_response.append([EdgeMetadata.from_dict(item) for item in res])
-                else:
-                    serialized_response.append(res)
-
-        return serialized_response
-
-    def script(self, name, payload):
-        """
-        Executes a lua script.
-
-        `name` specifies the name of the lua script, which should be in the server's script root directory. It should
-        include the `.lua` extension of the file. `payload` is a JSON-serializable payload to send to the script.
-        """
-        return self._request("POST", _path("script", name), body=payload)
-
-    def mapreduce(self, name, payload):
-        """
-        Executes a lua mapreduce script.
-
-        `name` specifies the name of the lua script, which should be in the server's script root directory. It should
-        include the `.lua` extension of the file. `payload` is a JSON-serializable payload to send to the script.
-        """
-
-        for update in self._request("POST", _path("mapreduce", name), body=payload, stream=True):
-            if "ping" in update:
-                yield MapReducePing.from_dict(update["ping"])
-            elif "ok" in update:
-                yield update["ok"]
-                return
-            elif "error" in update:
-                raise Error(update["error"])
-            else:
-                raise Error("Unexpected update: %s" % update)
+    def transaction(self):
+        trans = self.service.transaction().wait()
+        return Transaction(trans.transaction)
 </code></pre>
   </div>
 </div>
@@ -1243,44 +1143,68 @@ __all__ = ["Client", "Error", "Vertex", "Edge", "VertexQuery", "EdgeQuery", "Edg
           <h3>Ancestors (in MRO)</h3>
           <ul class="class_list">
           <li><a href="#indradb.Client">Client</a></li>
-          <li>builtins.object</li>
+          <li>__builtin__.object</li>
           </ul>
-          <h3>Static methods</h3>
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="indradb.Client.client" class="name">var <span class="ident">client</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="indradb.Client.host" class="name">var <span class="ident">host</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="indradb.Client.service" class="name">var <span class="ident">service</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+          <h3>Methods</h3>
             
   <div class="item">
     <div class="name def" id="indradb.Client.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, host, request_timeout=60, scheme=&#39;https&#39;)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, host)</p>
     </div>
     
 
     
   
     <div class="desc"><p>Creates a new client.</p>
-<p><code>host</code> specifies the hostname and port of the server, specified either as a tuple or a string of the format
+<p><code>host</code> is a string that specifies the server location, in the format
 <code>hostname:port</code>.</p>
 <p>The optional <code>request_timeout</code> sets how many seconds to wait before a request times out (defaults to 60
-seconds.) The optional <code>scheme</code> sets what protocol to use (<code>http</code> or <code>https</code>.) This defaults to <code>https</code>,
-but if your server does not accept https requests, you will get an error.</p></div>
+seconds.)</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Client.__init__', this);">Show source &equiv;</a></p>
   <div id="source-indradb.Client.__init__" class="source">
-    <pre><code>def __init__(self, host, request_timeout=DEFAULT_REQUEST_TIMEOUT, scheme="https"):
+    <pre><code>def __init__(self, host):
     """
     Creates a new client.
-    `host` specifies the hostname and port of the server, specified either as a tuple or a string of the format
+    `host` is a string that specifies the server location, in the format
     `hostname:port`.
     The optional `request_timeout` sets how many seconds to wait before a request times out (defaults to 60
-    seconds.) The optional `scheme` sets what protocol to use (`http` or `https`.) This defaults to `https`,
-    but if your server does not accept https requests, you will get an error.
+    seconds.)
     """
-    if isinstance(host, tuple):
-        self.host = host
-    else:
-        parts = host.split(":")
-        self.host = (parts[0], int(parts[1]))
-    self.scheme = scheme
-    self.request_timeout = request_timeout
-    self._session = requests.Session()
+    self.host = host
+    self.client = capnp.TwoPartyClient(self.host)
+    self.service = self.client.bootstrap().cast_as(indradb_capnp.Service)
 </code></pre>
   </div>
 </div>
@@ -1289,63 +1213,18 @@ but if your server does not accept https requests, you will get an error.</p></d
   
             
   <div class="item">
-    <div class="name def" id="indradb.Client.mapreduce">
-    <p>def <span class="ident">mapreduce</span>(</p><p>self, name, payload)</p>
+    <div class="name def" id="indradb.Client.ping">
+    <p>def <span class="ident">ping</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Executes a lua mapreduce script.</p>
-<p><code>name</code> specifies the name of the lua script, which should be in the server's script root directory. It should
-include the <code>.lua</code> extension of the file. <code>payload</code> is a JSON-serializable payload to send to the script.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Client.mapreduce', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Client.mapreduce" class="source">
-    <pre><code>def mapreduce(self, name, payload):
-    """
-    Executes a lua mapreduce script.
-    `name` specifies the name of the lua script, which should be in the server's script root directory. It should
-    include the `.lua` extension of the file. `payload` is a JSON-serializable payload to send to the script.
-    """
-    for update in self._request("POST", _path("mapreduce", name), body=payload, stream=True):
-        if "ping" in update:
-            yield MapReducePing.from_dict(update["ping"])
-        elif "ok" in update:
-            yield update["ok"]
-            return
-        elif "error" in update:
-            raise Error(update["error"])
-        else:
-            raise Error("Unexpected update: %s" % update)
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Client.script">
-    <p>def <span class="ident">script</span>(</p><p>self, name, payload)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Executes a lua script.</p>
-<p><code>name</code> specifies the name of the lua script, which should be in the server's script root directory. It should
-include the <code>.lua</code> extension of the file. <code>payload</code> is a JSON-serializable payload to send to the script.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Client.script', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Client.script" class="source">
-    <pre><code>def script(self, name, payload):
-    """
-    Executes a lua script.
-    `name` specifies the name of the lua script, which should be in the server's script root directory. It should
-    include the `.lua` extension of the file. `payload` is a JSON-serializable payload to send to the script.
-    """
-    return self._request("POST", _path("script", name), body=payload)
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Client.ping', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Client.ping" class="source">
+    <pre><code>def ping(self):
+    return self.service.ping()
 </code></pre>
   </div>
 </div>
@@ -1355,70 +1234,24 @@ include the <code>.lua</code> extension of the file. <code>payload</code> is a J
             
   <div class="item">
     <div class="name def" id="indradb.Client.transaction">
-    <p>def <span class="ident">transaction</span>(</p><p>self, transaction)</p>
+    <p>def <span class="ident">transaction</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Executes several requests in one HTTP request, as part of a
-single transaction.</p>
-<p><code>transaction</code> specifies the <code>Transaction</code> to execute.</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Client.transaction', this);">Show source &equiv;</a></p>
   <div id="source-indradb.Client.transaction" class="source">
-    <pre><code>def transaction(self, transaction):
-    """
-    Executes several requests in one HTTP request, as part of a
-    single transaction.
-    `transaction` specifies the `Transaction` to execute.
-    """
-    response = self._request("POST", "/transaction", body=transaction.payload)
-    # Handle special serialization cases
-    serialized_response = []
-    for (req, res) in zip(transaction.payload, response):
-        if isinstance(res, dict) and "error" in res:
-            serialized_response.append(Error(res["error"]))
-        else:
-            action = req["action"]
-            if action == "get_vertices":
-                serialized_response.append([Vertex.from_dict(item) for item in res])
-            elif action == "get_edges":
-                serialized_response.append([Edge.from_dict(item) for item in res])
-            elif action == "get_vertex_metadata":
-                serialized_response.append([VertexMetadata.from_dict(item) for item in res])
-            elif action == "get_edge_metadata":
-                serialized_response.append([EdgeMetadata.from_dict(item) for item in res])
-            else:
-                serialized_response.append(res)
-    return serialized_response
+    <pre><code>def transaction(self):
+    trans = self.service.transaction().wait()
+    return Transaction(trans.transaction)
 </code></pre>
   </div>
 </div>
 
   </div>
   
-          <h3>Instance variables</h3>
-            <div class="item">
-            <p id="indradb.Client.request_timeout" class="name">var <span class="ident">request_timeout</span></p>
-            
-
-            
-  
-  <div class="source_cont">
-</div>
-
-            </div>
-            <div class="item">
-            <p id="indradb.Client.scheme" class="name">var <span class="ident">scheme</span></p>
-            
-
-            
-  
-  <div class="source_cont">
-</div>
-
-            </div>
       </div>
       </div>
       
@@ -1458,16 +1291,17 @@ single transaction.</p>
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    def to_dict(self):
-        return dict(key=self.key.to_dict(), created_datetime=self.created_datetime.isoformat())
+    def to_message(self):
+        return indradb_capnp.Edge.new_message(
+            key=self.key.to_message(),
+            createdDatetime=to_timestamp(self.created_datetime)
+        )
 
     @classmethod
-    def from_dict(cls, d):
-        """Converts a dict to an `Edge`. Useful for JSON deserialization."""
-
+    def from_message(cls, message):
         return cls(
-            key=EdgeKey.from_dict(d["key"]),
-            created_datetime=arrow.get(d["created_datetime"]),
+            key=EdgeKey.from_message(message.key),
+            created_datetime=from_timestamp(message.createdDatetime)
         )
 </code></pre>
   </div>
@@ -1478,9 +1312,30 @@ single transaction.</p>
           <h3>Ancestors (in MRO)</h3>
           <ul class="class_list">
           <li><a href="#indradb.Edge">Edge</a></li>
-          <li>builtins.object</li>
+          <li>__builtin__.object</li>
           </ul>
-          <h3>Static methods</h3>
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="indradb.Edge.created_datetime" class="name">var <span class="ident">created_datetime</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="indradb.Edge.key" class="name">var <span class="ident">key</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+          <h3>Methods</h3>
             
   <div class="item">
     <div class="name def" id="indradb.Edge.__init__">
@@ -1512,65 +1367,44 @@ was created.</p></div>
   
             
   <div class="item">
-    <div class="name def" id="indradb.Edge.to_dict">
-    <p>def <span class="ident">to_dict</span>(</p><p>self)</p>
+    <div class="name def" id="indradb.Edge.from_message">
+    <p>def <span class="ident">from_message</span>(</p><p>cls, message)</p>
     </div>
     
 
     
   
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Edge.to_dict', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Edge.to_dict" class="source">
-    <pre><code>def to_dict(self):
-    return dict(key=self.key.to_dict(), created_datetime=self.created_datetime.isoformat())
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Edge.from_message', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Edge.from_message" class="source">
+    <pre><code>@classmethod
+def from_message(cls, message):
+    return cls(
+        key=EdgeKey.from_message(message.key),
+        created_datetime=from_timestamp(message.createdDatetime)
+    )
 </code></pre>
   </div>
 </div>
 
   </div>
   
-          <h3>Instance variables</h3>
-            <div class="item">
-            <p id="indradb.Edge.created_datetime" class="name">var <span class="ident">created_datetime</span></p>
-            
-
-            
-  
-  <div class="source_cont">
-</div>
-
-            </div>
-            <div class="item">
-            <p id="indradb.Edge.key" class="name">var <span class="ident">key</span></p>
-            
-
-            
-  
-  <div class="source_cont">
-</div>
-
-            </div>
-          <h3>Methods</h3>
             
   <div class="item">
-    <div class="name def" id="indradb.Edge.from_dict">
-    <p>def <span class="ident">from_dict</span>(</p><p>cls, d)</p>
+    <div class="name def" id="indradb.Edge.to_message">
+    <p>def <span class="ident">to_message</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Converts a dict to an <code>Edge</code>. Useful for JSON deserialization.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Edge.from_dict', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Edge.from_dict" class="source">
-    <pre><code>@classmethod
-def from_dict(cls, d):
-    """Converts a dict to an `Edge`. Useful for JSON deserialization."""
-    return cls(
-        key=EdgeKey.from_dict(d["key"]),
-        created_datetime=arrow.get(d["created_datetime"]),
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Edge.to_message', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Edge.to_message" class="source">
+    <pre><code>def to_message(self):
+    return indradb_capnp.Edge.new_message(
+        key=self.key.to_message(),
+        createdDatetime=to_timestamp(self.created_datetime)
     )
 </code></pre>
   </div>
@@ -1618,16 +1452,19 @@ def from_dict(cls, d):
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    def to_dict(self):
-        return dict(outbound_id=self.outbound_id, type=self.type, inbound_id=self.inbound_id)
+    def to_message(self):
+        return indradb_capnp.EdgeKey.new_message(
+            outboundId=self.outbound_id.bytes,
+            type=self.type,
+            inboundId=self.inbound_id.bytes
+        )
 
     @classmethod
-    def from_dict(cls, d):
-        """Converts a dict to an `EdgeKey`. Useful for JSON deserialization."""
+    def from_message(cls, message):
         return cls(
-            outbound_id=d["outbound_id"],
-            type=d["type"],
-            inbound_id=d["inbound_id"]
+            outbound_id=uuid.UUID(bytes=message.outboundId),
+            type=message.type,
+            inbound_id=uuid.UUID(bytes=message.inboundId)
         )
 </code></pre>
   </div>
@@ -1638,60 +1475,8 @@ def from_dict(cls, d):
           <h3>Ancestors (in MRO)</h3>
           <ul class="class_list">
           <li><a href="#indradb.EdgeKey">EdgeKey</a></li>
-          <li>builtins.object</li>
+          <li>__builtin__.object</li>
           </ul>
-          <h3>Static methods</h3>
-            
-  <div class="item">
-    <div class="name def" id="indradb.EdgeKey.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, outbound_id, type, inbound_id)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Creates a new edge key.</p>
-<p><code>outbound_id</code> is the vertex UUID from which the edge is outbounding. <code>type</code> is the edge type. <code>inbound_id</code> is
-the vertex UUID into which the edge is inbounding.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.EdgeKey.__init__', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.EdgeKey.__init__" class="source">
-    <pre><code>def __init__(self, outbound_id, type, inbound_id):
-    """
-    Creates a new edge key.
-    
-    `outbound_id` is the vertex UUID from which the edge is outbounding. `type` is the edge type. `inbound_id` is
-    the vertex UUID into which the edge is inbounding.
-    """
-    self.outbound_id = outbound_id
-    self.type = type
-    self.inbound_id = inbound_id
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.EdgeKey.to_dict">
-    <p>def <span class="ident">to_dict</span>(</p><p>self)</p>
-    </div>
-    
-
-    
-  
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.EdgeKey.to_dict', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.EdgeKey.to_dict" class="source">
-    <pre><code>def to_dict(self):
-    return dict(outbound_id=self.outbound_id, type=self.type, inbound_id=self.inbound_id)
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
           <h3>Instance variables</h3>
             <div class="item">
             <p id="indradb.EdgeKey.inbound_id" class="name">var <span class="ident">inbound_id</span></p>
@@ -1726,24 +1511,77 @@ the vertex UUID into which the edge is inbounding.</p></div>
           <h3>Methods</h3>
             
   <div class="item">
-    <div class="name def" id="indradb.EdgeKey.from_dict">
-    <p>def <span class="ident">from_dict</span>(</p><p>cls, d)</p>
+    <div class="name def" id="indradb.EdgeKey.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, outbound_id, type, inbound_id)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Converts a dict to an <code>EdgeKey</code>. Useful for JSON deserialization.</p></div>
+    <div class="desc"><p>Creates a new edge key.</p>
+<p><code>outbound_id</code> is the vertex UUID from which the edge is outbounding. <code>type</code> is the edge type. <code>inbound_id</code> is
+the vertex UUID into which the edge is inbounding.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.EdgeKey.from_dict', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.EdgeKey.from_dict" class="source">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.EdgeKey.__init__', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.EdgeKey.__init__" class="source">
+    <pre><code>def __init__(self, outbound_id, type, inbound_id):
+    """
+    Creates a new edge key.
+    
+    `outbound_id` is the vertex UUID from which the edge is outbounding. `type` is the edge type. `inbound_id` is
+    the vertex UUID into which the edge is inbounding.
+    """
+    self.outbound_id = outbound_id
+    self.type = type
+    self.inbound_id = inbound_id
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.EdgeKey.from_message">
+    <p>def <span class="ident">from_message</span>(</p><p>cls, message)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.EdgeKey.from_message', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.EdgeKey.from_message" class="source">
     <pre><code>@classmethod
-def from_dict(cls, d):
-    """Converts a dict to an `EdgeKey`. Useful for JSON deserialization."""
+def from_message(cls, message):
     return cls(
-        outbound_id=d["outbound_id"],
-        type=d["type"],
-        inbound_id=d["inbound_id"]
+        outbound_id=uuid.UUID(bytes=message.outboundId),
+        type=message.type,
+        inbound_id=uuid.UUID(bytes=message.inboundId)
+    )
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.EdgeKey.to_message">
+    <p>def <span class="ident">to_message</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.EdgeKey.to_message', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.EdgeKey.to_message" class="source">
+    <pre><code>def to_message(self):
+    return indradb_capnp.EdgeKey.new_message(
+        outboundId=self.outbound_id.bytes,
+        type=self.type,
+        inboundId=self.inbound_id.bytes
     )
 </code></pre>
   </div>
@@ -1765,6 +1603,37 @@ def from_dict(cls, d):
     <pre><code>class EdgeQuery(Query):
     """A query for edges."""
 
+    def to_message(self):
+        message = indradb_capnp.EdgeQuery.new_message()
+
+        if self.type == "edges":
+            payload_keys = self.payload["keys"]
+            edges = message.init("edges")
+            keys = edges.init("keys", len(payload_keys))
+
+            for i, key in enumerate(payload_keys):
+                keys[i] = key.to_message()
+        elif self.type == "pipe":
+            pipe = message.init("pipe")
+            pipe.vertexQuery = self.payload["vertex_query"].to_message()
+            pipe.converter = self.payload["converter"]
+
+            type_filter = self.payload["type_filter"]
+            pipe.typeFilter = type_filter if type_filter is not None else ""
+            
+            high_filter = self.payload["high_filter"]
+            pipe.highFilter = to_timestamp(high_filter) if high_filter is not None else 0
+            
+            low_filter = self.payload["low_filter"]
+            pipe.lowFilter = to_timestamp(low_filter) if low_filter is not None else 0
+            
+            limit = self.payload["limit"]
+            pipe.limit = limit if limit is not None else 0
+        else:
+            raise ValueError("Unknown type for vertex query")
+
+        return message
+
     @classmethod
     def edges(cls, keys):
         """
@@ -1773,23 +1642,23 @@ def from_dict(cls, d):
 
         `keys` represents the `EdgeKey`s that identifies the edges.
         """
-        return cls("edges", keys=[key.to_dict() for key in keys])
+        return cls("edges", keys=keys)
 
-    def outbound_vertices(self, limit=DEFAULT_LIMIT):
+    def outbound_vertices(self, limit=None):
         """
         Get the vertices outbounding from the edges returned by this query.
 
         `limit` limits the number of returned vertices.
         """
-        return VertexQuery("pipe", edge_query=self.to_dict(), converter="outbound", limit=limit)
+        return VertexQuery("pipe", edge_query=self, converter="outbound", limit=limit)
 
-    def inbound_vertices(self, limit=DEFAULT_LIMIT):
+    def inbound_vertices(self, limit=None):
         """
         Get the vertices inbounding from the edges returned by this query.
 
         `limit` limits the number of returned vertices.
         """
-        return VertexQuery("pipe", edge_query=self.to_dict(), converter="inbound", limit=limit)
+        return VertexQuery("pipe", edge_query=self, converter="inbound", limit=limit)
 </code></pre>
   </div>
 </div>
@@ -1800,9 +1669,9 @@ def from_dict(cls, d):
           <ul class="class_list">
           <li><a href="#indradb.EdgeQuery">EdgeQuery</a></li>
           <li>indradb.models.Query</li>
-          <li>builtins.object</li>
+          <li>__builtin__.object</li>
           </ul>
-          <h3>Static methods</h3>
+          <h3>Methods</h3>
             
   <div class="item">
     <div class="name def" id="indradb.EdgeQuery.__init__">
@@ -1832,79 +1701,6 @@ the class methods.</p></div>
   
             
   <div class="item">
-    <div class="name def" id="indradb.EdgeQuery.inbound_vertices">
-    <p>def <span class="ident">inbound_vertices</span>(</p><p>self, limit=1000)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Get the vertices inbounding from the edges returned by this query.</p>
-<p><code>limit</code> limits the number of returned vertices.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.EdgeQuery.inbound_vertices', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.EdgeQuery.inbound_vertices" class="source">
-    <pre><code>def inbound_vertices(self, limit=DEFAULT_LIMIT):
-    """
-    Get the vertices inbounding from the edges returned by this query.
-    `limit` limits the number of returned vertices.
-    """
-    return VertexQuery("pipe", edge_query=self.to_dict(), converter="inbound", limit=limit)
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.EdgeQuery.outbound_vertices">
-    <p>def <span class="ident">outbound_vertices</span>(</p><p>self, limit=1000)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Get the vertices outbounding from the edges returned by this query.</p>
-<p><code>limit</code> limits the number of returned vertices.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.EdgeQuery.outbound_vertices', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.EdgeQuery.outbound_vertices" class="source">
-    <pre><code>def outbound_vertices(self, limit=DEFAULT_LIMIT):
-    """
-    Get the vertices outbounding from the edges returned by this query.
-    `limit` limits the number of returned vertices.
-    """
-    return VertexQuery("pipe", edge_query=self.to_dict(), converter="outbound", limit=limit)
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.EdgeQuery.to_dict">
-    <p>def <span class="ident">to_dict</span>(</p><p>self)</p>
-    </div>
-    
-
-    
-  
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.EdgeQuery.to_dict', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.EdgeQuery.to_dict" class="source">
-    <pre><code>def to_dict(self):
-    return dict(type=self.type, **self.payload)
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-          <h3>Methods</h3>
-            
-  <div class="item">
     <div class="name def" id="indradb.EdgeQuery.edges">
     <p>def <span class="ident">edges</span>(</p><p>cls, keys)</p>
     </div>
@@ -1925,104 +1721,109 @@ def edges(cls, keys):
     which you want to construct a new query.
     `keys` represents the `EdgeKey`s that identifies the edges.
     """
-    return cls("edges", keys=[key.to_dict() for key in keys])
+    return cls("edges", keys=keys)
 </code></pre>
   </div>
 </div>
 
   </div>
   
-      </div>
-      </div>
-      
-      <div class="item">
-      <p id="indradb.Error" class="name">class <span class="ident">Error</span></p>
-      
-  
-    <div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Error', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Error" class="source">
-    <pre><code>class Error(Exception):
-    def __init__(self, error, code=None):
-        super(Error, self).__init__()
-        self.code = code
-        self.error = error
-
-    def __str__(self):
-        if self.code:
-            return "[%s] %s" % (self.code, self.error)
-        else:
-            return self.error
-</code></pre>
-  </div>
-</div>
-
-
-      <div class="class">
-          <h3>Ancestors (in MRO)</h3>
-          <ul class="class_list">
-          <li><a href="#indradb.Error">Error</a></li>
-          <li>builtins.Exception</li>
-          <li>builtins.BaseException</li>
-          <li>builtins.object</li>
-          </ul>
-          <h3>Class variables</h3>
-            <div class="item">
-            <p id="indradb.Error.args" class="name">var <span class="ident">args</span></p>
-            
-
-            
-  
-  <div class="source_cont">
-</div>
-
-            </div>
-          <h3>Static methods</h3>
             
   <div class="item">
-    <div class="name def" id="indradb.Error.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, error, code=None)</p>
+    <div class="name def" id="indradb.EdgeQuery.inbound_vertices">
+    <p>def <span class="ident">inbound_vertices</span>(</p><p>self, limit=None)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Initialize self.  See help(type(self)) for accurate signature.</p></div>
+    <div class="desc"><p>Get the vertices inbounding from the edges returned by this query.</p>
+<p><code>limit</code> limits the number of returned vertices.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Error.__init__', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Error.__init__" class="source">
-    <pre><code>def __init__(self, error, code=None):
-    super(Error, self).__init__()
-    self.code = code
-    self.error = error
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.EdgeQuery.inbound_vertices', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.EdgeQuery.inbound_vertices" class="source">
+    <pre><code>def inbound_vertices(self, limit=None):
+    """
+    Get the vertices inbounding from the edges returned by this query.
+    `limit` limits the number of returned vertices.
+    """
+    return VertexQuery("pipe", edge_query=self, converter="inbound", limit=limit)
 </code></pre>
   </div>
 </div>
 
   </div>
   
-          <h3>Instance variables</h3>
-            <div class="item">
-            <p id="indradb.Error.code" class="name">var <span class="ident">code</span></p>
             
+  <div class="item">
+    <div class="name def" id="indradb.EdgeQuery.outbound_vertices">
+    <p>def <span class="ident">outbound_vertices</span>(</p><p>self, limit=None)</p>
+    </div>
+    
 
-            
+    
   
+    <div class="desc"><p>Get the vertices outbounding from the edges returned by this query.</p>
+<p><code>limit</code> limits the number of returned vertices.</p></div>
   <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.EdgeQuery.outbound_vertices', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.EdgeQuery.outbound_vertices" class="source">
+    <pre><code>def outbound_vertices(self, limit=None):
+    """
+    Get the vertices outbounding from the edges returned by this query.
+    `limit` limits the number of returned vertices.
+    """
+    return VertexQuery("pipe", edge_query=self, converter="outbound", limit=limit)
+</code></pre>
+  </div>
 </div>
 
-            </div>
-            <div class="item">
-            <p id="indradb.Error.error" class="name">var <span class="ident">error</span></p>
+  </div>
+  
             
+  <div class="item">
+    <div class="name def" id="indradb.EdgeQuery.to_message">
+    <p>def <span class="ident">to_message</span>(</p><p>self)</p>
+    </div>
+    
 
-            
+    
   
   <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.EdgeQuery.to_message', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.EdgeQuery.to_message" class="source">
+    <pre><code>def to_message(self):
+    message = indradb_capnp.EdgeQuery.new_message()
+    if self.type == "edges":
+        payload_keys = self.payload["keys"]
+        edges = message.init("edges")
+        keys = edges.init("keys", len(payload_keys))
+        for i, key in enumerate(payload_keys):
+            keys[i] = key.to_message()
+    elif self.type == "pipe":
+        pipe = message.init("pipe")
+        pipe.vertexQuery = self.payload["vertex_query"].to_message()
+        pipe.converter = self.payload["converter"]
+        type_filter = self.payload["type_filter"]
+        pipe.typeFilter = type_filter if type_filter is not None else ""
+        
+        high_filter = self.payload["high_filter"]
+        pipe.highFilter = to_timestamp(high_filter) if high_filter is not None else 0
+        
+        low_filter = self.payload["low_filter"]
+        pipe.lowFilter = to_timestamp(low_filter) if low_filter is not None else 0
+        
+        limit = self.payload["limit"]
+        pipe.limit = limit if limit is not None else 0
+    else:
+        raise ValueError("Unknown type for vertex query")
+    return message
+</code></pre>
+  </div>
 </div>
 
-            </div>
+  </div>
+  
       </div>
       </div>
       
@@ -2030,41 +1831,31 @@ def edges(cls, keys):
       <p id="indradb.Transaction" class="name">class <span class="ident">Transaction</span></p>
       
   
-    <div class="desc"><p>A transaction. This class uses the builder pattern, so that you can easily
-chain queries together, e.g.:</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>Transaction().create_edge(...).get_vertices(...)</p>
-</blockquote>
-</blockquote>
-</blockquote></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction', this);">Show source &equiv;</a></p>
   <div id="source-indradb.Transaction" class="source">
     <pre><code>class Transaction(object):
-    """
-    A transaction. This class uses the builder pattern, so that you can easily
-    chain queries together, e.g.:
-    
-    >>> Transaction().create_edge(...).get_vertices(...)
-    """
+    def __init__(self, trans):
+        self.trans = trans
 
-    def __init__(self):
-        self.payload = []
-
-    def _add(self, **kwargs):
-        self.payload.append(kwargs)
-
-    def create_vertex(self, type):
+    def create_vertex(self, vertex):
         """
         Creates a new vertex.
 
-        `type` specifies the vertex type. Must be less than 256 characters long, and can only contain letters, numbers,
-        dashes, and underscores.
+        `vertex` specifies the `Vertex` to create.
         """
-        self._add(action="create_vertex", type=type)
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.createVertex(vertex.to_message()).then(deserialize)
+
+    def create_vertex_from_type(self, type):
+        """
+        Creates a new vertex from a type.
+
+        `type` specifies the new vertex's type.
+        """
+
+        deserialize = lambda message: uuid.UUID(bytes=message.result)
+        return self.trans.createVertexFromType(type).then(deserialize)
 
     def get_vertices(self, query):
         """
@@ -2072,8 +1863,8 @@ chain queries together, e.g.:</p>
 
         `query` specifies the `VertexQuery` to use.
         """
-        self._add(action="get_vertices", query=query.to_dict())
-        return self
+        deserialize = lambda message: [Vertex.from_message(v) for v in message.result]
+        return self.trans.getVertices(query.to_message()).then(deserialize)
 
     def delete_vertices(self, query):
         """
@@ -2081,18 +1872,24 @@ chain queries together, e.g.:</p>
 
         `query` specifies the `VertexQuery` to use.
         """
-        self._add(action="delete_vertices", query=query.to_dict())
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.deleteVertices(query.to_message()).then(deserialize)
+
+    def get_vertex_count(self):
+        """
+        Gets the total number of vertices in the datastore.
+        """
+        deserialize = lambda message: message.result
+        return self.trans.getVertexCount().then(deserialize)
 
     def create_edge(self, key):
         """
         Creates a new edge.
 
         `key` is the `EdgeKey` that identifies the edge.
-        -1.0 and 1.0.
         """
-        self._add(action="create_edge", key=key.to_dict())
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.createEdge(key.to_message()).then(deserialize)
 
     def get_edges(self, query):
         """
@@ -2100,8 +1897,8 @@ chain queries together, e.g.:</p>
 
         `query` specifies the `EdgeQuery` to use.
         """
-        self._add(action="get_edges", query=query.to_dict())
-        return self
+        deserialize = lambda message: [Edge.from_message(e) for e in message.result]
+        return self.trans.getEdges(query.to_message()).then(deserialize)
 
     def delete_edges(self, query):
         """
@@ -2109,8 +1906,8 @@ chain queries together, e.g.:</p>
 
         `query` specifies the `EdgeQuery` to use.
         """
-        self._add(action="delete_edges", query=query.to_dict())
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.deleteEdges(query.to_message()).then(deserialize)
 
     def get_edge_count(self, id, type_filter, direction):
         """
@@ -2121,96 +1918,68 @@ chain queries together, e.g.:</p>
         counted. `direction` specifies the direction of edges to count -
         either `outbound` or `inbound`.
         """
-        self._add(action="get_edge_count", id=id, type_filter=type_filter, direction=direction)
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.getEdgeCount(id.bytes, type_filter or "", direction).then(deserialize)
 
-    def get_global_metadata(self, name):
+    def get_vertex_properties(self, query, name):
         """
-        Gets global metadata.
-
-        `name` specifies name of the global metadata to get.
-        """
-        self._add(action="get_global_metadata", name=name)
-        return self
-
-    def set_global_metadata(self, name, value):
-        """
-        Sets global metadata.
-
-        `name` specifies name of the global metadata to get. `value` specifies
-        the value to set.
-        """
-        self._add(action="set_global_metadata", name=name, value=value)
-        return self
-
-    def delete_global_metadata(self, name):
-        """
-        Deletes global metadata.
-
-        `name` specifies name of the global metadata to delete.
-        """
-        self._add(action="delete_global_metadata", name=name)
-        return self
-
-    def get_vertex_metadata(self, query, name):
-        """
-        Gets vertex metadata.
+        Gets vertex properties.
 
         `query` specifies the vertex query to run. `name` specifies name of
-        the metadata to get.
+        the properties to get.
         """
-        self._add(action="get_vertex_metadata", query=query.to_dict(), name=name)
-        return self
+        deserialize = lambda message: [VertexProperty.from_message(m) for m in message.result]
+        return self.trans.getVertexProperties(query.to_message(), name).then(deserialize)
 
-    def set_vertex_metadata(self, query, name, value):
+    def set_vertex_properties(self, query, name, value):
         """
-        Sets vertex metadata.
+        Sets vertex properties.
 
         `query` specifies the edge query to run. `name` specifies name of the
-        metadata to get. `value` specifies the value to set.
+        properties to get. `value` specifies the value to set.
         """
-        self._add(action="set_vertex_metadata", query=query.to_dict(), name=name, value=value)
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.setVertexProperties(query.to_message(), name, json.dumps(value)).then(deserialize)
 
-    def delete_vertex_metadata(self, query, name):
+    def delete_vertex_properties(self, query, name):
         """
-        Deletes vertex metadata.
+        Deletes vertex properties.
 
         `query` specifies the vertex query to run. `name` specifies name of
-        the metadata to delete.
+        the properties to delete.
         """
-        self._add(action="delete_vertex_metadata", query=query.to_dict(), name=name)
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.deleteVertexProperties(query.to_message(), name).then(deserialize)
 
-    def get_edge_metadata(self, query, name):
+    def get_edge_properties(self, query, name):
         """
-        Gets edge metadata.
-
-        `query` specifies the edge query to run. `name` specifies name of the
-        metadata to get.
-        """
-        self._add(action="get_edge_metadata", query=query.to_dict(), name=name)
-        return self
-
-    def set_edge_metadata(self, query, name, value):
-        """
-        Sets edge metadata.
+        Gets edge properties.
 
         `query` specifies the edge query to run. `name` specifies name of the
-        metadata to get. `value` specifies the value to set.
+        properties to get.
         """
-        self._add(action="set_edge_metadata", query=query.to_dict(), name=name, value=value)
-        return self
+        deserialize = lambda message: [EdgeProperty.from_message(m) for m in message.result]
+        return self.trans.getEdgeProperties(query.to_message(), name).then(deserialize)
 
-    def delete_edge_metadata(self, query, name):
+    def set_edge_properties(self, query, name, value):
         """
-        Deletes global metadata.
+        Sets edge properties.
 
         `query` specifies the edge query to run. `name` specifies name of the
-        metadata to delete.
+        properties to get. `value` specifies the value to set.
         """
-        self._add(action="delete_edge_metadata", query=query.to_dict(), name=name)
-        return self
+        deserialize = lambda message: message.result
+        return self.trans.setEdgeProperties(query.to_message(), name, json.dumps(value)).then(deserialize)
+
+    def delete_edge_properties(self, query, name):
+        """
+        Deletes global properties.
+
+        `query` specifies the edge query to run. `name` specifies name of the
+        properties to delete.
+        """
+        deserialize = lambda message: message.result
+        return self.trans.deleteEdgeProperties(query.to_message(), name).then(deserialize)
 </code></pre>
   </div>
 </div>
@@ -2220,24 +1989,34 @@ chain queries together, e.g.:</p>
           <h3>Ancestors (in MRO)</h3>
           <ul class="class_list">
           <li><a href="#indradb.Transaction">Transaction</a></li>
-          <li>builtins.object</li>
+          <li>__builtin__.object</li>
           </ul>
-          <h3>Static methods</h3>
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="indradb.Transaction.trans" class="name">var <span class="ident">trans</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+          <h3>Methods</h3>
             
   <div class="item">
     <div class="name def" id="indradb.Transaction.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, trans)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Initialize self.  See help(type(self)) for accurate signature.</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.__init__', this);">Show source &equiv;</a></p>
   <div id="source-indradb.Transaction.__init__" class="source">
-    <pre><code>def __init__(self):
-    self.payload = []
+    <pre><code>def __init__(self, trans):
+    self.trans = trans
 </code></pre>
   </div>
 </div>
@@ -2254,8 +2033,7 @@ chain queries together, e.g.:</p>
     
   
     <div class="desc"><p>Creates a new edge.</p>
-<p><code>key</code> is the <code>EdgeKey</code> that identifies the edge.
--1.0 and 1.0.</p></div>
+<p><code>key</code> is the <code>EdgeKey</code> that identifies the edge.</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.create_edge', this);">Show source &equiv;</a></p>
   <div id="source-indradb.Transaction.create_edge" class="source">
@@ -2263,10 +2041,9 @@ chain queries together, e.g.:</p>
     """
     Creates a new edge.
     `key` is the `EdgeKey` that identifies the edge.
-    -1.0 and 1.0.
     """
-    self._add(action="create_edge", key=key.to_dict())
-    return self
+    deserialize = lambda message: message.result
+    return self.trans.createEdge(key.to_message()).then(deserialize)
 </code></pre>
   </div>
 </div>
@@ -2276,26 +2053,24 @@ chain queries together, e.g.:</p>
             
   <div class="item">
     <div class="name def" id="indradb.Transaction.create_vertex">
-    <p>def <span class="ident">create_vertex</span>(</p><p>self, type)</p>
+    <p>def <span class="ident">create_vertex</span>(</p><p>self, vertex)</p>
     </div>
     
 
     
   
     <div class="desc"><p>Creates a new vertex.</p>
-<p><code>type</code> specifies the vertex type. Must be less than 256 characters long, and can only contain letters, numbers,
-dashes, and underscores.</p></div>
+<p><code>vertex</code> specifies the <code>Vertex</code> to create.</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.create_vertex', this);">Show source &equiv;</a></p>
   <div id="source-indradb.Transaction.create_vertex" class="source">
-    <pre><code>def create_vertex(self, type):
+    <pre><code>def create_vertex(self, vertex):
     """
     Creates a new vertex.
-    `type` specifies the vertex type. Must be less than 256 characters long, and can only contain letters, numbers,
-    dashes, and underscores.
+    `vertex` specifies the `Vertex` to create.
     """
-    self._add(action="create_vertex", type=type)
-    return self
+    deserialize = lambda message: message.result
+    return self.trans.createVertex(vertex.to_message()).then(deserialize)
 </code></pre>
   </div>
 </div>
@@ -2304,27 +2079,54 @@ dashes, and underscores.</p></div>
   
             
   <div class="item">
-    <div class="name def" id="indradb.Transaction.delete_edge_metadata">
-    <p>def <span class="ident">delete_edge_metadata</span>(</p><p>self, query, name)</p>
+    <div class="name def" id="indradb.Transaction.create_vertex_from_type">
+    <p>def <span class="ident">create_vertex_from_type</span>(</p><p>self, type)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Deletes global metadata.</p>
-<p><code>query</code> specifies the edge query to run. <code>name</code> specifies name of the
-metadata to delete.</p></div>
+    <div class="desc"><p>Creates a new vertex from a type.</p>
+<p><code>type</code> specifies the new vertex's type.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.delete_edge_metadata', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.delete_edge_metadata" class="source">
-    <pre><code>def delete_edge_metadata(self, query, name):
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.create_vertex_from_type', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Transaction.create_vertex_from_type" class="source">
+    <pre><code>def create_vertex_from_type(self, type):
     """
-    Deletes global metadata.
+    Creates a new vertex from a type.
+    `type` specifies the new vertex's type.
+    """
+    deserialize = lambda message: uuid.UUID(bytes=message.result)
+    return self.trans.createVertexFromType(type).then(deserialize)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.Transaction.delete_edge_properties">
+    <p>def <span class="ident">delete_edge_properties</span>(</p><p>self, query, name)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Deletes global properties.</p>
+<p><code>query</code> specifies the edge query to run. <code>name</code> specifies name of the
+properties to delete.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.delete_edge_properties', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Transaction.delete_edge_properties" class="source">
+    <pre><code>def delete_edge_properties(self, query, name):
+    """
+    Deletes global properties.
     `query` specifies the edge query to run. `name` specifies name of the
-    metadata to delete.
+    properties to delete.
     """
-    self._add(action="delete_edge_metadata", query=query.to_dict(), name=name)
-    return self
+    deserialize = lambda message: message.result
+    return self.trans.deleteEdgeProperties(query.to_message(), name).then(deserialize)
 </code></pre>
   </div>
 </div>
@@ -2350,8 +2152,8 @@ metadata to delete.</p></div>
     Deletes edges by a given query.
     `query` specifies the `EdgeQuery` to use.
     """
-    self._add(action="delete_edges", query=query.to_dict())
-    return self
+    deserialize = lambda message: message.result
+    return self.trans.deleteEdges(query.to_message()).then(deserialize)
 </code></pre>
   </div>
 </div>
@@ -2360,54 +2162,27 @@ metadata to delete.</p></div>
   
             
   <div class="item">
-    <div class="name def" id="indradb.Transaction.delete_global_metadata">
-    <p>def <span class="ident">delete_global_metadata</span>(</p><p>self, name)</p>
+    <div class="name def" id="indradb.Transaction.delete_vertex_properties">
+    <p>def <span class="ident">delete_vertex_properties</span>(</p><p>self, query, name)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Deletes global metadata.</p>
-<p><code>name</code> specifies name of the global metadata to delete.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.delete_global_metadata', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.delete_global_metadata" class="source">
-    <pre><code>def delete_global_metadata(self, name):
-    """
-    Deletes global metadata.
-    `name` specifies name of the global metadata to delete.
-    """
-    self._add(action="delete_global_metadata", name=name)
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.delete_vertex_metadata">
-    <p>def <span class="ident">delete_vertex_metadata</span>(</p><p>self, query, name)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Deletes vertex metadata.</p>
+    <div class="desc"><p>Deletes vertex properties.</p>
 <p><code>query</code> specifies the vertex query to run. <code>name</code> specifies name of
-the metadata to delete.</p></div>
+the properties to delete.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.delete_vertex_metadata', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.delete_vertex_metadata" class="source">
-    <pre><code>def delete_vertex_metadata(self, query, name):
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.delete_vertex_properties', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Transaction.delete_vertex_properties" class="source">
+    <pre><code>def delete_vertex_properties(self, query, name):
     """
-    Deletes vertex metadata.
+    Deletes vertex properties.
     `query` specifies the vertex query to run. `name` specifies name of
-    the metadata to delete.
+    the properties to delete.
     """
-    self._add(action="delete_vertex_metadata", query=query.to_dict(), name=name)
-    return self
+    deserialize = lambda message: message.result
+    return self.trans.deleteVertexProperties(query.to_message(), name).then(deserialize)
 </code></pre>
   </div>
 </div>
@@ -2433,8 +2208,8 @@ the metadata to delete.</p></div>
     Deletes vertices by a given query.
     `query` specifies the `VertexQuery` to use.
     """
-    self._add(action="delete_vertices", query=query.to_dict())
-    return self
+    deserialize = lambda message: message.result
+    return self.trans.deleteVertices(query.to_message()).then(deserialize)
 </code></pre>
   </div>
 </div>
@@ -2466,8 +2241,8 @@ either <code>outbound</code> or <code>inbound</code>.</p></div>
     counted. `direction` specifies the direction of edges to count -
     either `outbound` or `inbound`.
     """
-    self._add(action="get_edge_count", id=id, type_filter=type_filter, direction=direction)
-    return self
+    deserialize = lambda message: message.result
+    return self.trans.getEdgeCount(id.bytes, type_filter or "", direction).then(deserialize)
 </code></pre>
   </div>
 </div>
@@ -2476,27 +2251,27 @@ either <code>outbound</code> or <code>inbound</code>.</p></div>
   
             
   <div class="item">
-    <div class="name def" id="indradb.Transaction.get_edge_metadata">
-    <p>def <span class="ident">get_edge_metadata</span>(</p><p>self, query, name)</p>
+    <div class="name def" id="indradb.Transaction.get_edge_properties">
+    <p>def <span class="ident">get_edge_properties</span>(</p><p>self, query, name)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Gets edge metadata.</p>
+    <div class="desc"><p>Gets edge properties.</p>
 <p><code>query</code> specifies the edge query to run. <code>name</code> specifies name of the
-metadata to get.</p></div>
+properties to get.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.get_edge_metadata', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.get_edge_metadata" class="source">
-    <pre><code>def get_edge_metadata(self, query, name):
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.get_edge_properties', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Transaction.get_edge_properties" class="source">
+    <pre><code>def get_edge_properties(self, query, name):
     """
-    Gets edge metadata.
+    Gets edge properties.
     `query` specifies the edge query to run. `name` specifies name of the
-    metadata to get.
+    properties to get.
     """
-    self._add(action="get_edge_metadata", query=query.to_dict(), name=name)
-    return self
+    deserialize = lambda message: [EdgeProperty.from_message(m) for m in message.result]
+    return self.trans.getEdgeProperties(query.to_message(), name).then(deserialize)
 </code></pre>
   </div>
 </div>
@@ -2522,8 +2297,8 @@ metadata to get.</p></div>
     Gets edges by a given query.
     `query` specifies the `EdgeQuery` to use.
     """
-    self._add(action="get_edges", query=query.to_dict())
-    return self
+    deserialize = lambda message: [Edge.from_message(e) for e in message.result]
+    return self.trans.getEdges(query.to_message()).then(deserialize)
 </code></pre>
   </div>
 </div>
@@ -2532,25 +2307,23 @@ metadata to get.</p></div>
   
             
   <div class="item">
-    <div class="name def" id="indradb.Transaction.get_global_metadata">
-    <p>def <span class="ident">get_global_metadata</span>(</p><p>self, name)</p>
+    <div class="name def" id="indradb.Transaction.get_vertex_count">
+    <p>def <span class="ident">get_vertex_count</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Gets global metadata.</p>
-<p><code>name</code> specifies name of the global metadata to get.</p></div>
+    <div class="desc"><p>Gets the total number of vertices in the datastore.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.get_global_metadata', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.get_global_metadata" class="source">
-    <pre><code>def get_global_metadata(self, name):
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.get_vertex_count', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Transaction.get_vertex_count" class="source">
+    <pre><code>def get_vertex_count(self):
     """
-    Gets global metadata.
-    `name` specifies name of the global metadata to get.
+    Gets the total number of vertices in the datastore.
     """
-    self._add(action="get_global_metadata", name=name)
-    return self
+    deserialize = lambda message: message.result
+    return self.trans.getVertexCount().then(deserialize)
 </code></pre>
   </div>
 </div>
@@ -2559,27 +2332,27 @@ metadata to get.</p></div>
   
             
   <div class="item">
-    <div class="name def" id="indradb.Transaction.get_vertex_metadata">
-    <p>def <span class="ident">get_vertex_metadata</span>(</p><p>self, query, name)</p>
+    <div class="name def" id="indradb.Transaction.get_vertex_properties">
+    <p>def <span class="ident">get_vertex_properties</span>(</p><p>self, query, name)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Gets vertex metadata.</p>
+    <div class="desc"><p>Gets vertex properties.</p>
 <p><code>query</code> specifies the vertex query to run. <code>name</code> specifies name of
-the metadata to get.</p></div>
+the properties to get.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.get_vertex_metadata', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.get_vertex_metadata" class="source">
-    <pre><code>def get_vertex_metadata(self, query, name):
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.get_vertex_properties', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Transaction.get_vertex_properties" class="source">
+    <pre><code>def get_vertex_properties(self, query, name):
     """
-    Gets vertex metadata.
+    Gets vertex properties.
     `query` specifies the vertex query to run. `name` specifies name of
-    the metadata to get.
+    the properties to get.
     """
-    self._add(action="get_vertex_metadata", query=query.to_dict(), name=name)
-    return self
+    deserialize = lambda message: [VertexProperty.from_message(m) for m in message.result]
+    return self.trans.getVertexProperties(query.to_message(), name).then(deserialize)
 </code></pre>
   </div>
 </div>
@@ -2605,8 +2378,8 @@ the metadata to get.</p></div>
     Gets vertices by a given query.
     `query` specifies the `VertexQuery` to use.
     """
-    self._add(action="get_vertices", query=query.to_dict())
-    return self
+    deserialize = lambda message: [Vertex.from_message(v) for v in message.result]
+    return self.trans.getVertices(query.to_message()).then(deserialize)
 </code></pre>
   </div>
 </div>
@@ -2615,27 +2388,27 @@ the metadata to get.</p></div>
   
             
   <div class="item">
-    <div class="name def" id="indradb.Transaction.set_edge_metadata">
-    <p>def <span class="ident">set_edge_metadata</span>(</p><p>self, query, name, value)</p>
+    <div class="name def" id="indradb.Transaction.set_edge_properties">
+    <p>def <span class="ident">set_edge_properties</span>(</p><p>self, query, name, value)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Sets edge metadata.</p>
+    <div class="desc"><p>Sets edge properties.</p>
 <p><code>query</code> specifies the edge query to run. <code>name</code> specifies name of the
-metadata to get. <code>value</code> specifies the value to set.</p></div>
+properties to get. <code>value</code> specifies the value to set.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.set_edge_metadata', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.set_edge_metadata" class="source">
-    <pre><code>def set_edge_metadata(self, query, name, value):
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.set_edge_properties', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Transaction.set_edge_properties" class="source">
+    <pre><code>def set_edge_properties(self, query, name, value):
     """
-    Sets edge metadata.
+    Sets edge properties.
     `query` specifies the edge query to run. `name` specifies name of the
-    metadata to get. `value` specifies the value to set.
+    properties to get. `value` specifies the value to set.
     """
-    self._add(action="set_edge_metadata", query=query.to_dict(), name=name, value=value)
-    return self
+    deserialize = lambda message: message.result
+    return self.trans.setEdgeProperties(query.to_message(), name, json.dumps(value)).then(deserialize)
 </code></pre>
   </div>
 </div>
@@ -2644,73 +2417,33 @@ metadata to get. <code>value</code> specifies the value to set.</p></div>
   
             
   <div class="item">
-    <div class="name def" id="indradb.Transaction.set_global_metadata">
-    <p>def <span class="ident">set_global_metadata</span>(</p><p>self, name, value)</p>
+    <div class="name def" id="indradb.Transaction.set_vertex_properties">
+    <p>def <span class="ident">set_vertex_properties</span>(</p><p>self, query, name, value)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Sets global metadata.</p>
-<p><code>name</code> specifies name of the global metadata to get. <code>value</code> specifies
-the value to set.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.set_global_metadata', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.set_global_metadata" class="source">
-    <pre><code>def set_global_metadata(self, name, value):
-    """
-    Sets global metadata.
-    `name` specifies name of the global metadata to get. `value` specifies
-    the value to set.
-    """
-    self._add(action="set_global_metadata", name=name, value=value)
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.set_vertex_metadata">
-    <p>def <span class="ident">set_vertex_metadata</span>(</p><p>self, query, name, value)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Sets vertex metadata.</p>
+    <div class="desc"><p>Sets vertex properties.</p>
 <p><code>query</code> specifies the edge query to run. <code>name</code> specifies name of the
-metadata to get. <code>value</code> specifies the value to set.</p></div>
+properties to get. <code>value</code> specifies the value to set.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.set_vertex_metadata', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.set_vertex_metadata" class="source">
-    <pre><code>def set_vertex_metadata(self, query, name, value):
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.set_vertex_properties', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Transaction.set_vertex_properties" class="source">
+    <pre><code>def set_vertex_properties(self, query, name, value):
     """
-    Sets vertex metadata.
+    Sets vertex properties.
     `query` specifies the edge query to run. `name` specifies name of the
-    metadata to get. `value` specifies the value to set.
+    properties to get. `value` specifies the value to set.
     """
-    self._add(action="set_vertex_metadata", query=query.to_dict(), name=name, value=value)
-    return self
+    deserialize = lambda message: message.result
+    return self.trans.setVertexProperties(query.to_message(), name, json.dumps(value)).then(deserialize)
 </code></pre>
   </div>
 </div>
 
   </div>
   
-          <h3>Instance variables</h3>
-            <div class="item">
-            <p id="indradb.Transaction.payload" class="name">var <span class="ident">payload</span></p>
-            
-
-            
-  
-  <div class="source_cont">
-</div>
-
-            </div>
       </div>
       </div>
       
@@ -2731,6 +2464,7 @@ metadata to get. <code>value</code> specifies the value to set.</p></div>
 
         `id` is the vertex UUID. `type` is the vertex type.
         """
+
         self.id = id
         self.type = type
 
@@ -2746,15 +2480,18 @@ metadata to get. <code>value</code> specifies the value to set.</p></div>
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    def to_dict(self):
-        return dict(id=self.id, type=self.type)
+    def to_message(self):
+        return indradb_capnp.Vertex.new_message(
+            id=self.id.bytes,
+            type=self.type
+        )
 
     @classmethod
-    def from_dict(cls, d):
-        """
-        Converts a dict to a `Vertex`. Useful for JSON deserialization.
-        """
-        return cls(id=d["id"], type=d["type"])
+    def from_message(cls, message):
+        return cls(
+            id=uuid.UUID(bytes=message.id),
+            type=message.type
+        )
 </code></pre>
   </div>
 </div>
@@ -2764,9 +2501,30 @@ metadata to get. <code>value</code> specifies the value to set.</p></div>
           <h3>Ancestors (in MRO)</h3>
           <ul class="class_list">
           <li><a href="#indradb.Vertex">Vertex</a></li>
-          <li>builtins.object</li>
+          <li>__builtin__.object</li>
           </ul>
-          <h3>Static methods</h3>
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="indradb.Vertex.id" class="name">var <span class="ident">id</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="indradb.Vertex.type" class="name">var <span class="ident">type</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+          <h3>Methods</h3>
             
   <div class="item">
     <div class="name def" id="indradb.Vertex.__init__">
@@ -2796,65 +2554,45 @@ metadata to get. <code>value</code> specifies the value to set.</p></div>
   
             
   <div class="item">
-    <div class="name def" id="indradb.Vertex.to_dict">
-    <p>def <span class="ident">to_dict</span>(</p><p>self)</p>
+    <div class="name def" id="indradb.Vertex.from_message">
+    <p>def <span class="ident">from_message</span>(</p><p>cls, message)</p>
     </div>
     
 
     
   
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Vertex.to_dict', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Vertex.to_dict" class="source">
-    <pre><code>def to_dict(self):
-    return dict(id=self.id, type=self.type)
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Vertex.from_message', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Vertex.from_message" class="source">
+    <pre><code>@classmethod
+def from_message(cls, message):
+    return cls(
+        id=uuid.UUID(bytes=message.id),
+        type=message.type
+    )
 </code></pre>
   </div>
 </div>
 
   </div>
   
-          <h3>Instance variables</h3>
-            <div class="item">
-            <p id="indradb.Vertex.id" class="name">var <span class="ident">id</span></p>
-            
-
-            
-  
-  <div class="source_cont">
-</div>
-
-            </div>
-            <div class="item">
-            <p id="indradb.Vertex.type" class="name">var <span class="ident">type</span></p>
-            
-
-            
-  
-  <div class="source_cont">
-</div>
-
-            </div>
-          <h3>Methods</h3>
             
   <div class="item">
-    <div class="name def" id="indradb.Vertex.from_dict">
-    <p>def <span class="ident">from_dict</span>(</p><p>cls, d)</p>
+    <div class="name def" id="indradb.Vertex.to_message">
+    <p>def <span class="ident">to_message</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Converts a dict to a <code>Vertex</code>. Useful for JSON deserialization.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Vertex.from_dict', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Vertex.from_dict" class="source">
-    <pre><code>@classmethod
-def from_dict(cls, d):
-    """
-    Converts a dict to a `Vertex`. Useful for JSON deserialization.
-    """
-    return cls(id=d["id"], type=d["type"])
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Vertex.to_message', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Vertex.to_message" class="source">
+    <pre><code>def to_message(self):
+    return indradb_capnp.Vertex.new_message(
+        id=self.id.bytes,
+        type=self.type
+    )
 </code></pre>
   </div>
 </div>
@@ -2875,8 +2613,38 @@ def from_dict(cls, d):
     <pre><code>class VertexQuery(Query):
     """A query for vertices."""
 
+    def to_message(self):
+        message = indradb_capnp.VertexQuery.new_message()
+
+        if self.type == "all":
+            all = message.init("all")
+            
+            start_id = self.payload["start_id"]
+            all.startId = start_id.bytes if start_id is not None else b""
+            
+            limit = self.payload["limit"]
+            all.limit = limit if limit is not None else 0
+        elif self.type == "vertices":
+            payload_ids = self.payload["ids"]
+            vertices = message.init("vertices")
+            ids = vertices.init("ids", len(payload_ids))
+
+            for i, id in enumerate(payload_ids):
+                ids[i] = id.bytes
+        elif self.type == "pipe":
+            pipe = message.init("pipe")
+            pipe.edgeQuery = self.payload["edge_query"].to_message()
+            pipe.converter = self.payload["converter"]
+
+            limit = self.payload["limit"]
+            pipe.limit = limit if limit is not None else 0
+        else:
+            raise ValueError("Unknown type for vertex query")
+
+        return message
+
     @classmethod
-    def all(cls, start_id=None, limit=DEFAULT_LIMIT):
+    def all(cls, start_id=None, limit=None):
         """
         Gets all vertices, filtered only the input arguments. Generally this query is useful when you want to iterate
         over all of the vertices in the datastore - e.g. to build an in-memory representation of the data.
@@ -2896,7 +2664,7 @@ def from_dict(cls, d):
         """
         return cls("vertices", ids=ids)
 
-    def outbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=DEFAULT_LIMIT):
+    def outbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=None):
         """
         Get the edges outbounding from the vertices returned by this query.
 
@@ -2906,15 +2674,15 @@ def from_dict(cls, d):
         """
         return EdgeQuery(
             "pipe",
-            vertex_query=self.to_dict(),
+            vertex_query=self,
             converter="outbound",
             type_filter=type_filter,
-            high_filter=high_filter.isoformat() if high_filter else None,
-            low_filter=low_filter.isoformat() if low_filter else None,
+            high_filter=high_filter,
+            low_filter=low_filter,
             limit=limit
         )
 
-    def inbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=DEFAULT_LIMIT):
+    def inbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=None):
         """
         Get the edges inbounding from the vertices returned by this query.
 
@@ -2924,11 +2692,11 @@ def from_dict(cls, d):
         """
         return EdgeQuery(
             "pipe",
-            vertex_query=self.to_dict(),
+            vertex_query=self,
             converter="inbound",
             type_filter=type_filter,
-            high_filter=high_filter.isoformat() if high_filter else None,
-            low_filter=low_filter.isoformat() if low_filter else None,
+            high_filter=high_filter,
+            low_filter=low_filter,
             limit=limit
         )
 </code></pre>
@@ -2941,9 +2709,9 @@ def from_dict(cls, d):
           <ul class="class_list">
           <li><a href="#indradb.VertexQuery">VertexQuery</a></li>
           <li>indradb.models.Query</li>
-          <li>builtins.object</li>
+          <li>__builtin__.object</li>
           </ul>
-          <h3>Static methods</h3>
+          <h3>Methods</h3>
             
   <div class="item">
     <div class="name def" id="indradb.VertexQuery.__init__">
@@ -2973,105 +2741,8 @@ the class methods.</p></div>
   
             
   <div class="item">
-    <div class="name def" id="indradb.VertexQuery.inbound_edges">
-    <p>def <span class="ident">inbound_edges</span>(</p><p>self, type_filter=None, high_filter=None, low_filter=None, limit=1000)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Get the edges inbounding from the vertices returned by this query.</p>
-<p><code>type_filter</code> optionally filters those edges to only have a specific type. <code>high_filter</code> optionally filters
-those edges to only get ones updated at or before the given datetime. <code>low_filter</code> optionally filters those
-edges to only get ones updated at or after the given datetime. <code>limit</code> limits the number of returned edges.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.VertexQuery.inbound_edges', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.VertexQuery.inbound_edges" class="source">
-    <pre><code>def inbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=DEFAULT_LIMIT):
-    """
-    Get the edges inbounding from the vertices returned by this query.
-    `type_filter` optionally filters those edges to only have a specific type. `high_filter` optionally filters
-    those edges to only get ones updated at or before the given datetime. `low_filter` optionally filters those
-    edges to only get ones updated at or after the given datetime. `limit` limits the number of returned edges.
-    """
-    return EdgeQuery(
-        "pipe",
-        vertex_query=self.to_dict(),
-        converter="inbound",
-        type_filter=type_filter,
-        high_filter=high_filter.isoformat() if high_filter else None,
-        low_filter=low_filter.isoformat() if low_filter else None,
-        limit=limit
-    )
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.VertexQuery.outbound_edges">
-    <p>def <span class="ident">outbound_edges</span>(</p><p>self, type_filter=None, high_filter=None, low_filter=None, limit=1000)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Get the edges outbounding from the vertices returned by this query.</p>
-<p><code>type_filter</code> optionally filters those edges to only have a specific type. <code>high_filter</code> optionally filters
-those edges to only get ones updated at or before the given datetime. <code>low_filter</code> optionally filters those
-edges to only get ones updated at or after the given datetime. <code>limit</code> limits the number of returned edges.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.VertexQuery.outbound_edges', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.VertexQuery.outbound_edges" class="source">
-    <pre><code>def outbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=DEFAULT_LIMIT):
-    """
-    Get the edges outbounding from the vertices returned by this query.
-    `type_filter` optionally filters those edges to only have a specific type. `high_filter` optionally filters
-    those edges to only get ones updated at or before the given datetime. `low_filter` optionally filters those
-    edges to only get ones updated at or after the given datetime. `limit` limits the number of returned edges.
-    """
-    return EdgeQuery(
-        "pipe",
-        vertex_query=self.to_dict(),
-        converter="outbound",
-        type_filter=type_filter,
-        high_filter=high_filter.isoformat() if high_filter else None,
-        low_filter=low_filter.isoformat() if low_filter else None,
-        limit=limit
-    )
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.VertexQuery.to_dict">
-    <p>def <span class="ident">to_dict</span>(</p><p>self)</p>
-    </div>
-    
-
-    
-  
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.VertexQuery.to_dict', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.VertexQuery.to_dict" class="source">
-    <pre><code>def to_dict(self):
-    return dict(type=self.type, **self.payload)
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-          <h3>Methods</h3>
-            
-  <div class="item">
     <div class="name def" id="indradb.VertexQuery.all">
-    <p>def <span class="ident">all</span>(</p><p>cls, start_id=None, limit=1000)</p>
+    <p>def <span class="ident">all</span>(</p><p>cls, start_id=None, limit=None)</p>
     </div>
     
 
@@ -3085,7 +2756,7 @@ limit of the number vertices to return.</p></div>
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.VertexQuery.all', this);">Show source &equiv;</a></p>
   <div id="source-indradb.VertexQuery.all" class="source">
     <pre><code>@classmethod
-def all(cls, start_id=None, limit=DEFAULT_LIMIT):
+def all(cls, start_id=None, limit=None):
     """
     Gets all vertices, filtered only the input arguments. Generally this query is useful when you want to iterate
     over all of the vertices in the datastore - e.g. to build an in-memory representation of the data.
@@ -3093,6 +2764,125 @@ def all(cls, start_id=None, limit=DEFAULT_LIMIT):
     limit of the number vertices to return.
     """
     return cls("all", start_id=start_id, limit=limit)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.VertexQuery.inbound_edges">
+    <p>def <span class="ident">inbound_edges</span>(</p><p>self, type_filter=None, high_filter=None, low_filter=None, limit=None)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Get the edges inbounding from the vertices returned by this query.</p>
+<p><code>type_filter</code> optionally filters those edges to only have a specific type. <code>high_filter</code> optionally filters
+those edges to only get ones updated at or before the given datetime. <code>low_filter</code> optionally filters those
+edges to only get ones updated at or after the given datetime. <code>limit</code> limits the number of returned edges.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.VertexQuery.inbound_edges', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.VertexQuery.inbound_edges" class="source">
+    <pre><code>def inbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=None):
+    """
+    Get the edges inbounding from the vertices returned by this query.
+    `type_filter` optionally filters those edges to only have a specific type. `high_filter` optionally filters
+    those edges to only get ones updated at or before the given datetime. `low_filter` optionally filters those
+    edges to only get ones updated at or after the given datetime. `limit` limits the number of returned edges.
+    """
+    return EdgeQuery(
+        "pipe",
+        vertex_query=self,
+        converter="inbound",
+        type_filter=type_filter,
+        high_filter=high_filter,
+        low_filter=low_filter,
+        limit=limit
+    )
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.VertexQuery.outbound_edges">
+    <p>def <span class="ident">outbound_edges</span>(</p><p>self, type_filter=None, high_filter=None, low_filter=None, limit=None)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Get the edges outbounding from the vertices returned by this query.</p>
+<p><code>type_filter</code> optionally filters those edges to only have a specific type. <code>high_filter</code> optionally filters
+those edges to only get ones updated at or before the given datetime. <code>low_filter</code> optionally filters those
+edges to only get ones updated at or after the given datetime. <code>limit</code> limits the number of returned edges.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.VertexQuery.outbound_edges', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.VertexQuery.outbound_edges" class="source">
+    <pre><code>def outbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=None):
+    """
+    Get the edges outbounding from the vertices returned by this query.
+    `type_filter` optionally filters those edges to only have a specific type. `high_filter` optionally filters
+    those edges to only get ones updated at or before the given datetime. `low_filter` optionally filters those
+    edges to only get ones updated at or after the given datetime. `limit` limits the number of returned edges.
+    """
+    return EdgeQuery(
+        "pipe",
+        vertex_query=self,
+        converter="outbound",
+        type_filter=type_filter,
+        high_filter=high_filter,
+        low_filter=low_filter,
+        limit=limit
+    )
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.VertexQuery.to_message">
+    <p>def <span class="ident">to_message</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.VertexQuery.to_message', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.VertexQuery.to_message" class="source">
+    <pre><code>def to_message(self):
+    message = indradb_capnp.VertexQuery.new_message()
+    if self.type == "all":
+        all = message.init("all")
+        
+        start_id = self.payload["start_id"]
+        all.startId = start_id.bytes if start_id is not None else b""
+        
+        limit = self.payload["limit"]
+        all.limit = limit if limit is not None else 0
+    elif self.type == "vertices":
+        payload_ids = self.payload["ids"]
+        vertices = message.init("vertices")
+        ids = vertices.init("ids", len(payload_ids))
+        for i, id in enumerate(payload_ids):
+            ids[i] = id.bytes
+    elif self.type == "pipe":
+        pipe = message.init("pipe")
+        pipe.edgeQuery = self.payload["edge_query"].to_message()
+        pipe.converter = self.payload["converter"]
+        limit = self.payload["limit"]
+        pipe.limit = limit if limit is not None else 0
+    else:
+        raise ValueError("Unknown type for vertex query")
+    return message
 </code></pre>
   </div>
 </div>

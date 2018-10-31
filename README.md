@@ -6,4 +6,4 @@ See the [api doc](https://htmlpreview.github.io/?https://github.com/indradb/pyth
 
 ## Running tests
 
-    make test
+    make init test
