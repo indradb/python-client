@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name = "indradb",
-    version = "0.3.0",
+    version = "0.4.0",
     author = "Yusuf Simonson",
     package_data={"": ["indradb.capnp"]},
 
