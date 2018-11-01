@@ -219,35 +219,12 @@ class EdgeProperty(object):
             value=json.loads(message.value)
         )
 
-class Property(object):
-    def __init__(self, name, value):
-        self.name = name
-        self.value = value
-
-    def __eq__(self, other):
-        if not isinstance(other, Property):
-            return False
-        if self.name != other.name:
-            return False
-        if self.value != other.value:
-            return False
-        return True
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
-    def to_message(self):
-        return indradb_capnp.Property.new_message(
-            name=self.name,
-            value=json.dumps(self.value),
-        )
-
-class Query(object):
-    """Abstract class that represents a query"""
+class Enum(object):
+    """Abstract class that represents an enum"""
 
     def __init__(self, type, **kwargs):
         """
-        Creates a new query. Generally you shouldn't construct a query objects directly, but rather use
+        Creates a new enum. Generally you shouldn't construct a query objects directly, but rather use
         the class methods.
         """
         self.type = type
@@ -263,7 +240,7 @@ class Query(object):
     def __ne__(self, other):
         return not self.__eq__(other)
 
-class VertexQuery(Query):
+class VertexQuery(Enum):
     """A query for vertices."""
 
     def to_message(self):
@@ -353,7 +330,8 @@ class VertexQuery(Query):
             limit=limit
         )
 
-class EdgeQuery(Query):
+# TODO: Use normal python enums?
+class EdgeQuery(Enum):
     """A query for edges."""
 
     def to_message(self):
@@ -412,3 +390,44 @@ class EdgeQuery(Query):
         `limit` limits the number of returned vertices.
         """
         return VertexQuery("pipe", edge_query=self, converter="inbound", limit=limit)
+
+class BulkInsertItem(Enum):
+    @classmethod
+    def vertex(cls, vertex):
+        return cls("vertex", vertex=vertex)
+
+    @classmethod
+    def edge(cls, key):
+        return cls("edge", key=key)
+
+    @classmethod
+    def vertex_property(cls, id, name, value):
+        return cls("vertex_property", id=id, name=name, value=value)
+
+    @classmethod
+    def edge_property(cls, key, name, value):
+        return cls("edge_property", key=key, name=name, value=value)
+
+    def to_message(self):
+        message = indradb_capnp.BulkInsertItem.new_message()
+
+        if self.type == "vertex":
+            container = message.init("vertex")
+            container.vertex = self.payload["vertex"].to_message()
+        elif self.type == "edge":
+            container = message.init("edge")
+            container.key = self.payload["key"].to_message()
+        elif self.type == "vertex_property":
+            container = message.init("vertexProperty")
+            container.id = self.payload["id"].bytes
+            container.name = self.payload["name"]
+            container.value = json.dumps(self.payload["value"])
+        elif self.type == "edge_property":
+            container = message.init("edgeProperty")
+            container.key = self.payload["key"].to_message()
+            container.name = self.payload["name"]
+            container.value = json.dumps(self.payload["value"])
+        else:
+            raise ValueError("Unknown type for vertex query")
+
+        return message
