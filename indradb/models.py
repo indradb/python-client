@@ -219,6 +219,29 @@ class EdgeProperty(object):
             value=json.loads(message.value)
         )
 
+class Property(object):
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+    def __eq__(self, other):
+        if not isinstance(other, Property):
+            return False
+        if self.name != other.name:
+            return False
+        if self.value != other.value:
+            return False
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def to_message(self):
+        return indradb_capnp.Property.new_message(
+            name=self.name,
+            value=json.dumps(self.value),
+        )
+
 class Query(object):
     """Abstract class that represents a query"""
 

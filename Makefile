@@ -4,6 +4,9 @@ init:
 	virtualenv --no-site-packages venv
 	. venv/bin/activate && pip install tox nose pdoc
 	git submodule update --init --recursive
+	make indradb/indradb.capnp
+
+indradb/indradb.capnp:
 	cp indradb_server/bin/indradb.capnp indradb/
 
 doc:

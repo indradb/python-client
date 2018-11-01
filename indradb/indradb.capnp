@@ -59,6 +59,11 @@ enum EdgeDirection {
     inbound @1;
 }
 
+struct Property {
+    name @0 :Text;
+    value @1 :Json;
+}
+
 struct VertexProperty {
     id @0 :Uuid;
     value @1 :Json;
@@ -69,9 +74,16 @@ struct EdgeProperty {
     value @1 :Json;
 }
 
+struct BulkInsertItem(T) {
+    value @0 :T;
+    properties @1 :List(Property);
+}
+
 interface Service {
     ping @0 () -> (ready :Bool);
     transaction @1 () -> (transaction :Transaction);
+    bulkInsertVertices @2 (items :List(BulkInsertItem(Vertex))) -> (result :Void);
+    bulkInsertEdges @3 (items :List(BulkInsertItem(EdgeKey))) -> (result :Void);
 }
 
 interface Transaction {
