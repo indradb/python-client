@@ -15,8 +15,8 @@ class Client(object):
         `host` is a string that specifies the server location, in the format
         `hostname:port`.
 
-        The optional `request_timeout` sets how many seconds to wait before a request times out (defaults to 60
-        seconds.)
+        The optional `request_timeout` sets how many seconds to wait before a
+        request times out (defaults to 60 seconds.)
         """
 
         self.host = host

@@ -71,8 +71,9 @@ class EdgeKey(object):
         """
         Creates a new edge key.
         
-        `outbound_id` is the vertex UUID from which the edge is outbounding. `type` is the edge type. `inbound_id` is
-        the vertex UUID into which the edge is inbounding.
+        `outbound_id` is the vertex UUID from which the edge is outbounding.
+        `type` is the edge type. `inbound_id` is the vertex UUID into which
+        the edge is inbounding.
         """
 
         self.outbound_id = outbound_id
@@ -110,15 +111,16 @@ class EdgeKey(object):
 
 class Edge(object):
     """
-    An edge, which represents a relationship between things, and have types and when they were last updated.
+    An edge, which represents a relationship between things, and have types
+    and when they were last updated.
     """
 
     def __init__(self, key, created_datetime):
         """
         Creates a new edge.
 
-        `key` is the `EdgeKey` to the edge. `created_datetime` is when the edge
-        was created.
+        `key` is the `EdgeKey` to the edge. `created_datetime` is when the
+        edge was created.
         """
 
         self.key = key
@@ -226,8 +228,8 @@ class Enum(object):
 
     def __init__(self, type, **kwargs):
         """
-        Creates a new enum. Generally you shouldn't construct a query objects directly, but rather use
-        the class methods.
+        Creates a new enum. Generally you shouldn't construct a query objects
+        directly, but rather use the class methods.
         """
         self.type = type
         self.payload = kwargs
@@ -275,19 +277,22 @@ class VertexQuery(Enum):
     @classmethod
     def all(cls, limit, start_id=None):
         """
-        Gets all vertices, filtered only the input arguments. Generally this query is useful when you want to iterate
-        over all of the vertices in the datastore - e.g. to build an in-memory representation of the data.
+        Gets all vertices, filtered only the input arguments. Generally this
+        query is useful when you want to iterate over all of the vertices in
+        the datastore - e.g. to build an in-memory representation of the data.
 
-        `limit` sets the limit of the number vertices to return. `start_id` represents the vertex UUID from which to
-        start for the returned range (exclusive.) 
+        `limit` sets the limit of the number vertices to return. `start_id`
+        represents the vertex UUID from which to start for the returned range
+        (exclusive.) 
         """
         return cls("all", start_id=start_id, limit=limit)
 
     @classmethod
     def vertices(cls, ids):
         """
-        Gets a set of vertices. Generally this query is useful when you have a set of vertices from a previous query
-        upon which you want to construct a new query.
+        Gets a set of vertices. Generally this query is useful when you have a
+        set of vertices from a previous query upon which you want to construct
+        a new query.
 
         `ids` is the set of vertex UUIDs to get.
         """
@@ -297,9 +302,11 @@ class VertexQuery(Enum):
         """
         Get the edges outbounding from the vertices returned by this query.
 
-        `limit` limits the number of returned edges. `type_filter` optionally filters those edges to only have a
-        specific type. `high_filter` optionally filters those edges to only get ones updated at or before the given
-        datetime. `low_filter` optionally filters those edges to only get ones updated at or after the given datetime.
+        `limit` limits the number of returned edges. `type_filter` optionally
+        filters those edges to only have a specific type. `high_filter`
+        optionally filters those edges to only get ones updated at or before
+        the given datetime. `low_filter` optionally filters those edges to
+        only get ones updated at or after the given datetime.
         """
         return EdgeQuery(
             "pipe",
@@ -315,9 +322,11 @@ class VertexQuery(Enum):
         """
         Get the edges inbounding from the vertices returned by this query.
 
-        `limit` limits the number of returned edges. `type_filter` optionally filters those edges to only have a
-        specific type. `high_filter` optionally filters those edges to only get ones updated at or before the given
-        datetime. `low_filter` optionally filters those edges to only get ones updated at or after the given datetime.
+        `limit` limits the number of returned edges. `type_filter` optionally
+        filters those edges to only have a specific type. `high_filter`
+        optionally filters those edges to only get ones updated at or before
+        the given datetime. `low_filter` optionally filters those edges to
+        only get ones updated at or after the given datetime.
         """
         return EdgeQuery(
             "pipe",
@@ -365,8 +374,9 @@ class EdgeQuery(Enum):
     @classmethod
     def edges(cls, keys):
         """
-        Gets a set of edges. Generally this query is useful when you have a set of edges from a previous query upon
-        which you want to construct a new query.
+        Gets a set of edges. Generally this query is useful when you have a
+        set of edges from a previous query upon which you want to construct a
+        new query.
 
         `keys` represents the `EdgeKey`s that identifies the edges.
         """
