@@ -219,6 +219,8 @@ class EdgeProperty(object):
             value=json.loads(message.value)
         )
 
+# NOTE: python's stdlib enums are not used because we want to support python
+# 2.7, and they were introduced in 3.4.
 class Enum(object):
     """Abstract class that represents an enum"""
 
@@ -327,7 +329,6 @@ class VertexQuery(Enum):
             limit=limit
         )
 
-# TODO: Use normal python enums?
 class EdgeQuery(Enum):
     """A query for edges."""
 
