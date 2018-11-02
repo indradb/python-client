@@ -252,8 +252,7 @@ class VertexQuery(Enum):
             start_id = self.payload["start_id"]
             all.startId = start_id.bytes if start_id is not None else b""
             
-            limit = self.payload["limit"]
-            all.limit = limit if limit is not None else 0
+            all.limit = self.payload["limit"]
         elif self.type == "vertices":
             payload_ids = self.payload["ids"]
             vertices = message.init("vertices")
@@ -265,22 +264,20 @@ class VertexQuery(Enum):
             pipe = message.init("pipe")
             pipe.edgeQuery = self.payload["edge_query"].to_message()
             pipe.converter = self.payload["converter"]
-
-            limit = self.payload["limit"]
-            pipe.limit = limit if limit is not None else 0
+            pipe.limit = self.payload["limit"]
         else:
             raise ValueError("Unknown type for vertex query")
 
         return message
 
     @classmethod
-    def all(cls, start_id=None, limit=None):
+    def all(cls, limit, start_id=None):
         """
         Gets all vertices, filtered only the input arguments. Generally this query is useful when you want to iterate
         over all of the vertices in the datastore - e.g. to build an in-memory representation of the data.
 
-        `start_id` represents the vertex UUID from which to start for the returned range (exclusive.) `limit` sets the
-        limit of the number vertices to return.
+        `limit` sets the limit of the number vertices to return. `start_id` represents the vertex UUID from which to
+        start for the returned range (exclusive.) 
         """
         return cls("all", start_id=start_id, limit=limit)
 
@@ -294,13 +291,13 @@ class VertexQuery(Enum):
         """
         return cls("vertices", ids=ids)
 
-    def outbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=None):
+    def outbound_edges(self, limit, type_filter=None, high_filter=None, low_filter=None):
         """
         Get the edges outbounding from the vertices returned by this query.
 
-        `type_filter` optionally filters those edges to only have a specific type. `high_filter` optionally filters
-        those edges to only get ones updated at or before the given datetime. `low_filter` optionally filters those
-        edges to only get ones updated at or after the given datetime. `limit` limits the number of returned edges.
+        `limit` limits the number of returned edges. `type_filter` optionally filters those edges to only have a
+        specific type. `high_filter` optionally filters those edges to only get ones updated at or before the given
+        datetime. `low_filter` optionally filters those edges to only get ones updated at or after the given datetime.
         """
         return EdgeQuery(
             "pipe",
@@ -312,13 +309,13 @@ class VertexQuery(Enum):
             limit=limit
         )
 
-    def inbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=None):
+    def inbound_edges(self, limit, type_filter=None, high_filter=None, low_filter=None):
         """
         Get the edges inbounding from the vertices returned by this query.
 
-        `type_filter` optionally filters those edges to only have a specific type. `high_filter` optionally filters
-        those edges to only get ones updated at or before the given datetime. `low_filter` optionally filters those
-        edges to only get ones updated at or after the given datetime. `limit` limits the number of returned edges.
+        `limit` limits the number of returned edges. `type_filter` optionally filters those edges to only have a
+        specific type. `high_filter` optionally filters those edges to only get ones updated at or before the given
+        datetime. `low_filter` optionally filters those edges to only get ones updated at or after the given datetime.
         """
         return EdgeQuery(
             "pipe",
@@ -358,8 +355,7 @@ class EdgeQuery(Enum):
             low_filter = self.payload["low_filter"]
             pipe.lowFilter = to_timestamp(low_filter) if low_filter is not None else 0
             
-            limit = self.payload["limit"]
-            pipe.limit = limit if limit is not None else 0
+            pipe.limit = self.payload["limit"]
         else:
             raise ValueError("Unknown type for vertex query")
 
@@ -375,7 +371,7 @@ class EdgeQuery(Enum):
         """
         return cls("edges", keys=keys)
 
-    def outbound_vertices(self, limit=None):
+    def outbound_vertices(self, limit):
         """
         Get the vertices outbounding from the edges returned by this query.
 
@@ -383,7 +379,7 @@ class EdgeQuery(Enum):
         """
         return VertexQuery("pipe", edge_query=self, converter="outbound", limit=limit)
 
-    def inbound_vertices(self, limit=None):
+    def inbound_vertices(self, limit):
         """
         Get the vertices inbounding from the edges returned by this query.
 
