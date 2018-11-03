@@ -15,8 +15,8 @@ class Client(object):
         `host` is a string that specifies the server location, in the format
         `hostname:port`.
 
-        The optional `request_timeout` sets how many seconds to wait before a request times out (defaults to 60
-        seconds.)
+        The optional `request_timeout` sets how many seconds to wait before a
+        request times out (defaults to 60 seconds.)
         """
 
         self.host = host
@@ -29,3 +29,13 @@ class Client(object):
     def transaction(self):
         trans = self.service.transaction().wait()
         return Transaction(trans.transaction)
+
+    def bulk_insert(self, items):
+        request = self.service.bulkInsert_request()
+        container = request.init("items", len(items))
+
+        for i, item in enumerate(items):
+            container[i] = item.to_message()
+
+        deserialize = lambda message: message.result
+        return request.send().then(deserialize)
