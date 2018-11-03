@@ -85,10 +85,10 @@ class EdgeTestCase(unittest.TestCase):
 
 class VertexQueryTestCase(unittest.TestCase):
     def test_all(self):
-        query = VertexQuery.all()
+        query = VertexQuery.all(1000)
         message = query.to_message()
         self.assertEqual(message.all.startId, b"")
-        self.assertEqual(message.all.limit, 0)
+        self.assertEqual(message.all.limit, 1000)
 
     def test_vertices(self):
         id1 = uuid.uuid1()
@@ -102,25 +102,25 @@ class VertexQueryTestCase(unittest.TestCase):
 
     def test_outbound_edges(self):
         id = uuid.uuid1()
-        query = VertexQuery.vertices([id]).outbound_edges(type_filter="bar", high_filter=FIXED_DATETIME)
+        query = VertexQuery.vertices([id]).outbound_edges(20, type_filter="bar", high_filter=FIXED_DATETIME)
         message = query.to_message()
         self.assertIsNotNone(message.pipe.vertexQuery)
         self.assertEqual(message.pipe.converter, "outbound")
         self.assertEqual(message.pipe.typeFilter, "bar")
         self.assertAlmostEqual(message.pipe.highFilter, FIXED_TIMESTAMP)
         self.assertEqual(message.pipe.lowFilter, 0)
-        self.assertEqual(message.pipe.limit, 0)
+        self.assertEqual(message.pipe.limit, 20)
         
     def test_inbound_edges(self):
         id = uuid.uuid1()
-        query = VertexQuery.vertices([id]).inbound_edges(type_filter="bar", high_filter=FIXED_DATETIME)
+        query = VertexQuery.vertices([id]).inbound_edges(30, type_filter="bar", high_filter=FIXED_DATETIME)
         message = query.to_message()
         self.assertIsNotNone(message.pipe.vertexQuery)
         self.assertEqual(message.pipe.converter, "inbound")
         self.assertEqual(message.pipe.typeFilter, "bar")
         self.assertAlmostEqual(message.pipe.highFilter, FIXED_TIMESTAMP)
         self.assertEqual(message.pipe.lowFilter, 0)
-        self.assertEqual(message.pipe.limit, 0)
+        self.assertEqual(message.pipe.limit, 30)
 
 class EdgeQueryTestCase(unittest.TestCase):
     def test_edges(self):
@@ -142,7 +142,7 @@ class EdgeQueryTestCase(unittest.TestCase):
     def test_outbound_vertices(self):
         id1 = uuid.uuid1()
         id2 = uuid.uuid1()
-        query = EdgeQuery.edges([EdgeKey(id1, "bar", id2)]).outbound_vertices()
+        query = EdgeQuery.edges([EdgeKey(id1, "bar", id2)]).outbound_vertices(0)
         message = query.to_message()
         self.assertIsNotNone(message.pipe.edgeQuery)
         self.assertEqual(message.pipe.converter, "outbound")
@@ -151,8 +151,8 @@ class EdgeQueryTestCase(unittest.TestCase):
     def test_inbound_vertices(self):
         id1 = uuid.uuid1()
         id2 = uuid.uuid1()
-        query = EdgeQuery.edges([EdgeKey(id1, "bar", id2)]).inbound_vertices()
+        query = EdgeQuery.edges([EdgeKey(id1, "bar", id2)]).inbound_vertices(10)
         message = query.to_message()
         self.assertIsNotNone(message.pipe.edgeQuery)
         self.assertEqual(message.pipe.converter, "inbound")
-        self.assertEqual(message.pipe.limit, 0)
+        self.assertEqual(message.pipe.limit, 10)

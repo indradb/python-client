@@ -71,8 +71,9 @@ class EdgeKey(object):
         """
         Creates a new edge key.
         
-        `outbound_id` is the vertex UUID from which the edge is outbounding. `type` is the edge type. `inbound_id` is
-        the vertex UUID into which the edge is inbounding.
+        `outbound_id` is the vertex UUID from which the edge is outbounding.
+        `type` is the edge type. `inbound_id` is the vertex UUID into which
+        the edge is inbounding.
         """
 
         self.outbound_id = outbound_id
@@ -110,15 +111,16 @@ class EdgeKey(object):
 
 class Edge(object):
     """
-    An edge, which represents a relationship between things, and have types and when they were last updated.
+    An edge, which represents a relationship between things, and have types
+    and when they were last updated.
     """
 
     def __init__(self, key, created_datetime):
         """
         Creates a new edge.
 
-        `key` is the `EdgeKey` to the edge. `created_datetime` is when the edge
-        was created.
+        `key` is the `EdgeKey` to the edge. `created_datetime` is when the
+        edge was created.
         """
 
         self.key = key
@@ -219,13 +221,15 @@ class EdgeProperty(object):
             value=json.loads(message.value)
         )
 
-class Query(object):
-    """Abstract class that represents a query"""
+# NOTE: python's stdlib enums are not used because we want to support python
+# 2.7, and they were introduced in 3.4.
+class Enum(object):
+    """Abstract class that represents an enum"""
 
     def __init__(self, type, **kwargs):
         """
-        Creates a new query. Generally you shouldn't construct a query objects directly, but rather use
-        the class methods.
+        Creates a new enum. Generally you shouldn't construct a query objects
+        directly, but rather use the class methods.
         """
         self.type = type
         self.payload = kwargs
@@ -240,7 +244,7 @@ class Query(object):
     def __ne__(self, other):
         return not self.__eq__(other)
 
-class VertexQuery(Query):
+class VertexQuery(Enum):
     """A query for vertices."""
 
     def to_message(self):
@@ -252,8 +256,7 @@ class VertexQuery(Query):
             start_id = self.payload["start_id"]
             all.startId = start_id.bytes if start_id is not None else b""
             
-            limit = self.payload["limit"]
-            all.limit = limit if limit is not None else 0
+            all.limit = self.payload["limit"]
         elif self.type == "vertices":
             payload_ids = self.payload["ids"]
             vertices = message.init("vertices")
@@ -265,42 +268,45 @@ class VertexQuery(Query):
             pipe = message.init("pipe")
             pipe.edgeQuery = self.payload["edge_query"].to_message()
             pipe.converter = self.payload["converter"]
-
-            limit = self.payload["limit"]
-            pipe.limit = limit if limit is not None else 0
+            pipe.limit = self.payload["limit"]
         else:
             raise ValueError("Unknown type for vertex query")
 
         return message
 
     @classmethod
-    def all(cls, start_id=None, limit=None):
+    def all(cls, limit, start_id=None):
         """
-        Gets all vertices, filtered only the input arguments. Generally this query is useful when you want to iterate
-        over all of the vertices in the datastore - e.g. to build an in-memory representation of the data.
+        Gets all vertices, filtered only the input arguments. Generally this
+        query is useful when you want to iterate over all of the vertices in
+        the datastore - e.g. to build an in-memory representation of the data.
 
-        `start_id` represents the vertex UUID from which to start for the returned range (exclusive.) `limit` sets the
-        limit of the number vertices to return.
+        `limit` sets the limit of the number vertices to return. `start_id`
+        represents the vertex UUID from which to start for the returned range
+        (exclusive.) 
         """
         return cls("all", start_id=start_id, limit=limit)
 
     @classmethod
     def vertices(cls, ids):
         """
-        Gets a set of vertices. Generally this query is useful when you have a set of vertices from a previous query
-        upon which you want to construct a new query.
+        Gets a set of vertices. Generally this query is useful when you have a
+        set of vertices from a previous query upon which you want to construct
+        a new query.
 
         `ids` is the set of vertex UUIDs to get.
         """
         return cls("vertices", ids=ids)
 
-    def outbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=None):
+    def outbound_edges(self, limit, type_filter=None, high_filter=None, low_filter=None):
         """
         Get the edges outbounding from the vertices returned by this query.
 
-        `type_filter` optionally filters those edges to only have a specific type. `high_filter` optionally filters
-        those edges to only get ones updated at or before the given datetime. `low_filter` optionally filters those
-        edges to only get ones updated at or after the given datetime. `limit` limits the number of returned edges.
+        `limit` limits the number of returned edges. `type_filter` optionally
+        filters those edges to only have a specific type. `high_filter`
+        optionally filters those edges to only get ones updated at or before
+        the given datetime. `low_filter` optionally filters those edges to
+        only get ones updated at or after the given datetime.
         """
         return EdgeQuery(
             "pipe",
@@ -312,13 +318,15 @@ class VertexQuery(Query):
             limit=limit
         )
 
-    def inbound_edges(self, type_filter=None, high_filter=None, low_filter=None, limit=None):
+    def inbound_edges(self, limit, type_filter=None, high_filter=None, low_filter=None):
         """
         Get the edges inbounding from the vertices returned by this query.
 
-        `type_filter` optionally filters those edges to only have a specific type. `high_filter` optionally filters
-        those edges to only get ones updated at or before the given datetime. `low_filter` optionally filters those
-        edges to only get ones updated at or after the given datetime. `limit` limits the number of returned edges.
+        `limit` limits the number of returned edges. `type_filter` optionally
+        filters those edges to only have a specific type. `high_filter`
+        optionally filters those edges to only get ones updated at or before
+        the given datetime. `low_filter` optionally filters those edges to
+        only get ones updated at or after the given datetime.
         """
         return EdgeQuery(
             "pipe",
@@ -330,7 +338,7 @@ class VertexQuery(Query):
             limit=limit
         )
 
-class EdgeQuery(Query):
+class EdgeQuery(Enum):
     """A query for edges."""
 
     def to_message(self):
@@ -357,8 +365,7 @@ class EdgeQuery(Query):
             low_filter = self.payload["low_filter"]
             pipe.lowFilter = to_timestamp(low_filter) if low_filter is not None else 0
             
-            limit = self.payload["limit"]
-            pipe.limit = limit if limit is not None else 0
+            pipe.limit = self.payload["limit"]
         else:
             raise ValueError("Unknown type for vertex query")
 
@@ -367,14 +374,15 @@ class EdgeQuery(Query):
     @classmethod
     def edges(cls, keys):
         """
-        Gets a set of edges. Generally this query is useful when you have a set of edges from a previous query upon
-        which you want to construct a new query.
+        Gets a set of edges. Generally this query is useful when you have a
+        set of edges from a previous query upon which you want to construct a
+        new query.
 
         `keys` represents the `EdgeKey`s that identifies the edges.
         """
         return cls("edges", keys=keys)
 
-    def outbound_vertices(self, limit=None):
+    def outbound_vertices(self, limit):
         """
         Get the vertices outbounding from the edges returned by this query.
 
@@ -382,10 +390,51 @@ class EdgeQuery(Query):
         """
         return VertexQuery("pipe", edge_query=self, converter="outbound", limit=limit)
 
-    def inbound_vertices(self, limit=None):
+    def inbound_vertices(self, limit):
         """
         Get the vertices inbounding from the edges returned by this query.
 
         `limit` limits the number of returned vertices.
         """
         return VertexQuery("pipe", edge_query=self, converter="inbound", limit=limit)
+
+class BulkInsertItem(Enum):
+    @classmethod
+    def vertex(cls, vertex):
+        return cls("vertex", vertex=vertex)
+
+    @classmethod
+    def edge(cls, key):
+        return cls("edge", key=key)
+
+    @classmethod
+    def vertex_property(cls, id, name, value):
+        return cls("vertex_property", id=id, name=name, value=value)
+
+    @classmethod
+    def edge_property(cls, key, name, value):
+        return cls("edge_property", key=key, name=name, value=value)
+
+    def to_message(self):
+        message = indradb_capnp.BulkInsertItem.new_message()
+
+        if self.type == "vertex":
+            container = message.init("vertex")
+            container.vertex = self.payload["vertex"].to_message()
+        elif self.type == "edge":
+            container = message.init("edge")
+            container.key = self.payload["key"].to_message()
+        elif self.type == "vertex_property":
+            container = message.init("vertexProperty")
+            container.id = self.payload["id"].bytes
+            container.name = self.payload["name"]
+            container.value = json.dumps(self.payload["value"])
+        elif self.type == "edge_property":
+            container = message.init("edgeProperty")
+            container.key = self.payload["key"].to_message()
+            container.name = self.payload["name"]
+            container.value = json.dumps(self.payload["value"])
+        else:
+            raise ValueError("Unknown type for vertex query")
+
+        return message
