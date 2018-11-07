@@ -3,7 +3,7 @@ import uuid
 import datetime
 import unittest
 
-from indradb import Vertex, EdgeKey, Edge, VertexQuery, EdgeQuery
+from indradb import *
 from indradb.hook import get_schema
 
 capnp, indradb_capnp = get_schema()
@@ -28,14 +28,14 @@ class VertexTestCase(unittest.TestCase):
         vertex = Vertex(id, "foo")
         message = vertex.to_message()
         self.assertEqual(message.id, id.bytes)
-        self.assertEqual(message.type, "foo")
+        self.assertEqual(message.t, "foo")
 
     def test_from_message(self):
         id = uuid.uuid1()
 
         message = indradb_capnp.Vertex.new_message(
             id=id.bytes,
-            type="foo"
+            t="foo"
         )
 
         self.assertEqual(Vertex.from_message(message), Vertex(id, "foo"))
@@ -47,7 +47,7 @@ class EdgeKeyTestCase(unittest.TestCase):
         key = EdgeKey(outbound_id, "foo", inbound_id)
         message = key.to_message()
         self.assertEqual(message.outboundId, outbound_id.bytes)
-        self.assertEqual(message.type, "foo")
+        self.assertEqual(message.t, "foo")
         self.assertEqual(message.inboundId, inbound_id.bytes)
 
     def test_from_message(self):
@@ -56,7 +56,7 @@ class EdgeKeyTestCase(unittest.TestCase):
 
         message = indradb_capnp.EdgeKey.new_message(
             outboundId=outbound_id.bytes,
-            type="foo",
+            t="foo",
             inboundId=inbound_id.bytes
         )
 
@@ -84,42 +84,42 @@ class EdgeTestCase(unittest.TestCase):
         self.assertEqual(Edge.from_message(message), Edge(key, FIXED_DATETIME))
 
 class VertexQueryTestCase(unittest.TestCase):
-    def test_all(self):
-        query = VertexQuery.all(1000)
+    def test_range(self):
+        query = RangeVertexQuery(1000)
         message = query.to_message()
-        self.assertEqual(message.all.startId, b"")
-        self.assertEqual(message.all.limit, 1000)
+        self.assertEqual(message.range.startId, b"")
+        self.assertEqual(message.range.limit, 1000)
 
-    def test_vertices(self):
+    def test_specific(self):
         id1 = uuid.uuid1()
         id2 = uuid.uuid1()
         id3 = uuid.uuid1()
-        query = VertexQuery.vertices([id1, id2, id3])
+        query = SpecificVertexQuery(id1, id2, id3)
         message = query.to_message()
-        self.assertEqual(message.vertices.ids[0], id1.bytes)
-        self.assertEqual(message.vertices.ids[1], id2.bytes)
-        self.assertEqual(message.vertices.ids[2], id3.bytes)
+        self.assertEqual(message.specific.ids[0], id1.bytes)
+        self.assertEqual(message.specific.ids[1], id2.bytes)
+        self.assertEqual(message.specific.ids[2], id3.bytes)
 
-    def test_outbound_edges(self):
+    def test_outbound(self):
         id = uuid.uuid1()
-        query = VertexQuery.vertices([id]).outbound_edges(20, type_filter="bar", high_filter=FIXED_DATETIME)
+        query = SpecificVertexQuery(id).outbound(20).t("bar").high(FIXED_DATETIME)
         message = query.to_message()
-        self.assertIsNotNone(message.pipe.vertexQuery)
-        self.assertEqual(message.pipe.converter, "outbound")
-        self.assertEqual(message.pipe.typeFilter, "bar")
-        self.assertAlmostEqual(message.pipe.highFilter, FIXED_TIMESTAMP)
-        self.assertEqual(message.pipe.lowFilter, 0)
+        self.assertIsNotNone(message.pipe.inner)
+        self.assertEqual(message.pipe.direction, "outbound")
+        self.assertEqual(message.pipe.t, "bar")
+        self.assertAlmostEqual(message.pipe.high, FIXED_TIMESTAMP)
+        self.assertEqual(message.pipe.low, 0)
         self.assertEqual(message.pipe.limit, 20)
         
-    def test_inbound_edges(self):
+    def test_inbound(self):
         id = uuid.uuid1()
-        query = VertexQuery.vertices([id]).inbound_edges(30, type_filter="bar", high_filter=FIXED_DATETIME)
+        query = SpecificVertexQuery(id).inbound(30).t("bar").high(FIXED_DATETIME)
         message = query.to_message()
-        self.assertIsNotNone(message.pipe.vertexQuery)
-        self.assertEqual(message.pipe.converter, "inbound")
-        self.assertEqual(message.pipe.typeFilter, "bar")
-        self.assertAlmostEqual(message.pipe.highFilter, FIXED_TIMESTAMP)
-        self.assertEqual(message.pipe.lowFilter, 0)
+        self.assertIsNotNone(message.pipe.inner)
+        self.assertEqual(message.pipe.direction, "inbound")
+        self.assertEqual(message.pipe.t, "bar")
+        self.assertAlmostEqual(message.pipe.high, FIXED_TIMESTAMP)
+        self.assertEqual(message.pipe.low, 0)
         self.assertEqual(message.pipe.limit, 30)
 
 class EdgeQueryTestCase(unittest.TestCase):
@@ -127,32 +127,34 @@ class EdgeQueryTestCase(unittest.TestCase):
         id1 = uuid.uuid1()
         id2 = uuid.uuid1()
         id3 = uuid.uuid1()
-        query = EdgeQuery.edges([
+
+        query = SpecificEdgeQuery(
             EdgeKey(id1, "bar1", id2),
             EdgeKey(id2, "bar2", id3)
-        ])
+        )
+        
         message = query.to_message()
-        self.assertEqual(message.edges.keys[0].outboundId, id1.bytes)
-        self.assertEqual(message.edges.keys[0].type, "bar1")
-        self.assertEqual(message.edges.keys[0].inboundId, id2.bytes)
-        self.assertEqual(message.edges.keys[1].outboundId, id2.bytes)
-        self.assertEqual(message.edges.keys[1].type, "bar2")
-        self.assertEqual(message.edges.keys[1].inboundId, id3.bytes)
+        self.assertEqual(message.specific.keys[0].outboundId, id1.bytes)
+        self.assertEqual(message.specific.keys[0].t, "bar1")
+        self.assertEqual(message.specific.keys[0].inboundId, id2.bytes)
+        self.assertEqual(message.specific.keys[1].outboundId, id2.bytes)
+        self.assertEqual(message.specific.keys[1].t, "bar2")
+        self.assertEqual(message.specific.keys[1].inboundId, id3.bytes)
 
-    def test_outbound_vertices(self):
+    def test_outbound(self):
         id1 = uuid.uuid1()
         id2 = uuid.uuid1()
-        query = EdgeQuery.edges([EdgeKey(id1, "bar", id2)]).outbound_vertices(0)
+        query = SpecificEdgeQuery(EdgeKey(id1, "bar", id2)).outbound(0)
         message = query.to_message()
-        self.assertIsNotNone(message.pipe.edgeQuery)
-        self.assertEqual(message.pipe.converter, "outbound")
+        self.assertIsNotNone(message.pipe.inner)
+        self.assertEqual(message.pipe.direction, "outbound")
         self.assertEqual(message.pipe.limit, 0)
 
     def test_inbound_vertices(self):
         id1 = uuid.uuid1()
         id2 = uuid.uuid1()
-        query = EdgeQuery.edges([EdgeKey(id1, "bar", id2)]).inbound_vertices(10)
+        query = SpecificEdgeQuery(EdgeKey(id1, "bar", id2)).inbound(10)
         message = query.to_message()
-        self.assertIsNotNone(message.pipe.edgeQuery)
-        self.assertEqual(message.pipe.converter, "inbound")
+        self.assertIsNotNone(message.pipe.inner)
+        self.assertEqual(message.pipe.direction, "inbound")
         self.assertEqual(message.pipe.limit, 10)

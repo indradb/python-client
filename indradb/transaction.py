@@ -77,74 +77,72 @@ class Transaction(object):
         deserialize = lambda message: message.result
         return self.trans.deleteEdges(query.to_message()).then(deserialize)
 
-    def get_edge_count(self, id, type_filter, direction):
+    def get_edge_count(self, id, t, direction):
         """
         Gets the number of edges related to a vertex.
 
-        `id` specifies the ID of the vertex. `type_filter` specifies which
+        `id` specifies the ID of the vertex. `t` specifies which
         type of edges to count - set this to `None` if all edges should be
         counted. `direction` specifies the direction of edges to count -
         either `outbound` or `inbound`.
         """
         deserialize = lambda message: message.result
-        return self.trans.getEdgeCount(id.bytes, type_filter or "", direction).then(deserialize)
+        return self.trans.getEdgeCount(id.bytes, t or "", direction).then(deserialize)
 
-    def get_vertex_properties(self, query, name):
+    def get_vertex_properties(self, query):
         """
         Gets vertex properties.
 
-        `query` specifies the vertex query to run. `name` specifies name of
-        the properties to get.
+        `query` specifies the vertex properties query to run.
         """
         deserialize = lambda message: [VertexProperty.from_message(m) for m in message.result]
-        return self.trans.getVertexProperties(query.to_message(), name).then(deserialize)
+        return self.trans.getVertexProperties(query.to_message()).then(deserialize)
 
-    def set_vertex_properties(self, query, name, value):
+    def set_vertex_properties(self, query, value):
         """
         Sets vertex properties.
 
-        `query` specifies the edge query to run. `name` specifies name of the
-        properties to get. `value` specifies the value to set.
+        `query` specifies the edge query to run. `value` specifies the value
+        to set; it must be JSONable (i.e., it should be possible to pass
+        `value` into `json.dumps`.)
         """
         deserialize = lambda message: message.result
-        return self.trans.setVertexProperties(query.to_message(), name, json.dumps(value)).then(deserialize)
+        return self.trans.setVertexProperties(query.to_message(), json.dumps(value)).then(deserialize)
 
-    def delete_vertex_properties(self, query, name):
+    def delete_vertex_properties(self, query):
         """
         Deletes vertex properties.
 
-        `query` specifies the vertex query to run. `name` specifies name of
-        the properties to delete.
+        `query` specifies the vertex query to run.
         """
         deserialize = lambda message: message.result
-        return self.trans.deleteVertexProperties(query.to_message(), name).then(deserialize)
+        return self.trans.deleteVertexProperties(query.to_message()).then(deserialize)
 
-    def get_edge_properties(self, query, name):
+    def get_edge_properties(self, query):
         """
         Gets edge properties.
 
-        `query` specifies the edge query to run. `name` specifies name of the
-        properties to get.
+        `query` specifies the edge query to run.
         """
         deserialize = lambda message: [EdgeProperty.from_message(m) for m in message.result]
-        return self.trans.getEdgeProperties(query.to_message(), name).then(deserialize)
+        return self.trans.getEdgeProperties(query.to_message()).then(deserialize)
 
-    def set_edge_properties(self, query, name, value):
+    def set_edge_properties(self, query, value):
         """
         Sets edge properties.
 
-        `query` specifies the edge query to run. `name` specifies name of the
-        properties to get. `value` specifies the value to set.
+        `query` specifies the edge query to run. `value` specifies the value
+        to set; it must be JSONable (i.e., it should be possible to pass
+        `value` into `json.dumps`.)
         """
         deserialize = lambda message: message.result
-        return self.trans.setEdgeProperties(query.to_message(), name, json.dumps(value)).then(deserialize)
+        return self.trans.setEdgeProperties(query.to_message(), json.dumps(value)).then(deserialize)
 
-    def delete_edge_properties(self, query, name):
+    def delete_edge_properties(self, query):
         """
         Deletes global properties.
 
-        `query` specifies the edge query to run. `name` specifies name of the
-        properties to delete.
+        `query` specifies the edge query to run.
         """
         deserialize = lambda message: message.result
-        return self.trans.deleteEdgeProperties(query.to_message(), name).then(deserialize)
+        return self.trans.deleteEdgeProperties(query.to_message()).then(deserialize)

@@ -1,5 +1,5 @@
 from indradb.client import Client
-from indradb.models import Vertex, Edge, VertexQuery, EdgeQuery, EdgeKey, VertexProperty, EdgeProperty, BulkInsertItem
+from indradb.models import Vertex, EdgeKey, Edge, VertexProperty, EdgeProperty, RangeVertexQuery, SpecificVertexQuery, PipeVertexQuery, SpecificEdgeQuery, PipeEdgeQuery, BulkInsertVertex, BulkInsertEdge, BulkInsertVertexProperty, BulkInsertEdgeProperty
 from indradb.transaction import Transaction
 
-__all__ = ["Client", "Error", "Vertex", "Edge", "VertexQuery", "EdgeQuery", "EdgeKey", "Transaction", "BulkInsertItem"]
+__all__ = ["Client", "Vertex", "EdgeKey", "Edge", "VertexProperty", "EdgeProperty", "RangeVertexQuery", "SpecificVertexQuery", "PipeVertexQuery", "SpecificEdgeQuery", "PipeEdgeQuery", "BulkInsertVertex", "BulkInsertEdge", "BulkInsertVertexProperty", "BulkInsertEdgeProperty"]
