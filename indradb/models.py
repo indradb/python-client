@@ -367,7 +367,7 @@ class BulkInsertVertex(_BaseModel):
         self.vertex = vertex
 
     def to_message(self):
-        mesage = indradb_capnp.BulkInsertItem.new_message()
+        message = indradb_capnp.BulkInsertItem.new_message()
         container = message.init("vertex")
         container.vertex = self.vertex.to_message()
         return message
@@ -379,7 +379,7 @@ class BulkInsertEdge(_BaseModel):
         self.key = key
 
     def to_message(self):
-        mesage = indradb_capnp.BulkInsertItem.new_message()
+        message = indradb_capnp.BulkInsertItem.new_message()
         container = message.init("edge")
         container.key = self.key.to_message()
         return message
@@ -393,8 +393,8 @@ class BulkInsertVertexProperty(_BaseModel):
         self.value = value
 
     def to_message(self):
-        mesage = indradb_capnp.BulkInsertItem.new_message()
-        container = message.init("vertex_property")
+        message = indradb_capnp.BulkInsertItem.new_message()
+        container = message.init("vertexProperty")
         container.id = self.id.bytes
         container.name = self.name
         container.value = json.dumps(self.value)
@@ -409,8 +409,8 @@ class BulkInsertEdgeProperty(_BaseModel):
         self.value = value
 
     def to_message(self):
-        mesage = indradb_capnp.BulkInsertItem.new_message()
-        container = message.init("edge_property")
+        message = indradb_capnp.BulkInsertItem.new_message()
+        container = message.init("edgeProperty")
         container.key = self.key.to_message()
         container.name = self.name
         container.value = json.dumps(self.value)
