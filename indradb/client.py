@@ -30,12 +30,14 @@ class Client(object):
         trans = self.service.transaction().wait()
         return Transaction(trans.transaction)
 
-    def bulk_insert(self, items):
+    def bulk_insert(self, outbound_vertex_type, inbound_vertex_type, edge_keys):
         request = self.service.bulkInsert_request()
-        container = request.init("items", len(items))
+        request.outboundVertexT = outbound_vertex_type
+        request.inboundVertexT = inbound_vertex_type
+        container = request.init("edgeKeys", len(edge_keys))
 
-        for i, item in enumerate(items):
-            container[i] = item.to_message()
+        for i, edge_key in enumerate(edge_keys):
+            container[i] = edge_key.to_message()
 
         deserialize = lambda message: message.result
         return request.send().then(deserialize)
