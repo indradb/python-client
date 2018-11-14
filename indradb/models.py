@@ -1,5 +1,4 @@
 import json
-import uuid
 import datetime
 
 from .hook import get_schema
@@ -40,7 +39,7 @@ class _BaseModel(object):
         return not self.__eq__(other)
 
 class Vertex(_BaseModel):
-    """A vertex, which represents things. Vertices have types and UUIDs."""
+    """A vertex, which represents things. Vertices have types and IDs."""
 
     __slots__ = ["id", "t"]
 
@@ -48,7 +47,7 @@ class Vertex(_BaseModel):
         """
         Creates a new vertex.
 
-        `id` is the vertex UUID. `t` is the vertex type.
+        `id` is the vertex ID. `t` is the vertex type.
         """
 
         self.id = id
@@ -56,14 +55,14 @@ class Vertex(_BaseModel):
 
     def to_message(self):
         return indradb_capnp.Vertex.new_message(
-            id=self.id.bytes,
+            id=self.id,
             t=self.t
         )
 
     @classmethod
     def from_message(cls, message):
         return cls(
-            id=uuid.UUID(bytes=message.id),
+            id=message.id,
             t=message.t
         )
 
@@ -76,8 +75,8 @@ class EdgeKey(_BaseModel):
         """
         Creates a new edge key.
         
-        `outbound_id` is the vertex UUID from which the edge is outbounding.
-        `t` is the edge type. `inbound_id` is the vertex UUID into which
+        `outbound_id` is the vertex ID from which the edge is outbounding.
+        `t` is the edge type. `inbound_id` is the vertex ID into which
         the edge is inbounding.
         """
 
@@ -87,17 +86,17 @@ class EdgeKey(_BaseModel):
 
     def to_message(self):
         return indradb_capnp.EdgeKey.new_message(
-            outboundId=self.outbound_id.bytes,
+            outboundId=self.outbound_id,
             t=self.t,
-            inboundId=self.inbound_id.bytes
+            inboundId=self.inbound_id
         )
 
     @classmethod
     def from_message(cls, message):
         return cls(
-            outbound_id=uuid.UUID(bytes=message.outboundId),
+            outbound_id=message.outboundId,
             t=message.t,
-            inbound_id=uuid.UUID(bytes=message.inboundId)
+            inbound_id=message.inboundId
         )
 
 class Edge(_BaseModel):
@@ -153,7 +152,7 @@ class VertexProperty(_BaseModel):
     @classmethod
     def from_message(cls, message):
         return cls(
-            id=uuid.UUID(bytes=message.id),
+            id=message.id,
             value=json.loads(message.value)
         )
 
@@ -221,7 +220,7 @@ class RangeVertexQuery(_VertexQuery):
     def to_message(self):
         message = indradb_capnp.VertexQuery.new_message()
         q = message.init("range")
-        q.startId = self._start_id.bytes if self._start_id is not None else b""
+        q.startId = self._start_id if self._start_id is not None else b""
         q.limit = self._limit
         q.t = self._t or ""
         return message
@@ -238,7 +237,7 @@ class SpecificVertexQuery(_VertexQuery):
         ids = q.init("ids", len(self._ids))
 
         for i, id in enumerate(self._ids):
-            ids[i] = id.bytes
+            ids[i] = id
 
         return message
 
@@ -395,7 +394,7 @@ class BulkInsertVertexProperty(_BaseModel):
     def to_message(self):
         message = indradb_capnp.BulkInsertItem.new_message()
         container = message.init("vertexProperty")
-        container.id = self.id.bytes
+        container.id = self.id
         container.name = self.name
         container.value = json.dumps(self.value)
         return message

@@ -1,5 +1,4 @@
 from .models import Vertex, Edge, VertexProperty, EdgeProperty
-import uuid
 import json
 
 class Transaction(object):
@@ -22,7 +21,7 @@ class Transaction(object):
         `type` specifies the new vertex's type.
         """
 
-        deserialize = lambda message: uuid.UUID(bytes=message.result)
+        deserialize = lambda message: message.result
         return self.trans.createVertexFromType(type).then(deserialize)
 
     def get_vertices(self, query):
