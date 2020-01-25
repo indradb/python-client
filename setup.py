@@ -11,6 +11,6 @@ setup(
     ],
 
     install_requires = [
-        "pycapnp>=0.6.3"
+        "pycapnp>=0.6.4"
     ]
 )
