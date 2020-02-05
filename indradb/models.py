@@ -415,3 +415,77 @@ class BulkInsertEdgeProperty(_BaseModel):
         container.name = self.name
         container.value = json.dumps(self.value)
         return message
+
+class Property(_BaseModel):
+    """
+    List of properties attached to a vertex.
+    """
+
+    __slots__ = ["name", "value"]
+
+    def __init__(self, name, value):
+        """
+        Creates a new property.
+
+        `name` is the string name of the property, and `value` is its JSON value.
+        """
+
+        self.name = name
+        self.value = value
+
+    @classmethod
+    def from_message(cls, message):
+        return cls(
+            name=message.name,
+            value=json.loads(message.value)
+        )
+
+class VertexProperties(_BaseModel):
+    """
+    List of properties attached to a vertex.
+    """
+
+    __slots__ = ["vertex", "props"]
+
+    def __init__(self, vertex, props):
+        """
+        Creates a new vertex properties.
+
+        `vertex` is the vertex object, and `props` is a list of `Property`
+        objects.
+        """
+
+        self.vertex = vertex
+        self.props = props
+
+    @classmethod
+    def from_message(cls, message):
+        return cls(
+            vertex=Vertex.from_message(message.vertex),
+            props=[Property.from_message(m) for m in message.props],
+        )
+
+class EdgeProperties(_BaseModel):
+    """
+    List of properties attached to an edge.
+    """
+
+    __slots__ = ["edge", "props"]
+
+    def __init__(self, edge, props):
+        """
+        Creates a new edge properties.
+
+        `edge` is the edge object, and `props` is a list of `Property`
+        objects.
+        """
+
+        self.edge = edge
+        self.props = props
+
+    @classmethod
+    def from_message(cls, message):
+        return cls(
+            edge=Edge.from_message(message.edge),
+            props=[Property.from_message(m) for m in message.props],
+        )

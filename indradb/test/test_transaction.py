@@ -91,3 +91,44 @@ class TransactionTestCase(unittest.TestCase):
         self.assertEqual(m1, [])
         self.assertEqual(m2, [EdgeProperty(key, 42)])
         self.assertEqual(m3, [])
+
+    def test_get_all_vertex_properties(self):
+        trans = self.client.transaction()
+        id = trans.create_vertex_from_type("foo").wait()
+        query = SpecificVertexQuery(id)
+
+        m1 = trans.get_all_vertex_properties(query).wait()
+        trans.set_vertex_properties(query.property("foo"), 42).wait()
+        m2 = trans.get_all_vertex_properties(query).wait()
+        trans.delete_vertex_properties(query.property("foo")).wait()
+        m3 = trans.get_all_vertex_properties(query).wait()
+
+        self.assertEqual(m1, [VertexProperties(Vertex(id, "foo"), [])])
+        self.assertEqual(m2, [VertexProperties(Vertex(id, "foo"), [Property("foo", 42)])])
+        self.assertEqual(m3, [VertexProperties(Vertex(id, "foo"), [])])
+
+    def test_get_all_edge_properties(self):
+        trans = self.client.transaction()
+        outbound_id = trans.create_vertex_from_type("foo").wait()
+        inbound_id = trans.create_vertex_from_type("foo").wait()
+        key = EdgeKey(outbound_id, "bar", inbound_id)
+        trans.create_edge(key).wait()
+        query = SpecificEdgeQuery(key)
+
+        m1 = trans.get_all_edge_properties(query).wait()
+        trans.set_edge_properties(query.property("foo"), 42).wait()
+        m2 = trans.get_all_edge_properties(query).wait()
+        trans.delete_edge_properties(query.property("foo")).wait()
+        m3 = trans.get_all_edge_properties(query).wait()
+
+        self.assertTrue(len(m1), 1)
+        self.assertEqual(m1[0].edge.key, key)
+        self.assertEqual(m1[0].props, [])
+
+        self.assertTrue(len(m2), 1)
+        self.assertEqual(m2[0].edge.key, key)
+        self.assertEqual(m2[0].props, [Property("foo", 42)])
+        
+        self.assertTrue(len(m3), 1)
+        self.assertEqual(m3[0].edge.key, key)
+        self.assertEqual(m3[0].props, [])
