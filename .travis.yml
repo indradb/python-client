@@ -6,7 +6,6 @@ cache:
   pip: true
   directories:
     - .tox
-    - venv
 sudo: required
 dist: trusty
 
@@ -14,7 +13,7 @@ git:
   submodules: false
 
 install: ./ci/install.sh
-script: make venv test
+script: make test
 env:
   matrix:
     - TOXENV=py2

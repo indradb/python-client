@@ -10,6 +10,7 @@ git submodule update --init --recursive
 
 sudo apt-get -qq update
 sudo apt-get install -y python3
+pip3 install tox
 
 curl -O https://capnproto.org/capnproto-c++-0.6.1.tar.gz
 tar zxf capnproto-c++-0.6.1.tar.gz
