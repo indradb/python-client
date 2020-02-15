@@ -6,7 +6,6 @@ cache:
   pip: true
   directories:
     - .tox
-    - venv
 sudo: required
 dist: trusty
 

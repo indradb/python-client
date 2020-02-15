@@ -1,8 +1,10 @@
 .PHONY: init release test
 
-init:
-	virtualenv --no-site-packages venv
+venv:
+	virtualenv --no-site-packages venv -p python3
 	. venv/bin/activate && pip install tox nose pdoc
+
+init: venv
 	git submodule update --init --recursive
 	make indradb/indradb.capnp
 

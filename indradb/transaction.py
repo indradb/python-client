@@ -1,4 +1,4 @@
-from .models import Vertex, Edge, VertexProperty, EdgeProperty
+from .models import Vertex, Edge, VertexProperty, EdgeProperty, VertexProperties, EdgeProperties
 import uuid
 import json
 
@@ -146,3 +146,21 @@ class Transaction(object):
         """
         deserialize = lambda message: message.result
         return self.trans.deleteEdgeProperties(query.to_message()).then(deserialize)
+
+    def get_all_vertex_properties(self, query):
+        """
+        Get all properties associated with the vertices from `query.`
+
+        `query` specifies the vertex query to run.
+        """
+        deserialize = lambda message: [VertexProperties.from_message(m) for m in message.result]
+        return self.trans.getAllVertexProperties(query.to_message()).then(deserialize)
+
+    def get_all_edge_properties(self, query):
+        """
+        Get all properties associated with the edges from `query.`
+
+        `query` specifies the edge query to run.
+        """
+        deserialize = lambda message: [EdgeProperties.from_message(m) for m in message.result]
+        return self.trans.getAllEdgeProperties(query.to_message()).then(deserialize)
