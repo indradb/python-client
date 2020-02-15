@@ -9,8 +9,14 @@ sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
 git submodule update --init --recursive
 
 sudo apt-get -qq update
-sudo apt-get install -y python3-pip python3
-pip3 install tox
+sudo apt-get install -y python3
+
+# install pip
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py
+
+# install python deps
+pip install tox
 
 curl -O https://capnproto.org/capnproto-c++-0.6.1.tar.gz
 tar zxf capnproto-c++-0.6.1.tar.gz
