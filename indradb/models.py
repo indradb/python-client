@@ -372,7 +372,7 @@ class BulkInsertVertex(_BaseModel):
         container = message.init("vertex")
         container.vertex = self.vertex.to_message()
 
-        props = message.init("props", len(self.props))
+        props = container.init("props", len(self.props))
         for i, prop in enumerate(self.props):
             props[i] = prop.to_message()
 
@@ -390,7 +390,7 @@ class BulkInsertEdge(_BaseModel):
         container = message.init("edge")
         container.key = self.key.to_message()
 
-        props = message.init("props", len(self.props))
+        props = container.init("props", len(self.props))
         for i, prop in enumerate(self.props):
             props[i] = prop.to_message()
         
