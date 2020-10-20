@@ -361,59 +361,39 @@ class EdgePropertyQuery(_BaseModel):
         return message
 
 class BulkInsertVertex(_BaseModel):
-    __slots__ = ["vertex"]
+    __slots__ = ["vertex", "props"]
 
     def __init__(self, vertex):
         self.vertex = vertex
+        self.props = props
 
     def to_message(self):
         message = indradb_capnp.BulkInsertItem.new_message()
         container = message.init("vertex")
         container.vertex = self.vertex.to_message()
+
+        props = message.init("props", len(self.props))
+        for i, prop in enumerate(self.props):
+            props[i] = prop.to_message()
+
         return message
 
 class BulkInsertEdge(_BaseModel):
-    __slots__ = ["key"]
+    __slots__ = ["key", "props"]
 
     def __init__(self, key):
         self.key = key
+        self.props = props
 
     def to_message(self):
         message = indradb_capnp.BulkInsertItem.new_message()
         container = message.init("edge")
         container.key = self.key.to_message()
-        return message
 
-class BulkInsertVertexProperty(_BaseModel):
-    __slots__ = ["id", "name", "value"]
-
-    def __init__(self, id, name, value):
-        self.id = id
-        self.name = name
-        self.value = value
-
-    def to_message(self):
-        message = indradb_capnp.BulkInsertItem.new_message()
-        container = message.init("vertexProperty")
-        container.id = self.id.bytes
-        container.name = self.name
-        container.value = json.dumps(self.value)
-        return message
-
-class BulkInsertEdgeProperty(_BaseModel):
-    __slots__ = ["key", "name", "value"]
-
-    def __init__(self, key, name, value):
-        self.key = key
-        self.name = name
-        self.value = value
-
-    def to_message(self):
-        message = indradb_capnp.BulkInsertItem.new_message()
-        container = message.init("edgeProperty")
-        container.key = self.key.to_message()
-        container.name = self.name
-        container.value = json.dumps(self.value)
+        props = message.init("props", len(self.props))
+        for i, prop in enumerate(self.props):
+            props[i] = prop.to_message()
+        
         return message
 
 class Property(_BaseModel):
@@ -432,6 +412,12 @@ class Property(_BaseModel):
 
         self.name = name
         self.value = value
+
+    def to_message(self):
+        message = indradb_capnp.Property.new_message()
+        message.name = self.name
+        message.value = json.dumps(self.value)
+        return message
 
     @classmethod
     def from_message(cls, message):

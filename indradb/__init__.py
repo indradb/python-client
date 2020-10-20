@@ -2,8 +2,7 @@ from indradb.client import Client
 from indradb.models import Vertex, EdgeKey, Edge, VertexProperty, \
     EdgeProperty, RangeVertexQuery, SpecificVertexQuery, PipeVertexQuery, \
     SpecificEdgeQuery, PipeEdgeQuery, BulkInsertVertex, BulkInsertEdge, \
-    BulkInsertVertexProperty, BulkInsertEdgeProperty, VertexProperties, \
-    EdgeProperties, Property
+    VertexProperties, EdgeProperties, Property
 from indradb.transaction import Transaction
 
 __all__ = [
@@ -20,8 +19,6 @@ __all__ = [
     "PipeEdgeQuery",
     "BulkInsertVertex",
     "BulkInsertEdge",
-    "BulkInsertVertexProperty",
-    "BulkInsertEdgeProperty",
     "VertexProperties",
     "EdgeProperties",
     "Property",
