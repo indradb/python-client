@@ -363,7 +363,7 @@ class EdgePropertyQuery(_BaseModel):
 class BulkInsertVertex(_BaseModel):
     __slots__ = ["vertex", "props"]
 
-    def __init__(self, vertex):
+    def __init__(self, vertex, props):
         self.vertex = vertex
         self.props = props
 
@@ -381,7 +381,7 @@ class BulkInsertVertex(_BaseModel):
 class BulkInsertEdge(_BaseModel):
     __slots__ = ["key", "props"]
 
-    def __init__(self, key):
+    def __init__(self, key, props):
         self.key = key
         self.props = props
 
