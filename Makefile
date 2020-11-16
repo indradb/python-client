@@ -18,6 +18,7 @@ doc:
 release:
 	git checkout master
 	git push origin master
+	rm -rf build dist
 	python setup.py clean build sdist bdist_wheel
 	. venv/bin/activate && twine upload --skip-existing dist/*
 
