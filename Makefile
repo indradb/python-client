@@ -9,7 +9,7 @@ init: venv
 	make indradb/indradb.capnp
 
 indradb/indradb.capnp:
-	cp indradb_server/bin/indradb.capnp indradb/
+	cp indradb_server/proto/indradb.capnp indradb/
 
 doc:
 	. venv/bin/activate && python setup.py clean build install
