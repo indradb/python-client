@@ -4,13 +4,13 @@ setup(
     name = "indradb",
     version = "1.0.1",
     author = "Yusuf Simonson",
-    package_data={"": ["indradb.capnp"]},
 
     packages = [
         "indradb",
     ],
 
     install_requires = [
-        "pycapnp>=0.6.4"
+        "grpcio>=1.26.0",
+        "protobuf>=3.11.2",
     ]
 )

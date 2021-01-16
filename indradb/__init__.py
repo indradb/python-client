@@ -1,28 +1,7 @@
-from indradb.client import Client
-from indradb.models import Vertex, EdgeKey, Edge, VertexProperty, \
-    EdgeProperty, RangeVertexQuery, SpecificVertexQuery, PipeVertexQuery, \
-    SpecificEdgeQuery, PipeEdgeQuery, BulkInsertVertex, BulkInsertEdge, \
-    BulkInsertVertexProperty, BulkInsertEdgeProperty, VertexProperties, \
-    EdgeProperties, Property
-from indradb.transaction import Transaction
+import indradb.indradb_pb2 as proto
+import indradb.indradb_pb2_grpc as grpc
 
-__all__ = [
-    "Client",
-    "Vertex",
-    "EdgeKey",
-    "Edge",
-    "VertexProperty",
-    "EdgeProperty",
-    "RangeVertexQuery",
-    "SpecificVertexQuery",
-    "PipeVertexQuery",
-    "SpecificEdgeQuery",
-    "PipeEdgeQuery",
-    "BulkInsertVertex",
-    "BulkInsertEdge",
-    "BulkInsertVertexProperty",
-    "BulkInsertEdgeProperty",
-    "VertexProperties",
-    "EdgeProperties",
-    "Property",
-]
+from indradb.client import Client, BulkInserter, Transaction
+from indradb.models import Edge, EdgeKey, Vertex, RangeVertexQuery, SpecificVertexQuery, PipeVertexQuery, \
+    VertexPropertyQuery, SpecificEdgeQuery, PipeEdgeQuery, EdgePropertyQuery, EdgeDirection, NamedProperty, \
+    VertexProperty, VertexProperties, EdgeProperty, EdgeProperties
