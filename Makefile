@@ -11,9 +11,9 @@ init: venv
 	# fix import
 	sed -i -e 's/import indradb_pb2/import indradb.indradb_pb2/g' indradb/indradb_pb2_grpc.py
 
-doc:
+docs:
 	. venv/bin/activate && python setup.py clean build install
-	. venv/bin/activate && pdoc --html --html-dir ./doc ./indradb
+	. venv/bin/activate && pdoc --html --html-dir ./docs ./indradb
 
 release:
 	git checkout master
