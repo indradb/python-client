@@ -1,4 +1,4 @@
-# IndraDB python client [![Build Status](https://travis-ci.org/indradb/python-client.svg?branch=master)](https://travis-ci.org/indradb/python-client)
+# IndraDB python client ![CI](https://github.com/indradb/python-client/workflows/Test/badge.svg)
 
 IndraDB's python client. This uses the server API to enable graph queries and manipulation from python code.
 

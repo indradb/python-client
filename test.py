@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import os
@@ -10,8 +10,7 @@ from contextlib import contextmanager
 
 from indradb import Client
 
-PORT = 27615
-HOST = "localhost:%s" % PORT
+HOST = "localhost:27615"
 
 @contextmanager
 def server(env):
@@ -32,12 +31,10 @@ def server(env):
     
     while True:
         try:
-            client = Client(HOST)
-            
-            if client.ping().wait().ready:
-                break
-        except socket.error as e:
-            print(e)
+            Client(HOST).ping()
+            break
+        except:
+            print("server not yet ready")
 
         # Server is not yet responding to requests - let's make sure it's
         # running in the first place
@@ -55,23 +52,17 @@ def main():
     env = dict(os.environ)
 
     env.update({
-        "PORT": str(PORT),
         "RUST_BACKTRACE": "1",
         "DATABASE_URL": "memory://",
         "INDRADB_HOST": HOST
     })
 
     with server(env):
-        proc = subprocess.Popen(
-            ["nosetests", "indradb.test"],
-            stdout=sys.stdout,
-            stderr=sys.stderr,
-            env=env
+        subprocess.run(
+            ["nosetests", "indradb.test", *sys.argv[1:]],
+            env=env,
+            check=True,
         )
-
-        sys.exit(proc.wait())
-    
-    raise Exception("This code path should not get hit")
 
 if __name__ == "__main__":
     main()

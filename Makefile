@@ -1,19 +1,19 @@
 .PHONY: init release test
 
 venv:
-	virtualenv --no-site-packages venv -p python3
-	. venv/bin/activate && pip install tox nose pdoc
+	virtualenv -p python3 venv
+	. venv/bin/activate && pip install -r requirements.txt
 
 init: venv
 	git submodule update --init --recursive
-	make indradb/indradb.capnp
+	. venv/bin/activate && python3 -m grpc_tools.protoc -I./indradb_server/proto \
+		--python_out=indradb --grpc_python_out=indradb indradb.proto
+	# fix import
+	sed -i -e 's/import indradb_pb2/import indradb.indradb_pb2/g' indradb/indradb_pb2_grpc.py
 
-indradb/indradb.capnp:
-	cp indradb_server/bin/indradb.capnp indradb/
-
-doc:
+docs:
 	. venv/bin/activate && python setup.py clean build install
-	. venv/bin/activate && pdoc --html --html-dir ./doc ./indradb
+	. venv/bin/activate && pdoc --html --html-dir ./docs ./indradb
 
 release:
 	git checkout master
@@ -23,4 +23,4 @@ release:
 	. venv/bin/activate && twine upload --skip-existing dist/*
 
 test:
-	. venv/bin/activate && tox
+	. venv/bin/activate && ./test.py
