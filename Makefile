@@ -2,7 +2,7 @@
 
 venv:
 	virtualenv -p python3 venv
-	. venv/bin/activate && pip install tox nose pdoc grpcio==1.27.2 grpcio-tools==1.27.2
+	. venv/bin/activate && pip install -r requirements.txt
 
 init: venv
 	git submodule update --init --recursive
@@ -23,4 +23,4 @@ release:
 	. venv/bin/activate && twine upload --skip-existing dist/*
 
 test:
-	. venv/bin/activate && tox
+	. venv/bin/activate && ./test.py
