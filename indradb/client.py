@@ -3,7 +3,6 @@ import json
 import itertools
 
 import grpc
-import indradb.indradb_pb2 as indradb_proto
 import indradb.indradb_pb2_grpc as indradb_grpc
 
 from .models import Vertex, Edge, VertexProperty, EdgeProperty, VertexProperties, EdgeProperties
@@ -34,11 +33,11 @@ class Client:
         self.stub = indradb_grpc.IndraDBStub(channel)
 
     def ping(self):
-        req = indradb_proto.google_dot_protobuf_dot_empty__pb2.Empty()
+        req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
         return self.stub.Ping(req)
 
     def index_property(self, name):
-        req = indradb_proto.IndexPropertyRequest(name=name.to_message())
+        req = proto.IndexPropertyRequest(name=proto.Identifier(value=name))
         return self.stub.IndexProperty(req)
 
     def create_vertex(self, vertex):
@@ -264,7 +263,7 @@ class Transaction:
         """
         Gets the total number of vertices in the datastore.
         """
-        self._add_req(get_vertex_count=indradb_proto.google_dot_protobuf_dot_empty__pb2.Empty())
+        self._add_req(get_vertex_count=proto.google_dot_protobuf_dot_empty__pb2.Empty())
         return self
 
     def create_edge(self, key):
