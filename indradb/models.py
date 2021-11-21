@@ -76,7 +76,7 @@ class EdgeKey(_BaseModel):
     def to_message(self):
         return proto.EdgeKey(
             outbound_id=proto.Uuid(value=self.outbound_id.bytes),
-            t=proto.Type(value=self.t),
+            t=proto.Identifier(value=self.t),
             inbound_id=proto.Uuid(value=self.inbound_id.bytes),
         )
 
@@ -97,7 +97,7 @@ class Vertex(_BaseModel):
         """
         Creates a new vertex.
 
-        `id` is the vertex UUID. `t` is the vertex type.
+        `id` is the vertex UUID. `t` is the vertex identifier.
         """
 
         self.id = id
@@ -106,7 +106,7 @@ class Vertex(_BaseModel):
     def to_message(self):
         return proto.Vertex(
             id=proto.Uuid(value=self.id.bytes),
-            t=proto.Type(value=self.t),
+            t=proto.Identifier(value=self.t),
         )
 
     @classmethod
@@ -132,6 +132,82 @@ class _VertexQuery(_BaseModel):
     def property(self, name):
         return VertexPropertyQuery(self, name)
 
+    def with_property(self, name):
+        return PipePropertyPresenceVertexQuery(self, name, True)
+
+    def without_property(self, name):
+        return PipePropertyPresenceVertexQuery(self, name, False)
+
+    def with_property_equal_to(self, name, value):
+        PipePropertyValueVertexQuery(self, name, value, True)
+
+    def with_property_not_equal_to(self, name, value):
+        PipePropertyValueVertexQuery(self, name, value, False)
+
+class PropertyPresenceVertexQuery(_VertexQuery):
+    __slots__ = ["_name"]
+
+    def __init__(self, name):
+        self._name = name
+
+    def to_message(self):
+        return proto.VertexQuery(
+            range=proto.PropertyPresenceVertexQuery(
+                name=proto.Identifier(value=self._name),
+            ),
+        )
+
+class PropertyValueVertexQuery(_VertexQuery):
+    __slots__ = ["_name", "_value"]
+
+    def __init__(self, name, value):
+        self._name = name
+        self._value = value
+
+    def to_message(self):
+        return proto.VertexQuery(
+            range=proto.PropertyValueVertexQuery(
+                name=proto.Identifier(value=self._name),
+                value=json.dumps(self._value),
+            ),
+        )
+
+class PipePropertyPresenceVertexQuery(_VertexQuery):
+    __slots__ = ["_inner", "_name", "_exists"]
+
+    def __init__(self, inner, name, exists):
+        self._inner = inner
+        self._name = name
+        self._exists = exists
+
+    def to_message(self):
+        return proto.VertexQuery(
+            range=proto.PipePropertyPresenceVertexQuery(
+                inner=self._inner.to_message(),
+                name=proto.Identifier(value=self._name),
+                exists=self._exists,
+            ),
+        )
+
+class PipePropertyValueVertexQuery(_VertexQuery):
+    __slots__ = ["_inner", "_name", "_value", "_equal"]
+
+    def __init__(self, inner, name, value):
+        self._inner = inner
+        self._name = name
+        self._value = value
+        self._equal = equal
+
+    def to_message(self):
+        return proto.VertexQuery(
+            range=proto.PropertyValueVertexQuery(
+                inner=self._inner.to_message(),
+                name=proto.Identifier(value=self._name),
+                value=json.dumps(self._value),
+                equal=self._equal,
+            ),
+        )
+
 class RangeVertexQuery(_VertexQuery):
     __slots__ = ["_limit", "_start_id", "_t"]
 
@@ -156,7 +232,7 @@ class RangeVertexQuery(_VertexQuery):
         return proto.VertexQuery(
             range=proto.RangeVertexQuery(
                 limit=self._limit,
-                t=proto.Type(value=self._t) if self._t is not None else None,
+                t=proto.Identifier(value=self._t) if self._t is not None else None,
                 start_id=proto.Uuid(value=self._start_id.bytes) if self._start_id is not None else None,
             ),
         )
@@ -195,7 +271,7 @@ class PipeVertexQuery(_VertexQuery):
                 inner=self._inner.to_message(),
                 direction=self._direction.value,
                 limit=self._limit,
-                t=proto.Type(value=self._t) if self._t is not None else None,
+                t=proto.Identifier(value=self._t) if self._t is not None else None,
             ),
         )
 
@@ -281,7 +357,7 @@ class PipeEdgeQuery(_EdgeQuery):
             pipe=proto.PipeEdgeQuery(
                 inner=self._inner.to_message(),
                 direction=self._direction.value,
-                t=proto.Type(value=self._t) if self._t is not None else None,
+                t=proto.Identifier(value=self._t) if self._t is not None else None,
                 high=high,
                 low=low,
                 limit=self._limit,

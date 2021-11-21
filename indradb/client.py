@@ -37,6 +37,10 @@ class Client:
         req = indradb_proto.google_dot_protobuf_dot_empty__pb2.Empty()
         return self.stub.Ping(req)
 
+    def index_property(self, name):
+        req = indradb_proto.IndexPropertyRequest(name=name.to_message())
+        return self.stub.IndexProperty(req)
+
     def create_vertex(self, vertex):
         """
         Creates a new vertex.
@@ -195,7 +199,7 @@ class BulkInserter:
     def vertex_property(self, id, name, value):
         self._add_req(vertex_property=proto.VertexPropertyBulkInsertItem(
             id=proto.Uuid(value=id.bytes),
-            name=name,
+            name=proto.Identifier(value=name),
             value=proto.Json(value=json.dumps(value)),
         ))
         return self
@@ -203,7 +207,7 @@ class BulkInserter:
     def edge_property(self, key, name, value):
         self._add_req(edge_property=proto.EdgePropertyBulkInsertItem(
             key=key.to_message(),
-            name=name,
+            name=proto.Identifier(value=name),
             value=proto.Json(value=json.dumps(value)),
         ))
         return self
@@ -229,13 +233,13 @@ class Transaction:
         self._add_req(create_vertex=vertex.to_message())
         return self
 
-    def create_vertex_from_type(self, type):
+    def create_vertex_from_type(self, t):
         """
         Creates a new vertex from a type.
 
-        `type` specifies the new vertex's type.
+        `t` specifies the new vertex's type.
         """
-        self._add_req(create_vertex_from_type=proto.Type(value=type))
+        self._add_req(create_vertex_from_type=proto.Identifier(value=t))
         return self
 
     def get_vertices(self, query):
@@ -300,7 +304,7 @@ class Transaction:
         """
         self._add_req(get_edge_count=proto.GetEdgeCountRequest(
             id=proto.Uuid(value=id.bytes),
-            t=proto.Type(value=t) if t is not None else None,
+            t=proto.Identifier(value=t) if t is not None else None,
             direction=direction.value,
         ))
         return self
