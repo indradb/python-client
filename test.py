@@ -22,8 +22,8 @@ def server(env):
 
     # Start the process
     server_proc = subprocess.Popen(
-        ["cargo", "run"],
-        cwd=os.path.join(".", "indradb_server", "bin"),
+        ["cargo", "run", "--bin", "indradb-server"],
+        cwd=os.path.join(".", "indradb_server"),
         stdout=sys.stdout,
         stderr=sys.stderr,
         env=env
