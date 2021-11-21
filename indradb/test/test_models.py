@@ -43,7 +43,7 @@ class EdgeKeyTestCase(unittest.TestCase):
         inbound_id = uuid.uuid1()
         message = proto.EdgeKey(
             outbound_id=proto.Uuid(value=outbound_id.bytes),
-            t=proto.Type(value="foo"),
+            t=proto.Identifier(value="foo"),
             inbound_id=proto.Uuid(value=inbound_id.bytes),
         )
         self.assertEqual(EdgeKey.from_message(message), EdgeKey(outbound_id, "foo", inbound_id))
@@ -60,7 +60,7 @@ class VertexTestCase(unittest.TestCase):
         id = uuid.uuid1()
         message = proto.Vertex(
             id=proto.Uuid(value=id.bytes),
-            t=proto.Type(value="foo"),
+            t=proto.Identifier(value="foo"),
         )
         self.assertEqual(Vertex.from_message(message), Vertex(id, "foo"))
 
@@ -142,7 +142,7 @@ class EdgeQueryTestCase(unittest.TestCase):
 
 class NamedPropertyTestCase(unittest.TestCase):
     def test_from_message(self):
-        message = proto.NamedProperty(name="foo", value=proto.Json(value=json.dumps({})))
+        message = proto.NamedProperty(name=proto.Identifier(value="foo"), value=proto.Json(value=json.dumps({})))
         self.assertEqual(NamedProperty.from_message(message), NamedProperty("foo", {}))
 
 class VertexPropertyTestCase(unittest.TestCase):
@@ -160,11 +160,11 @@ class VertexPropertiesTestCase(unittest.TestCase):
         message = proto.VertexProperties(
             vertex=proto.Vertex(
                 id=proto.Uuid(value=id.bytes),
-                t=proto.Type(value="foo"),
+                t=proto.Identifier(value="foo"),
             ),
             props=[
-                proto.NamedProperty(name="first", value=proto.Json(value=json.dumps(True))),
-                proto.NamedProperty(name="second", value=proto.Json(value=json.dumps(False))),
+                proto.NamedProperty(name=proto.Identifier(value="first"), value=proto.Json(value=json.dumps(True))),
+                proto.NamedProperty(name=proto.Identifier(value="second"), value=proto.Json(value=json.dumps(False))),
             ],
         )
         self.assertEqual(VertexProperties.from_message(message), VertexProperties(Vertex(id, "foo"), [
@@ -179,7 +179,7 @@ class EdgePropertyTestCase(unittest.TestCase):
         message = proto.EdgeProperty(
             key=proto.EdgeKey(
                 outbound_id=proto.Uuid(value=outbound_id.bytes),
-                t=proto.Type(value="foo"),
+                t=proto.Identifier(value="foo"),
                 inbound_id=proto.Uuid(value=inbound_id.bytes),
             ),
             value=proto.Json(value=json.dumps("bar"))
@@ -196,14 +196,14 @@ class EdgePropertiesTestCase(unittest.TestCase):
             edge=proto.Edge(
                 key=proto.EdgeKey(
                     outbound_id=proto.Uuid(value=outbound_id.bytes),
-                    t=proto.Type(value="foo"),
+                    t=proto.Identifier(value="foo"),
                     inbound_id=proto.Uuid(value=inbound_id.bytes),
                 ),
                 created_datetime=ts,
             ),
             props=[
-                proto.NamedProperty(name="first", value=proto.Json(value=json.dumps(True))),
-                proto.NamedProperty(name="second", value=proto.Json(value=json.dumps(False))),
+                proto.NamedProperty(name=proto.Identifier(value="first"), value=proto.Json(value=json.dumps(True))),
+                proto.NamedProperty(name=proto.Identifier(value="second"), value=proto.Json(value=json.dumps(False))),
             ],
         )
         edge = Edge(EdgeKey(outbound_id, "foo", inbound_id), FIXED_DATETIME)

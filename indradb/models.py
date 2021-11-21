@@ -285,7 +285,7 @@ class VertexPropertyQuery(_BaseModel):
     def to_message(self):
         return proto.VertexPropertyQuery(
             inner=self._inner.to_message(),
-            name=self._name,
+            name=proto.Identifier(value=self._name),
         )
 
 class _EdgeQuery(_BaseModel):
@@ -374,7 +374,7 @@ class EdgePropertyQuery(_BaseModel):
     def to_message(self):
         return proto.EdgePropertyQuery(
             inner=self._inner.to_message(),
-            name=self._name,
+            name=proto.Identifier(value=self._name),
         )
 
 class EdgeDirection(Enum):
@@ -396,7 +396,7 @@ class NamedProperty(_BaseModel):
     @classmethod
     def from_message(cls, message):
         return cls(
-            name=message.name,
+            name=message.name.value,
             value=json.loads(message.value.value),
         )
 
