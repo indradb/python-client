@@ -8,6 +8,9 @@ class ClientTestCase(unittest.TestCase):
     def setUp(self):
         self.client = Client(os.environ["INDRADB_HOST"])
 
+    def test_index_property(self):
+        self.client.index_property("foo")
+
     def test_create_vertex(self):
         id = uuid.uuid4()
         v1 = Vertex(id, "foo")

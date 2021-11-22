@@ -3,7 +3,6 @@ import json
 import itertools
 
 import grpc
-import indradb.indradb_pb2 as indradb_proto
 import indradb.indradb_pb2_grpc as indradb_grpc
 
 from .models import Vertex, Edge, VertexProperty, EdgeProperty, VertexProperties, EdgeProperties
@@ -34,8 +33,12 @@ class Client:
         self.stub = indradb_grpc.IndraDBStub(channel)
 
     def ping(self):
-        req = indradb_proto.google_dot_protobuf_dot_empty__pb2.Empty()
+        req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
         return self.stub.Ping(req)
+
+    def index_property(self, name):
+        req = proto.IndexPropertyRequest(name=proto.Identifier(value=name))
+        return self.stub.IndexProperty(req)
 
     def create_vertex(self, vertex):
         """
@@ -195,7 +198,7 @@ class BulkInserter:
     def vertex_property(self, id, name, value):
         self._add_req(vertex_property=proto.VertexPropertyBulkInsertItem(
             id=proto.Uuid(value=id.bytes),
-            name=name,
+            name=proto.Identifier(value=name),
             value=proto.Json(value=json.dumps(value)),
         ))
         return self
@@ -203,7 +206,7 @@ class BulkInserter:
     def edge_property(self, key, name, value):
         self._add_req(edge_property=proto.EdgePropertyBulkInsertItem(
             key=key.to_message(),
-            name=name,
+            name=proto.Identifier(value=name),
             value=proto.Json(value=json.dumps(value)),
         ))
         return self
@@ -229,13 +232,13 @@ class Transaction:
         self._add_req(create_vertex=vertex.to_message())
         return self
 
-    def create_vertex_from_type(self, type):
+    def create_vertex_from_type(self, t):
         """
         Creates a new vertex from a type.
 
-        `type` specifies the new vertex's type.
+        `t` specifies the new vertex's type.
         """
-        self._add_req(create_vertex_from_type=proto.Type(value=type))
+        self._add_req(create_vertex_from_type=proto.Identifier(value=t))
         return self
 
     def get_vertices(self, query):
@@ -260,7 +263,7 @@ class Transaction:
         """
         Gets the total number of vertices in the datastore.
         """
-        self._add_req(get_vertex_count=indradb_proto.google_dot_protobuf_dot_empty__pb2.Empty())
+        self._add_req(get_vertex_count=proto.google_dot_protobuf_dot_empty__pb2.Empty())
         return self
 
     def create_edge(self, key):
@@ -300,7 +303,7 @@ class Transaction:
         """
         self._add_req(get_edge_count=proto.GetEdgeCountRequest(
             id=proto.Uuid(value=id.bytes),
-            t=proto.Type(value=t) if t is not None else None,
+            t=proto.Identifier(value=t) if t is not None else None,
             direction=direction.value,
         ))
         return self
