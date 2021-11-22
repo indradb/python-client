@@ -59,7 +59,7 @@ def main():
 
     with server(env):
         subprocess.run(
-            ["nosetests", "indradb.test", *sys.argv[1:]],
+            ["pytest", "tests", *sys.argv[1:]],
             env=env,
             check=True,
         )
