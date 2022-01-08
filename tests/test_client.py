@@ -15,7 +15,7 @@ class ClientTestCase(unittest.TestCase):
         id = uuid.uuid4()
         v1 = Vertex(id, "foo")
         self.client.create_vertex(v1)
-        v2 = self.client.get_vertices(SpecificVertexQuery(id))
+        v2 = list(self.client.get_vertices(SpecificVertexQuery(id)))
         self.assertEqual(v2, [v1])
 
     def test_create_vertex_from_type(self):
@@ -24,13 +24,13 @@ class ClientTestCase(unittest.TestCase):
 
     def test_get_vertices(self):
         id = self.client.create_vertex_from_type("foo")
-        results = self.client.get_vertices(SpecificVertexQuery(id))
+        results = list(self.client.get_vertices(SpecificVertexQuery(id)))
         self.assertEqual(results, [Vertex(id, "foo")])
 
     def test_delete_vertices(self):
         id = self.client.create_vertex_from_type("foo")
         self.client.delete_vertices(SpecificVertexQuery(id))
-        results = self.client.get_vertices(SpecificVertexQuery(id))
+        results = list(self.client.get_vertices(SpecificVertexQuery(id)))
         self.assertEqual(results, [])
 
     def test_get_vertex_count(self):
@@ -42,7 +42,7 @@ class ClientTestCase(unittest.TestCase):
         inbound_id = self.client.create_vertex_from_type("foo")
         key = EdgeKey(outbound_id, "bar", inbound_id)
         self.client.create_edge(key)
-        results = self.client.get_edges(SpecificEdgeQuery(key))
+        results = list(self.client.get_edges(SpecificEdgeQuery(key)))
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].key, key)
 
@@ -67,11 +67,11 @@ class ClientTestCase(unittest.TestCase):
         id = self.client.create_vertex_from_type("foo")
         query = SpecificVertexQuery(id).property("foo")
 
-        m1 = self.client.get_vertex_properties(query)
+        m1 = list(self.client.get_vertex_properties(query))
         self.client.set_vertex_properties(query, 42)
-        m2 = self.client.get_vertex_properties(query)
+        m2 = list(self.client.get_vertex_properties(query))
         self.client.delete_vertex_properties(query)
-        m3 = self.client.get_vertex_properties(query)
+        m3 = list(self.client.get_vertex_properties(query))
 
         self.assertEqual(m1, [])
         self.assertEqual(m2, [VertexProperty(id, 42)])
@@ -84,11 +84,11 @@ class ClientTestCase(unittest.TestCase):
         self.client.create_edge(key)
         query = SpecificEdgeQuery(key).property("foo")
 
-        m1 = self.client.get_edge_properties(query)
+        m1 = list(self.client.get_edge_properties(query))
         self.client.set_edge_properties(query, 42)
-        m2 = self.client.get_edge_properties(query)
+        m2 = list(self.client.get_edge_properties(query))
         self.client.delete_edge_properties(query)
-        m3 = self.client.get_edge_properties(query)
+        m3 = list(self.client.get_edge_properties(query))
 
         self.assertEqual(m1, [])
         self.assertEqual(m2, [EdgeProperty(key, 42)])
@@ -98,11 +98,11 @@ class ClientTestCase(unittest.TestCase):
         id = self.client.create_vertex_from_type("foo")
         query = SpecificVertexQuery(id)
 
-        m1 = self.client.get_all_vertex_properties(query)
+        m1 = list(self.client.get_all_vertex_properties(query))
         self.client.set_vertex_properties(query.property("foo"), 42)
-        m2 = self.client.get_all_vertex_properties(query)
+        m2 = list(self.client.get_all_vertex_properties(query))
         self.client.delete_vertex_properties(query.property("foo"))
-        m3 = self.client.get_all_vertex_properties(query)
+        m3 = list(self.client.get_all_vertex_properties(query))
 
         self.assertEqual(m1, [VertexProperties(Vertex(id, "foo"), [])])
         self.assertEqual(m2, [VertexProperties(Vertex(id, "foo"), [NamedProperty("foo", 42)])])
@@ -115,11 +115,11 @@ class ClientTestCase(unittest.TestCase):
         self.client.create_edge(key)
         query = SpecificEdgeQuery(key)
 
-        m1 = self.client.get_all_edge_properties(query)
+        m1 = list(self.client.get_all_edge_properties(query))
         self.client.set_edge_properties(query.property("foo"), 42)
-        m2 = self.client.get_all_edge_properties(query)
+        m2 = list(self.client.get_all_edge_properties(query))
         self.client.delete_edge_properties(query.property("foo"))
-        m3 = self.client.get_all_edge_properties(query)
+        m3 = list(self.client.get_all_edge_properties(query))
 
         self.assertEqual(len(m1), 1)
         self.assertEqual(m1[0].edge.key, key)
@@ -151,66 +151,22 @@ class BulkInserterTestCase(unittest.TestCase):
         inserter.execute(client)
 
         # ensure vertices exist
-        results = client.get_vertices(SpecificVertexQuery(v1.id))
+        results = list(client.get_vertices(SpecificVertexQuery(v1.id)))
         self.assertEqual(results, [v1])
-        results = client.get_vertices(SpecificVertexQuery(v2.id))
+        results = list(client.get_vertices(SpecificVertexQuery(v2.id)))
         self.assertEqual(results, [v2])
 
         # ensure the edge exists
-        results = client.get_edges(SpecificEdgeQuery(key))
+        results = list(client.get_edges(SpecificEdgeQuery(key)))
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].key, key)
 
         # ensure the vertex property exists
         query = SpecificVertexQuery(v1.id).property("baz")
-        results = client.get_vertex_properties(query)
+        results = list(client.get_vertex_properties(query))
         self.assertEqual(results, [VertexProperty(v1.id, True)])
 
         # ensure the edge property exists
         query = SpecificEdgeQuery(key).property("bez")
-        results = client.get_edge_properties(query)
+        results = list(client.get_edge_properties(query))
         self.assertEqual(results, [EdgeProperty(key, False)])
-
-class TransactionTestCase(unittest.TestCase):
-    def test_transaction(self):
-        client = Client(os.environ["INDRADB_HOST"])
-
-        # 1) creates vertices
-        trans = Transaction()
-        trans.create_vertex_from_type("foo")
-        trans.create_vertex_from_type("foo")
-        results = list(trans.execute(client))
-        self.assertEqual(len(results), 2)
-        outbound_id = results[0]
-        inbound_id = results[1]
-        key = EdgeKey(outbound_id, "bar", inbound_id)
-        query = SpecificEdgeQuery(key)
-
-        # 2) create edge, and validate results
-        trans = Transaction()
-        trans.create_edge(key)
-        trans.get_all_edge_properties(query)
-        trans.set_edge_properties(query.property("foo"), 42)
-        trans.get_all_edge_properties(query)
-        trans.delete_edge_properties(query.property("foo"))
-        trans.get_all_edge_properties(query)
-        results = list(trans.execute(client))
-        self.assertEqual(len(results), 6)
-        self.assertTrue(results[0])
-        m1 = results[1]
-        self.assertIsNone(results[2])
-        m2 = results[3]
-        self.assertIsNone(results[4])
-        m3 = results[5]
-
-        self.assertTrue(len(m1), 1)
-        self.assertEqual(m1[0].edge.key, key)
-        self.assertEqual(m1[0].props, [])
-
-        self.assertTrue(len(m2), 1)
-        self.assertEqual(m2[0].edge.key, key)
-        self.assertEqual(m2[0].props, [NamedProperty("foo", 42)])
-        
-        self.assertTrue(len(m3), 1)
-        self.assertEqual(m3[0].edge.key, key)
-        self.assertEqual(m3[0].props, [])
