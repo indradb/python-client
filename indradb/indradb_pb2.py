@@ -22,7 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rindradb.proto\x12\x07indradb\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x15\n\x04Uuid\x12\r\n\x05value\x18\x01 \x01(\x0c\"\x1b\n\nIdentifier\x12\r\n\x05value\x18\x01 \x01(\t\"\x15\n\x04Json\x12\r\n\x05value\x18\x01 \x01(\t\"[\n\x04\x45\x64ge\x12\x1d\n\x03key\x18\x01 \x01(\x0b\x32\x10.indradb.EdgeKey\x12\x34\n\x10\x63reated_datetime\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"p\n\x07\x45\x64geKey\x12\"\n\x0boutbound_id\x18\x01 \x01(\x0b\x32\r.indradb.Uuid\x12\x1e\n\x01t\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\x12!\n\ninbound_id\x18\x03 \x01(\x0b\x32\r.indradb.Uuid\"C\n\x06Vertex\x12\x19\n\x02id\x18\x01 \x01(\x0b\x32\r.indradb.Uuid\x12\x1e\n\x01t\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\"\xb0\x03\n\x0bVertexQuery\x12*\n\x05range\x18\x01 \x01(\x0b\x32\x19.indradb.RangeVertexQueryH\x00\x12\x30\n\x08specific\x18\x02 \x01(\x0b\x32\x1c.indradb.SpecificVertexQueryH\x00\x12(\n\x04pipe\x18\x03 \x01(\x0b\x32\x18.indradb.PipeVertexQueryH\x00\x12\x41\n\x11property_presence\x18\x04 \x01(\x0b\x32$.indradb.PropertyPresenceVertexQueryH\x00\x12;\n\x0eproperty_value\x18\x05 \x01(\x0b\x32!.indradb.PropertyValueVertexQueryH\x00\x12J\n\x16pipe_property_presence\x18\x06 \x01(\x0b\x32(.indradb.PipePropertyPresenceVertexQueryH\x00\x12\x44\n\x13pipe_property_value\x18\x07 \x01(\x0b\x32%.indradb.PipePropertyValueVertexQueryH\x00\x42\x07\n\x05query\"b\n\x10RangeVertexQuery\x12\r\n\x05limit\x18\x01 \x01(\r\x12\x1e\n\x01t\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1f\n\x08start_id\x18\x03 \x01(\x0b\x32\r.indradb.Uuid\"1\n\x13SpecificVertexQuery\x12\x1a\n\x03ids\x18\x01 \x03(\x0b\x32\r.indradb.Uuid\"\x8e\x01\n\x0fPipeVertexQuery\x12!\n\x05inner\x18\x01 \x01(\x0b\x32\x12.indradb.EdgeQuery\x12)\n\tdirection\x18\x02 \x01(\x0e\x32\x16.indradb.EdgeDirection\x12\r\n\x05limit\x18\x03 \x01(\r\x12\x1e\n\x01t\x18\x04 \x01(\x0b\x32\x13.indradb.Identifier\"c\n\x13VertexPropertyQuery\x12#\n\x05inner\x18\x01 \x01(\x0b\x32\x14.indradb.VertexQuery\x12!\n\x04name\x18\x03 \x01(\x0b\x32\x13.indradb.IdentifierJ\x04\x08\x02\x10\x03\"@\n\x1bPropertyPresenceVertexQuery\x12!\n\x04name\x18\x01 \x01(\x0b\x32\x13.indradb.Identifier\"[\n\x18PropertyValueVertexQuery\x12!\n\x04name\x18\x01 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.indradb.Json\"y\n\x1fPipePropertyPresenceVertexQuery\x12#\n\x05inner\x18\x01 \x01(\x0b\x32\x14.indradb.VertexQuery\x12!\n\x04name\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\x12\x0e\n\x06\x65xists\x18\x03 \x01(\x08\"\x93\x01\n\x1cPipePropertyValueVertexQuery\x12#\n\x05inner\x18\x01 \x01(\x0b\x32\x14.indradb.VertexQuery\x12!\n\x04name\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1c\n\x05value\x18\x03 \x01(\x0b\x32\r.indradb.Json\x12\r\n\x05\x65qual\x18\x04 \x01(\x08\"\xf6\x02\n\tEdgeQuery\x12.\n\x08specific\x18\x01 \x01(\x0b\x32\x1a.indradb.SpecificEdgeQueryH\x00\x12&\n\x04pipe\x18\x02 \x01(\x0b\x32\x16.indradb.PipeEdgeQueryH\x00\x12?\n\x11property_presence\x18\x03 \x01(\x0b\x32\".indradb.PropertyPresenceEdgeQueryH\x00\x12\x39\n\x0eproperty_value\x18\x04 \x01(\x0b\x32\x1f.indradb.PropertyValueEdgeQueryH\x00\x12H\n\x16pipe_property_presence\x18\x05 \x01(\x0b\x32&.indradb.PipePropertyPresenceEdgeQueryH\x00\x12\x42\n\x13pipe_property_value\x18\x06 \x01(\x0b\x32#.indradb.PipePropertyValueEdgeQueryH\x00\x42\x07\n\x05query\"3\n\x11SpecificEdgeQuery\x12\x1e\n\x04keys\x18\x01 \x03(\x0b\x32\x10.indradb.EdgeKey\">\n\x19PropertyPresenceEdgeQuery\x12!\n\x04name\x18\x01 \x01(\x0b\x32\x13.indradb.Identifier\"Y\n\x16PropertyValueEdgeQuery\x12!\n\x04name\x18\x01 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.indradb.Json\"u\n\x1dPipePropertyPresenceEdgeQuery\x12!\n\x05inner\x18\x01 \x01(\x0b\x32\x12.indradb.EdgeQuery\x12!\n\x04name\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\x12\x0e\n\x06\x65xists\x18\x03 \x01(\x08\"\x8f\x01\n\x1aPipePropertyValueEdgeQuery\x12!\n\x05inner\x18\x01 \x01(\x0b\x32\x12.indradb.EdgeQuery\x12!\n\x04name\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1c\n\x05value\x18\x03 \x01(\x0b\x32\r.indradb.Json\x12\r\n\x05\x65qual\x18\x04 \x01(\x08\"\xe1\x01\n\rPipeEdgeQuery\x12#\n\x05inner\x18\x01 \x01(\x0b\x32\x14.indradb.VertexQuery\x12)\n\tdirection\x18\x02 \x01(\x0e\x32\x16.indradb.EdgeDirection\x12\x1e\n\x01t\x18\x03 \x01(\x0b\x32\x13.indradb.Identifier\x12(\n\x04high\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\'\n\x03low\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\r\n\x05limit\x18\x06 \x01(\r\"_\n\x11\x45\x64gePropertyQuery\x12!\n\x05inner\x18\x01 \x01(\x0b\x32\x12.indradb.EdgeQuery\x12!\n\x04name\x18\x03 \x01(\x0b\x32\x13.indradb.IdentifierJ\x04\x08\x02\x10\x03\"V\n\rNamedProperty\x12!\n\x04name\x18\x03 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.indradb.JsonJ\x04\x08\x01\x10\x02\"I\n\x0eVertexProperty\x12\x19\n\x02id\x18\x01 \x01(\x0b\x32\r.indradb.Uuid\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.indradb.Json\"Z\n\x10VertexProperties\x12\x1f\n\x06vertex\x18\x01 \x01(\x0b\x32\x0f.indradb.Vertex\x12%\n\x05props\x18\x02 \x03(\x0b\x32\x16.indradb.NamedProperty\"K\n\x0c\x45\x64geProperty\x12\x1d\n\x03key\x18\x01 \x01(\x0b\x32\x10.indradb.EdgeKey\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.indradb.Json\"T\n\x0e\x45\x64geProperties\x12\x1b\n\x04\x65\x64ge\x18\x01 \x01(\x0b\x32\r.indradb.Edge\x12%\n\x05props\x18\x02 \x03(\x0b\x32\x16.indradb.NamedProperty\"\xdd\x01\n\x0e\x42ulkInsertItem\x12!\n\x06vertex\x18\x01 \x01(\x0b\x32\x0f.indradb.VertexH\x00\x12 \n\x04\x65\x64ge\x18\x02 \x01(\x0b\x32\x10.indradb.EdgeKeyH\x00\x12@\n\x0fvertex_property\x18\x03 \x01(\x0b\x32%.indradb.VertexPropertyBulkInsertItemH\x00\x12<\n\redge_property\x18\x04 \x01(\x0b\x32#.indradb.EdgePropertyBulkInsertItemH\x00\x42\x06\n\x04item\"\x80\x01\n\x1cVertexPropertyBulkInsertItem\x12\x19\n\x02id\x18\x01 \x01(\x0b\x32\r.indradb.Uuid\x12!\n\x04name\x18\x04 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1c\n\x05value\x18\x03 \x01(\x0b\x32\r.indradb.JsonJ\x04\x08\x02\x10\x03\"\x82\x01\n\x1a\x45\x64gePropertyBulkInsertItem\x12\x1d\n\x03key\x18\x01 \x01(\x0b\x32\x10.indradb.EdgeKey\x12!\n\x04name\x18\x04 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1c\n\x05value\x18\x03 \x01(\x0b\x32\r.indradb.JsonJ\x04\x08\x02\x10\x03\"9\n\x14IndexPropertyRequest\x12!\n\x04name\x18\x01 \x01(\x0b\x32\x13.indradb.Identifier\"{\n\x13GetEdgeCountRequest\x12\x19\n\x02id\x18\x01 \x01(\x0b\x32\r.indradb.Uuid\x12\x1e\n\x01t\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\x12)\n\tdirection\x18\x03 \x01(\x0e\x32\x16.indradb.EdgeDirection\"c\n\x1aSetVertexPropertiesRequest\x12\'\n\x01q\x18\x01 \x01(\x0b\x32\x1c.indradb.VertexPropertyQuery\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.indradb.Json\"_\n\x18SetEdgePropertiesRequest\x12%\n\x01q\x18\x01 \x01(\x0b\x32\x1a.indradb.EdgePropertyQuery\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.indradb.Json\"\xd2\x07\n\x12TransactionRequest\x12\x12\n\nrequest_id\x18\x01 \x01(\r\x12(\n\rcreate_vertex\x18\x02 \x01(\x0b\x32\x0f.indradb.VertexH\x00\x12\x36\n\x17\x63reate_vertex_from_type\x18\x03 \x01(\x0b\x32\x13.indradb.IdentifierH\x00\x12,\n\x0cget_vertices\x18\x04 \x01(\x0b\x32\x14.indradb.VertexQueryH\x00\x12/\n\x0f\x64\x65lete_vertices\x18\x05 \x01(\x0b\x32\x14.indradb.VertexQueryH\x00\x12\x32\n\x10get_vertex_count\x18\x06 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12\'\n\x0b\x63reate_edge\x18\x07 \x01(\x0b\x32\x10.indradb.EdgeKeyH\x00\x12\'\n\tget_edges\x18\x08 \x01(\x0b\x32\x12.indradb.EdgeQueryH\x00\x12*\n\x0c\x64\x65lete_edges\x18\t \x01(\x0b\x32\x12.indradb.EdgeQueryH\x00\x12\x36\n\x0eget_edge_count\x18\n \x01(\x0b\x32\x1c.indradb.GetEdgeCountRequestH\x00\x12=\n\x15get_vertex_properties\x18\x0b \x01(\x0b\x32\x1c.indradb.VertexPropertyQueryH\x00\x12\x44\n\x15set_vertex_properties\x18\x0c \x01(\x0b\x32#.indradb.SetVertexPropertiesRequestH\x00\x12@\n\x18\x64\x65lete_vertex_properties\x18\r \x01(\x0b\x32\x1c.indradb.VertexPropertyQueryH\x00\x12\x39\n\x13get_edge_properties\x18\x0e \x01(\x0b\x32\x1a.indradb.EdgePropertyQueryH\x00\x12@\n\x13set_edge_properties\x18\x0f \x01(\x0b\x32!.indradb.SetEdgePropertiesRequestH\x00\x12<\n\x16\x64\x65lete_edge_properties\x18\x10 \x01(\x0b\x32\x1a.indradb.EdgePropertyQueryH\x00\x12\x39\n\x19get_all_vertex_properties\x18\x11 \x01(\x0b\x32\x14.indradb.VertexQueryH\x00\x12\x35\n\x17get_all_edge_properties\x18\x12 \x01(\x0b\x32\x12.indradb.EdgeQueryH\x00\x42\t\n\x07request\"\xac\x03\n\x13TransactionResponse\x12\x12\n\nrequest_id\x18\x01 \x01(\r\x12\'\n\x05\x65mpty\x18\x02 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12\x0c\n\x02ok\x18\x03 \x01(\x08H\x00\x12\x0f\n\x05\x63ount\x18\x04 \x01(\x04H\x00\x12\x1b\n\x02id\x18\x05 \x01(\x0b\x32\r.indradb.UuidH\x00\x12!\n\x06vertex\x18\x06 \x01(\x0b\x32\x0f.indradb.VertexH\x00\x12\x1d\n\x04\x65\x64ge\x18\x07 \x01(\x0b\x32\r.indradb.EdgeH\x00\x12\x32\n\x0fvertex_property\x18\x08 \x01(\x0b\x32\x17.indradb.VertexPropertyH\x00\x12\x36\n\x11vertex_properties\x18\t \x01(\x0b\x32\x19.indradb.VertexPropertiesH\x00\x12.\n\redge_property\x18\n \x01(\x0b\x32\x15.indradb.EdgePropertyH\x00\x12\x32\n\x0f\x65\x64ge_properties\x18\x0b \x01(\x0b\x32\x17.indradb.EdgePropertiesH\x00\x42\n\n\x08response**\n\rEdgeDirection\x12\x0c\n\x08OUTBOUND\x10\x00\x12\x0b\n\x07INBOUND\x10\x01\x32\xd0\x02\n\x07IndraDB\x12\x36\n\x04Ping\x12\x16.google.protobuf.Empty\x1a\x16.google.protobuf.Empty\x12\x36\n\x04Sync\x12\x16.google.protobuf.Empty\x1a\x16.google.protobuf.Empty\x12?\n\nBulkInsert\x12\x17.indradb.BulkInsertItem\x1a\x16.google.protobuf.Empty(\x01\x12L\n\x0bTransaction\x12\x1b.indradb.TransactionRequest\x1a\x1c.indradb.TransactionResponse(\x01\x30\x01\x12\x46\n\rIndexProperty\x12\x1d.indradb.IndexPropertyRequest\x1a\x16.google.protobuf.Emptyb\x06proto3'
+  serialized_pb=b'\n\rindradb.proto\x12\x07indradb\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x15\n\x04Uuid\x12\r\n\x05value\x18\x01 \x01(\x0c\"\x1b\n\nIdentifier\x12\r\n\x05value\x18\x01 \x01(\t\"\x15\n\x04Json\x12\r\n\x05value\x18\x01 \x01(\t\"[\n\x04\x45\x64ge\x12\x1d\n\x03key\x18\x01 \x01(\x0b\x32\x10.indradb.EdgeKey\x12\x34\n\x10\x63reated_datetime\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"p\n\x07\x45\x64geKey\x12\"\n\x0boutbound_id\x18\x01 \x01(\x0b\x32\r.indradb.Uuid\x12\x1e\n\x01t\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\x12!\n\ninbound_id\x18\x03 \x01(\x0b\x32\r.indradb.Uuid\"C\n\x06Vertex\x12\x19\n\x02id\x18\x01 \x01(\x0b\x32\r.indradb.Uuid\x12\x1e\n\x01t\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\"\xb0\x03\n\x0bVertexQuery\x12*\n\x05range\x18\x01 \x01(\x0b\x32\x19.indradb.RangeVertexQueryH\x00\x12\x30\n\x08specific\x18\x02 \x01(\x0b\x32\x1c.indradb.SpecificVertexQueryH\x00\x12(\n\x04pipe\x18\x03 \x01(\x0b\x32\x18.indradb.PipeVertexQueryH\x00\x12\x41\n\x11property_presence\x18\x04 \x01(\x0b\x32$.indradb.PropertyPresenceVertexQueryH\x00\x12;\n\x0eproperty_value\x18\x05 \x01(\x0b\x32!.indradb.PropertyValueVertexQueryH\x00\x12J\n\x16pipe_property_presence\x18\x06 \x01(\x0b\x32(.indradb.PipePropertyPresenceVertexQueryH\x00\x12\x44\n\x13pipe_property_value\x18\x07 \x01(\x0b\x32%.indradb.PipePropertyValueVertexQueryH\x00\x42\x07\n\x05query\"b\n\x10RangeVertexQuery\x12\r\n\x05limit\x18\x01 \x01(\r\x12\x1e\n\x01t\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1f\n\x08start_id\x18\x03 \x01(\x0b\x32\r.indradb.Uuid\"1\n\x13SpecificVertexQuery\x12\x1a\n\x03ids\x18\x01 \x03(\x0b\x32\r.indradb.Uuid\"\x8e\x01\n\x0fPipeVertexQuery\x12!\n\x05inner\x18\x01 \x01(\x0b\x32\x12.indradb.EdgeQuery\x12)\n\tdirection\x18\x02 \x01(\x0e\x32\x16.indradb.EdgeDirection\x12\r\n\x05limit\x18\x03 \x01(\r\x12\x1e\n\x01t\x18\x04 \x01(\x0b\x32\x13.indradb.Identifier\"c\n\x13VertexPropertyQuery\x12#\n\x05inner\x18\x01 \x01(\x0b\x32\x14.indradb.VertexQuery\x12!\n\x04name\x18\x03 \x01(\x0b\x32\x13.indradb.IdentifierJ\x04\x08\x02\x10\x03\"@\n\x1bPropertyPresenceVertexQuery\x12!\n\x04name\x18\x01 \x01(\x0b\x32\x13.indradb.Identifier\"[\n\x18PropertyValueVertexQuery\x12!\n\x04name\x18\x01 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.indradb.Json\"y\n\x1fPipePropertyPresenceVertexQuery\x12#\n\x05inner\x18\x01 \x01(\x0b\x32\x14.indradb.VertexQuery\x12!\n\x04name\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\x12\x0e\n\x06\x65xists\x18\x03 \x01(\x08\"\x93\x01\n\x1cPipePropertyValueVertexQuery\x12#\n\x05inner\x18\x01 \x01(\x0b\x32\x14.indradb.VertexQuery\x12!\n\x04name\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1c\n\x05value\x18\x03 \x01(\x0b\x32\r.indradb.Json\x12\r\n\x05\x65qual\x18\x04 \x01(\x08\"\xf6\x02\n\tEdgeQuery\x12.\n\x08specific\x18\x01 \x01(\x0b\x32\x1a.indradb.SpecificEdgeQueryH\x00\x12&\n\x04pipe\x18\x02 \x01(\x0b\x32\x16.indradb.PipeEdgeQueryH\x00\x12?\n\x11property_presence\x18\x03 \x01(\x0b\x32\".indradb.PropertyPresenceEdgeQueryH\x00\x12\x39\n\x0eproperty_value\x18\x04 \x01(\x0b\x32\x1f.indradb.PropertyValueEdgeQueryH\x00\x12H\n\x16pipe_property_presence\x18\x05 \x01(\x0b\x32&.indradb.PipePropertyPresenceEdgeQueryH\x00\x12\x42\n\x13pipe_property_value\x18\x06 \x01(\x0b\x32#.indradb.PipePropertyValueEdgeQueryH\x00\x42\x07\n\x05query\"3\n\x11SpecificEdgeQuery\x12\x1e\n\x04keys\x18\x01 \x03(\x0b\x32\x10.indradb.EdgeKey\">\n\x19PropertyPresenceEdgeQuery\x12!\n\x04name\x18\x01 \x01(\x0b\x32\x13.indradb.Identifier\"Y\n\x16PropertyValueEdgeQuery\x12!\n\x04name\x18\x01 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.indradb.Json\"u\n\x1dPipePropertyPresenceEdgeQuery\x12!\n\x05inner\x18\x01 \x01(\x0b\x32\x12.indradb.EdgeQuery\x12!\n\x04name\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\x12\x0e\n\x06\x65xists\x18\x03 \x01(\x08\"\x8f\x01\n\x1aPipePropertyValueEdgeQuery\x12!\n\x05inner\x18\x01 \x01(\x0b\x32\x12.indradb.EdgeQuery\x12!\n\x04name\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1c\n\x05value\x18\x03 \x01(\x0b\x32\r.indradb.Json\x12\r\n\x05\x65qual\x18\x04 \x01(\x08\"\xe1\x01\n\rPipeEdgeQuery\x12#\n\x05inner\x18\x01 \x01(\x0b\x32\x14.indradb.VertexQuery\x12)\n\tdirection\x18\x02 \x01(\x0e\x32\x16.indradb.EdgeDirection\x12\x1e\n\x01t\x18\x03 \x01(\x0b\x32\x13.indradb.Identifier\x12(\n\x04high\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\'\n\x03low\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\r\n\x05limit\x18\x06 \x01(\r\"_\n\x11\x45\x64gePropertyQuery\x12!\n\x05inner\x18\x01 \x01(\x0b\x32\x12.indradb.EdgeQuery\x12!\n\x04name\x18\x03 \x01(\x0b\x32\x13.indradb.IdentifierJ\x04\x08\x02\x10\x03\"V\n\rNamedProperty\x12!\n\x04name\x18\x03 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.indradb.JsonJ\x04\x08\x01\x10\x02\"I\n\x0eVertexProperty\x12\x19\n\x02id\x18\x01 \x01(\x0b\x32\r.indradb.Uuid\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.indradb.Json\"Z\n\x10VertexProperties\x12\x1f\n\x06vertex\x18\x01 \x01(\x0b\x32\x0f.indradb.Vertex\x12%\n\x05props\x18\x02 \x03(\x0b\x32\x16.indradb.NamedProperty\"K\n\x0c\x45\x64geProperty\x12\x1d\n\x03key\x18\x01 \x01(\x0b\x32\x10.indradb.EdgeKey\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.indradb.Json\"T\n\x0e\x45\x64geProperties\x12\x1b\n\x04\x65\x64ge\x18\x01 \x01(\x0b\x32\r.indradb.Edge\x12%\n\x05props\x18\x02 \x03(\x0b\x32\x16.indradb.NamedProperty\"\xdd\x01\n\x0e\x42ulkInsertItem\x12!\n\x06vertex\x18\x01 \x01(\x0b\x32\x0f.indradb.VertexH\x00\x12 \n\x04\x65\x64ge\x18\x02 \x01(\x0b\x32\x10.indradb.EdgeKeyH\x00\x12@\n\x0fvertex_property\x18\x03 \x01(\x0b\x32%.indradb.VertexPropertyBulkInsertItemH\x00\x12<\n\redge_property\x18\x04 \x01(\x0b\x32#.indradb.EdgePropertyBulkInsertItemH\x00\x42\x06\n\x04item\"\x80\x01\n\x1cVertexPropertyBulkInsertItem\x12\x19\n\x02id\x18\x01 \x01(\x0b\x32\r.indradb.Uuid\x12!\n\x04name\x18\x04 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1c\n\x05value\x18\x03 \x01(\x0b\x32\r.indradb.JsonJ\x04\x08\x02\x10\x03\"\x82\x01\n\x1a\x45\x64gePropertyBulkInsertItem\x12\x1d\n\x03key\x18\x01 \x01(\x0b\x32\x10.indradb.EdgeKey\x12!\n\x04name\x18\x04 \x01(\x0b\x32\x13.indradb.Identifier\x12\x1c\n\x05value\x18\x03 \x01(\x0b\x32\r.indradb.JsonJ\x04\x08\x02\x10\x03\"9\n\x14IndexPropertyRequest\x12!\n\x04name\x18\x01 \x01(\x0b\x32\x13.indradb.Identifier\"{\n\x13GetEdgeCountRequest\x12\x19\n\x02id\x18\x01 \x01(\x0b\x32\r.indradb.Uuid\x12\x1e\n\x01t\x18\x02 \x01(\x0b\x32\x13.indradb.Identifier\x12)\n\tdirection\x18\x03 \x01(\x0e\x32\x16.indradb.EdgeDirection\"c\n\x1aSetVertexPropertiesRequest\x12\'\n\x01q\x18\x01 \x01(\x0b\x32\x1c.indradb.VertexPropertyQuery\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.indradb.Json\"_\n\x18SetEdgePropertiesRequest\x12%\n\x01q\x18\x01 \x01(\x0b\x32\x1a.indradb.EdgePropertyQuery\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.indradb.Json\"!\n\x0e\x43reateResponse\x12\x0f\n\x07\x63reated\x18\x01 \x01(\x08\"\x1e\n\rCountResponse\x12\r\n\x05\x63ount\x18\x01 \x01(\x04\"@\n\x14\x45xecutePluginRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1a\n\x03\x61rg\x18\x02 \x01(\x0b\x32\r.indradb.Json\"5\n\x15\x45xecutePluginResponse\x12\x1c\n\x05value\x18\x01 \x01(\x0b\x32\r.indradb.Json**\n\rEdgeDirection\x12\x0c\n\x08OUTBOUND\x10\x00\x12\x0b\n\x07INBOUND\x10\x01\x32\xdb\x0b\n\x07IndraDB\x12\x36\n\x04Ping\x12\x16.google.protobuf.Empty\x1a\x16.google.protobuf.Empty\x12\x36\n\x04Sync\x12\x16.google.protobuf.Empty\x1a\x16.google.protobuf.Empty\x12\x38\n\x0c\x43reateVertex\x12\x0f.indradb.Vertex\x1a\x17.indradb.CreateResponse\x12:\n\x14\x43reateVertexFromType\x12\x13.indradb.Identifier\x1a\r.indradb.Uuid\x12\x36\n\x0bGetVertices\x12\x14.indradb.VertexQuery\x1a\x0f.indradb.Vertex0\x01\x12>\n\x0e\x44\x65leteVertices\x12\x14.indradb.VertexQuery\x1a\x16.google.protobuf.Empty\x12@\n\x0eGetVertexCount\x12\x16.google.protobuf.Empty\x1a\x16.indradb.CountResponse\x12\x37\n\nCreateEdge\x12\x10.indradb.EdgeKey\x1a\x17.indradb.CreateResponse\x12/\n\x08GetEdges\x12\x12.indradb.EdgeQuery\x1a\r.indradb.Edge0\x01\x12\x39\n\x0b\x44\x65leteEdges\x12\x12.indradb.EdgeQuery\x1a\x16.google.protobuf.Empty\x12\x44\n\x0cGetEdgeCount\x12\x1c.indradb.GetEdgeCountRequest\x1a\x16.indradb.CountResponse\x12N\n\x13GetVertexProperties\x12\x1c.indradb.VertexPropertyQuery\x1a\x17.indradb.VertexProperty0\x01\x12K\n\x16GetAllVertexProperties\x12\x14.indradb.VertexQuery\x1a\x19.indradb.VertexProperties0\x01\x12R\n\x13SetVertexProperties\x12#.indradb.SetVertexPropertiesRequest\x1a\x16.google.protobuf.Empty\x12N\n\x16\x44\x65leteVertexProperties\x12\x1c.indradb.VertexPropertyQuery\x1a\x16.google.protobuf.Empty\x12H\n\x11GetEdgeProperties\x12\x1a.indradb.EdgePropertyQuery\x1a\x15.indradb.EdgeProperty0\x01\x12N\n\x11SetEdgeProperties\x12!.indradb.SetEdgePropertiesRequest\x1a\x16.google.protobuf.Empty\x12J\n\x14\x44\x65leteEdgeProperties\x12\x1a.indradb.EdgePropertyQuery\x1a\x16.google.protobuf.Empty\x12\x45\n\x14GetAllEdgeProperties\x12\x12.indradb.EdgeQuery\x1a\x17.indradb.EdgeProperties0\x01\x12?\n\nBulkInsert\x12\x17.indradb.BulkInsertItem\x1a\x16.google.protobuf.Empty(\x01\x12\x46\n\rIndexProperty\x12\x1d.indradb.IndexPropertyRequest\x1a\x16.google.protobuf.Empty\x12N\n\rExecutePlugin\x12\x1d.indradb.ExecutePluginRequest\x1a\x1e.indradb.ExecutePluginResponseb\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
@@ -46,8 +46,8 @@ _EDGEDIRECTION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=5578,
-  serialized_end=5620,
+  serialized_start=4354,
+  serialized_end=4396,
 )
 _sym_db.RegisterEnumDescriptor(_EDGEDIRECTION)
 
@@ -1577,243 +1577,88 @@ _SETEDGEPROPERTIESREQUEST = _descriptor.Descriptor(
 )
 
 
-_TRANSACTIONREQUEST = _descriptor.Descriptor(
-  name='TransactionRequest',
-  full_name='indradb.TransactionRequest',
+_CREATERESPONSE = _descriptor.Descriptor(
+  name='CreateResponse',
+  full_name='indradb.CreateResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='request_id', full_name='indradb.TransactionRequest.request_id', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='create_vertex', full_name='indradb.TransactionRequest.create_vertex', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='create_vertex_from_type', full_name='indradb.TransactionRequest.create_vertex_from_type', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='get_vertices', full_name='indradb.TransactionRequest.get_vertices', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='delete_vertices', full_name='indradb.TransactionRequest.delete_vertices', index=4,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='get_vertex_count', full_name='indradb.TransactionRequest.get_vertex_count', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='create_edge', full_name='indradb.TransactionRequest.create_edge', index=6,
-      number=7, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='get_edges', full_name='indradb.TransactionRequest.get_edges', index=7,
-      number=8, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='delete_edges', full_name='indradb.TransactionRequest.delete_edges', index=8,
-      number=9, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='get_edge_count', full_name='indradb.TransactionRequest.get_edge_count', index=9,
-      number=10, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='get_vertex_properties', full_name='indradb.TransactionRequest.get_vertex_properties', index=10,
-      number=11, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='set_vertex_properties', full_name='indradb.TransactionRequest.set_vertex_properties', index=11,
-      number=12, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='delete_vertex_properties', full_name='indradb.TransactionRequest.delete_vertex_properties', index=12,
-      number=13, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='get_edge_properties', full_name='indradb.TransactionRequest.get_edge_properties', index=13,
-      number=14, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='set_edge_properties', full_name='indradb.TransactionRequest.set_edge_properties', index=14,
-      number=15, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='delete_edge_properties', full_name='indradb.TransactionRequest.delete_edge_properties', index=15,
-      number=16, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='get_all_vertex_properties', full_name='indradb.TransactionRequest.get_all_vertex_properties', index=16,
-      number=17, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='get_all_edge_properties', full_name='indradb.TransactionRequest.get_all_edge_properties', index=17,
-      number=18, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='request', full_name='indradb.TransactionRequest.request',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-  ],
-  serialized_start=4167,
-  serialized_end=5145,
-)
-
-
-_TRANSACTIONRESPONSE = _descriptor.Descriptor(
-  name='TransactionResponse',
-  full_name='indradb.TransactionResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='request_id', full_name='indradb.TransactionResponse.request_id', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='empty', full_name='indradb.TransactionResponse.empty', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='ok', full_name='indradb.TransactionResponse.ok', index=2,
-      number=3, type=8, cpp_type=7, label=1,
+      name='created', full_name='indradb.CreateResponse.created', index=0,
+      number=1, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=4166,
+  serialized_end=4199,
+)
+
+
+_COUNTRESPONSE = _descriptor.Descriptor(
+  name='CountResponse',
+  full_name='indradb.CountResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
     _descriptor.FieldDescriptor(
-      name='count', full_name='indradb.TransactionResponse.count', index=3,
-      number=4, type=4, cpp_type=4, label=1,
+      name='count', full_name='indradb.CountResponse.count', index=0,
+      number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=4201,
+  serialized_end=4231,
+)
+
+
+_EXECUTEPLUGINREQUEST = _descriptor.Descriptor(
+  name='ExecutePluginRequest',
+  full_name='indradb.ExecutePluginRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
     _descriptor.FieldDescriptor(
-      name='id', full_name='indradb.TransactionResponse.id', index=4,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='name', full_name='indradb.ExecutePluginRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='vertex', full_name='indradb.TransactionResponse.vertex', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='edge', full_name='indradb.TransactionResponse.edge', index=6,
-      number=7, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='vertex_property', full_name='indradb.TransactionResponse.vertex_property', index=7,
-      number=8, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='vertex_properties', full_name='indradb.TransactionResponse.vertex_properties', index=8,
-      number=9, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='edge_property', full_name='indradb.TransactionResponse.edge_property', index=9,
-      number=10, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='edge_properties', full_name='indradb.TransactionResponse.edge_properties', index=10,
-      number=11, type=11, cpp_type=10, label=1,
+      name='arg', full_name='indradb.ExecutePluginRequest.arg', index=1,
+      number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -1829,14 +1674,41 @@ _TRANSACTIONRESPONSE = _descriptor.Descriptor(
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
-    _descriptor.OneofDescriptor(
-      name='response', full_name='indradb.TransactionResponse.response',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
   ],
-  serialized_start=5148,
-  serialized_end=5576,
+  serialized_start=4233,
+  serialized_end=4297,
+)
+
+
+_EXECUTEPLUGINRESPONSE = _descriptor.Descriptor(
+  name='ExecutePluginResponse',
+  full_name='indradb.ExecutePluginResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='indradb.ExecutePluginResponse.value', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=4299,
+  serialized_end=4352,
 )
 
 _EDGE.fields_by_name['key'].message_type = _EDGEKEY
@@ -1970,112 +1842,8 @@ _SETVERTEXPROPERTIESREQUEST.fields_by_name['q'].message_type = _VERTEXPROPERTYQU
 _SETVERTEXPROPERTIESREQUEST.fields_by_name['value'].message_type = _JSON
 _SETEDGEPROPERTIESREQUEST.fields_by_name['q'].message_type = _EDGEPROPERTYQUERY
 _SETEDGEPROPERTIESREQUEST.fields_by_name['value'].message_type = _JSON
-_TRANSACTIONREQUEST.fields_by_name['create_vertex'].message_type = _VERTEX
-_TRANSACTIONREQUEST.fields_by_name['create_vertex_from_type'].message_type = _IDENTIFIER
-_TRANSACTIONREQUEST.fields_by_name['get_vertices'].message_type = _VERTEXQUERY
-_TRANSACTIONREQUEST.fields_by_name['delete_vertices'].message_type = _VERTEXQUERY
-_TRANSACTIONREQUEST.fields_by_name['get_vertex_count'].message_type = google_dot_protobuf_dot_empty__pb2._EMPTY
-_TRANSACTIONREQUEST.fields_by_name['create_edge'].message_type = _EDGEKEY
-_TRANSACTIONREQUEST.fields_by_name['get_edges'].message_type = _EDGEQUERY
-_TRANSACTIONREQUEST.fields_by_name['delete_edges'].message_type = _EDGEQUERY
-_TRANSACTIONREQUEST.fields_by_name['get_edge_count'].message_type = _GETEDGECOUNTREQUEST
-_TRANSACTIONREQUEST.fields_by_name['get_vertex_properties'].message_type = _VERTEXPROPERTYQUERY
-_TRANSACTIONREQUEST.fields_by_name['set_vertex_properties'].message_type = _SETVERTEXPROPERTIESREQUEST
-_TRANSACTIONREQUEST.fields_by_name['delete_vertex_properties'].message_type = _VERTEXPROPERTYQUERY
-_TRANSACTIONREQUEST.fields_by_name['get_edge_properties'].message_type = _EDGEPROPERTYQUERY
-_TRANSACTIONREQUEST.fields_by_name['set_edge_properties'].message_type = _SETEDGEPROPERTIESREQUEST
-_TRANSACTIONREQUEST.fields_by_name['delete_edge_properties'].message_type = _EDGEPROPERTYQUERY
-_TRANSACTIONREQUEST.fields_by_name['get_all_vertex_properties'].message_type = _VERTEXQUERY
-_TRANSACTIONREQUEST.fields_by_name['get_all_edge_properties'].message_type = _EDGEQUERY
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['create_vertex'])
-_TRANSACTIONREQUEST.fields_by_name['create_vertex'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['create_vertex_from_type'])
-_TRANSACTIONREQUEST.fields_by_name['create_vertex_from_type'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['get_vertices'])
-_TRANSACTIONREQUEST.fields_by_name['get_vertices'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['delete_vertices'])
-_TRANSACTIONREQUEST.fields_by_name['delete_vertices'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['get_vertex_count'])
-_TRANSACTIONREQUEST.fields_by_name['get_vertex_count'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['create_edge'])
-_TRANSACTIONREQUEST.fields_by_name['create_edge'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['get_edges'])
-_TRANSACTIONREQUEST.fields_by_name['get_edges'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['delete_edges'])
-_TRANSACTIONREQUEST.fields_by_name['delete_edges'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['get_edge_count'])
-_TRANSACTIONREQUEST.fields_by_name['get_edge_count'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['get_vertex_properties'])
-_TRANSACTIONREQUEST.fields_by_name['get_vertex_properties'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['set_vertex_properties'])
-_TRANSACTIONREQUEST.fields_by_name['set_vertex_properties'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['delete_vertex_properties'])
-_TRANSACTIONREQUEST.fields_by_name['delete_vertex_properties'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['get_edge_properties'])
-_TRANSACTIONREQUEST.fields_by_name['get_edge_properties'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['set_edge_properties'])
-_TRANSACTIONREQUEST.fields_by_name['set_edge_properties'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['delete_edge_properties'])
-_TRANSACTIONREQUEST.fields_by_name['delete_edge_properties'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['get_all_vertex_properties'])
-_TRANSACTIONREQUEST.fields_by_name['get_all_vertex_properties'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONREQUEST.oneofs_by_name['request'].fields.append(
-  _TRANSACTIONREQUEST.fields_by_name['get_all_edge_properties'])
-_TRANSACTIONREQUEST.fields_by_name['get_all_edge_properties'].containing_oneof = _TRANSACTIONREQUEST.oneofs_by_name['request']
-_TRANSACTIONRESPONSE.fields_by_name['empty'].message_type = google_dot_protobuf_dot_empty__pb2._EMPTY
-_TRANSACTIONRESPONSE.fields_by_name['id'].message_type = _UUID
-_TRANSACTIONRESPONSE.fields_by_name['vertex'].message_type = _VERTEX
-_TRANSACTIONRESPONSE.fields_by_name['edge'].message_type = _EDGE
-_TRANSACTIONRESPONSE.fields_by_name['vertex_property'].message_type = _VERTEXPROPERTY
-_TRANSACTIONRESPONSE.fields_by_name['vertex_properties'].message_type = _VERTEXPROPERTIES
-_TRANSACTIONRESPONSE.fields_by_name['edge_property'].message_type = _EDGEPROPERTY
-_TRANSACTIONRESPONSE.fields_by_name['edge_properties'].message_type = _EDGEPROPERTIES
-_TRANSACTIONRESPONSE.oneofs_by_name['response'].fields.append(
-  _TRANSACTIONRESPONSE.fields_by_name['empty'])
-_TRANSACTIONRESPONSE.fields_by_name['empty'].containing_oneof = _TRANSACTIONRESPONSE.oneofs_by_name['response']
-_TRANSACTIONRESPONSE.oneofs_by_name['response'].fields.append(
-  _TRANSACTIONRESPONSE.fields_by_name['ok'])
-_TRANSACTIONRESPONSE.fields_by_name['ok'].containing_oneof = _TRANSACTIONRESPONSE.oneofs_by_name['response']
-_TRANSACTIONRESPONSE.oneofs_by_name['response'].fields.append(
-  _TRANSACTIONRESPONSE.fields_by_name['count'])
-_TRANSACTIONRESPONSE.fields_by_name['count'].containing_oneof = _TRANSACTIONRESPONSE.oneofs_by_name['response']
-_TRANSACTIONRESPONSE.oneofs_by_name['response'].fields.append(
-  _TRANSACTIONRESPONSE.fields_by_name['id'])
-_TRANSACTIONRESPONSE.fields_by_name['id'].containing_oneof = _TRANSACTIONRESPONSE.oneofs_by_name['response']
-_TRANSACTIONRESPONSE.oneofs_by_name['response'].fields.append(
-  _TRANSACTIONRESPONSE.fields_by_name['vertex'])
-_TRANSACTIONRESPONSE.fields_by_name['vertex'].containing_oneof = _TRANSACTIONRESPONSE.oneofs_by_name['response']
-_TRANSACTIONRESPONSE.oneofs_by_name['response'].fields.append(
-  _TRANSACTIONRESPONSE.fields_by_name['edge'])
-_TRANSACTIONRESPONSE.fields_by_name['edge'].containing_oneof = _TRANSACTIONRESPONSE.oneofs_by_name['response']
-_TRANSACTIONRESPONSE.oneofs_by_name['response'].fields.append(
-  _TRANSACTIONRESPONSE.fields_by_name['vertex_property'])
-_TRANSACTIONRESPONSE.fields_by_name['vertex_property'].containing_oneof = _TRANSACTIONRESPONSE.oneofs_by_name['response']
-_TRANSACTIONRESPONSE.oneofs_by_name['response'].fields.append(
-  _TRANSACTIONRESPONSE.fields_by_name['vertex_properties'])
-_TRANSACTIONRESPONSE.fields_by_name['vertex_properties'].containing_oneof = _TRANSACTIONRESPONSE.oneofs_by_name['response']
-_TRANSACTIONRESPONSE.oneofs_by_name['response'].fields.append(
-  _TRANSACTIONRESPONSE.fields_by_name['edge_property'])
-_TRANSACTIONRESPONSE.fields_by_name['edge_property'].containing_oneof = _TRANSACTIONRESPONSE.oneofs_by_name['response']
-_TRANSACTIONRESPONSE.oneofs_by_name['response'].fields.append(
-  _TRANSACTIONRESPONSE.fields_by_name['edge_properties'])
-_TRANSACTIONRESPONSE.fields_by_name['edge_properties'].containing_oneof = _TRANSACTIONRESPONSE.oneofs_by_name['response']
+_EXECUTEPLUGINREQUEST.fields_by_name['arg'].message_type = _JSON
+_EXECUTEPLUGINRESPONSE.fields_by_name['value'].message_type = _JSON
 DESCRIPTOR.message_types_by_name['Uuid'] = _UUID
 DESCRIPTOR.message_types_by_name['Identifier'] = _IDENTIFIER
 DESCRIPTOR.message_types_by_name['Json'] = _JSON
@@ -2111,8 +1879,10 @@ DESCRIPTOR.message_types_by_name['IndexPropertyRequest'] = _INDEXPROPERTYREQUEST
 DESCRIPTOR.message_types_by_name['GetEdgeCountRequest'] = _GETEDGECOUNTREQUEST
 DESCRIPTOR.message_types_by_name['SetVertexPropertiesRequest'] = _SETVERTEXPROPERTIESREQUEST
 DESCRIPTOR.message_types_by_name['SetEdgePropertiesRequest'] = _SETEDGEPROPERTIESREQUEST
-DESCRIPTOR.message_types_by_name['TransactionRequest'] = _TRANSACTIONREQUEST
-DESCRIPTOR.message_types_by_name['TransactionResponse'] = _TRANSACTIONRESPONSE
+DESCRIPTOR.message_types_by_name['CreateResponse'] = _CREATERESPONSE
+DESCRIPTOR.message_types_by_name['CountResponse'] = _COUNTRESPONSE
+DESCRIPTOR.message_types_by_name['ExecutePluginRequest'] = _EXECUTEPLUGINREQUEST
+DESCRIPTOR.message_types_by_name['ExecutePluginResponse'] = _EXECUTEPLUGINRESPONSE
 DESCRIPTOR.enum_types_by_name['EdgeDirection'] = _EDGEDIRECTION
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -2361,19 +2131,33 @@ SetEdgePropertiesRequest = _reflection.GeneratedProtocolMessageType('SetEdgeProp
   })
 _sym_db.RegisterMessage(SetEdgePropertiesRequest)
 
-TransactionRequest = _reflection.GeneratedProtocolMessageType('TransactionRequest', (_message.Message,), {
-  'DESCRIPTOR' : _TRANSACTIONREQUEST,
+CreateResponse = _reflection.GeneratedProtocolMessageType('CreateResponse', (_message.Message,), {
+  'DESCRIPTOR' : _CREATERESPONSE,
   '__module__' : 'indradb_pb2'
-  # @@protoc_insertion_point(class_scope:indradb.TransactionRequest)
+  # @@protoc_insertion_point(class_scope:indradb.CreateResponse)
   })
-_sym_db.RegisterMessage(TransactionRequest)
+_sym_db.RegisterMessage(CreateResponse)
 
-TransactionResponse = _reflection.GeneratedProtocolMessageType('TransactionResponse', (_message.Message,), {
-  'DESCRIPTOR' : _TRANSACTIONRESPONSE,
+CountResponse = _reflection.GeneratedProtocolMessageType('CountResponse', (_message.Message,), {
+  'DESCRIPTOR' : _COUNTRESPONSE,
   '__module__' : 'indradb_pb2'
-  # @@protoc_insertion_point(class_scope:indradb.TransactionResponse)
+  # @@protoc_insertion_point(class_scope:indradb.CountResponse)
   })
-_sym_db.RegisterMessage(TransactionResponse)
+_sym_db.RegisterMessage(CountResponse)
+
+ExecutePluginRequest = _reflection.GeneratedProtocolMessageType('ExecutePluginRequest', (_message.Message,), {
+  'DESCRIPTOR' : _EXECUTEPLUGINREQUEST,
+  '__module__' : 'indradb_pb2'
+  # @@protoc_insertion_point(class_scope:indradb.ExecutePluginRequest)
+  })
+_sym_db.RegisterMessage(ExecutePluginRequest)
+
+ExecutePluginResponse = _reflection.GeneratedProtocolMessageType('ExecutePluginResponse', (_message.Message,), {
+  'DESCRIPTOR' : _EXECUTEPLUGINRESPONSE,
+  '__module__' : 'indradb_pb2'
+  # @@protoc_insertion_point(class_scope:indradb.ExecutePluginResponse)
+  })
+_sym_db.RegisterMessage(ExecutePluginResponse)
 
 
 
@@ -2384,8 +2168,8 @@ _INDRADB = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=5623,
-  serialized_end=5959,
+  serialized_start=4399,
+  serialized_end=5898,
   methods=[
   _descriptor.MethodDescriptor(
     name='Ping',
@@ -2408,9 +2192,179 @@ _INDRADB = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='CreateVertex',
+    full_name='indradb.IndraDB.CreateVertex',
+    index=2,
+    containing_service=None,
+    input_type=_VERTEX,
+    output_type=_CREATERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateVertexFromType',
+    full_name='indradb.IndraDB.CreateVertexFromType',
+    index=3,
+    containing_service=None,
+    input_type=_IDENTIFIER,
+    output_type=_UUID,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetVertices',
+    full_name='indradb.IndraDB.GetVertices',
+    index=4,
+    containing_service=None,
+    input_type=_VERTEXQUERY,
+    output_type=_VERTEX,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteVertices',
+    full_name='indradb.IndraDB.DeleteVertices',
+    index=5,
+    containing_service=None,
+    input_type=_VERTEXQUERY,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetVertexCount',
+    full_name='indradb.IndraDB.GetVertexCount',
+    index=6,
+    containing_service=None,
+    input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    output_type=_COUNTRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateEdge',
+    full_name='indradb.IndraDB.CreateEdge',
+    index=7,
+    containing_service=None,
+    input_type=_EDGEKEY,
+    output_type=_CREATERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetEdges',
+    full_name='indradb.IndraDB.GetEdges',
+    index=8,
+    containing_service=None,
+    input_type=_EDGEQUERY,
+    output_type=_EDGE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteEdges',
+    full_name='indradb.IndraDB.DeleteEdges',
+    index=9,
+    containing_service=None,
+    input_type=_EDGEQUERY,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetEdgeCount',
+    full_name='indradb.IndraDB.GetEdgeCount',
+    index=10,
+    containing_service=None,
+    input_type=_GETEDGECOUNTREQUEST,
+    output_type=_COUNTRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetVertexProperties',
+    full_name='indradb.IndraDB.GetVertexProperties',
+    index=11,
+    containing_service=None,
+    input_type=_VERTEXPROPERTYQUERY,
+    output_type=_VERTEXPROPERTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetAllVertexProperties',
+    full_name='indradb.IndraDB.GetAllVertexProperties',
+    index=12,
+    containing_service=None,
+    input_type=_VERTEXQUERY,
+    output_type=_VERTEXPROPERTIES,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetVertexProperties',
+    full_name='indradb.IndraDB.SetVertexProperties',
+    index=13,
+    containing_service=None,
+    input_type=_SETVERTEXPROPERTIESREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteVertexProperties',
+    full_name='indradb.IndraDB.DeleteVertexProperties',
+    index=14,
+    containing_service=None,
+    input_type=_VERTEXPROPERTYQUERY,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetEdgeProperties',
+    full_name='indradb.IndraDB.GetEdgeProperties',
+    index=15,
+    containing_service=None,
+    input_type=_EDGEPROPERTYQUERY,
+    output_type=_EDGEPROPERTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetEdgeProperties',
+    full_name='indradb.IndraDB.SetEdgeProperties',
+    index=16,
+    containing_service=None,
+    input_type=_SETEDGEPROPERTIESREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteEdgeProperties',
+    full_name='indradb.IndraDB.DeleteEdgeProperties',
+    index=17,
+    containing_service=None,
+    input_type=_EDGEPROPERTYQUERY,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetAllEdgeProperties',
+    full_name='indradb.IndraDB.GetAllEdgeProperties',
+    index=18,
+    containing_service=None,
+    input_type=_EDGEQUERY,
+    output_type=_EDGEPROPERTIES,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='BulkInsert',
     full_name='indradb.IndraDB.BulkInsert',
-    index=2,
+    index=19,
     containing_service=None,
     input_type=_BULKINSERTITEM,
     output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
@@ -2418,22 +2372,22 @@ _INDRADB = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='Transaction',
-    full_name='indradb.IndraDB.Transaction',
-    index=3,
+    name='IndexProperty',
+    full_name='indradb.IndraDB.IndexProperty',
+    index=20,
     containing_service=None,
-    input_type=_TRANSACTIONREQUEST,
-    output_type=_TRANSACTIONRESPONSE,
+    input_type=_INDEXPROPERTYREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='IndexProperty',
-    full_name='indradb.IndraDB.IndexProperty',
-    index=4,
+    name='ExecutePlugin',
+    full_name='indradb.IndraDB.ExecutePlugin',
+    index=21,
     containing_service=None,
-    input_type=_INDEXPROPERTYREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    input_type=_EXECUTEPLUGINREQUEST,
+    output_type=_EXECUTEPLUGINRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
