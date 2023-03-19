@@ -6,34 +6,12 @@ import unittest
 
 from indradb import *
 
-FIXED_DATETIME = datetime.datetime(year=2018, month=6, day=20, hour=6, minute=25, second=0)
-
 class EdgeTestCase(unittest.TestCase):
     def test_to_message(self):
-        edge = Edge(EdgeKey(uuid.uuid1(), "foo", uuid.uuid1()), FIXED_DATETIME)
+        outbound_id = uuid.uuid1()
+        inbound_id = uuid.uuid1()
+        edge = Edge(outbound_id, "foo", inbound_id)
         message = edge.to_message()
-        # EdgeKey is already validated in another test case, so we skip that.
-        self.assertIsNotNone(message.key)
-        self.assertEqual(message.created_datetime.ToDatetime(), FIXED_DATETIME)
-
-    def test_from_message(self):
-        outbound_id = uuid.uuid1()
-        inbound_id = uuid.uuid1()
-        key = EdgeKey(outbound_id, "foo", inbound_id)
-        ts = proto.google_dot_protobuf_dot_timestamp__pb2.Timestamp()
-        ts.FromDatetime(FIXED_DATETIME)
-        message = proto.Edge(
-            key=key.to_message(),
-            created_datetime=ts,
-        )
-        self.assertEqual(Edge.from_message(message), Edge(key, FIXED_DATETIME))
-
-class EdgeKeyTestCase(unittest.TestCase):
-    def test_to_message(self):
-        outbound_id = uuid.uuid1()
-        inbound_id = uuid.uuid1()
-        key = EdgeKey(outbound_id, "foo", inbound_id)
-        message = key.to_message()
         self.assertEqual(message.outbound_id.value, outbound_id.bytes)
         self.assertEqual(message.t.value, "foo")
         self.assertEqual(message.inbound_id.value, inbound_id.bytes)
@@ -41,12 +19,12 @@ class EdgeKeyTestCase(unittest.TestCase):
     def test_from_message(self):
         outbound_id = uuid.uuid1()
         inbound_id = uuid.uuid1()
-        message = proto.EdgeKey(
+        message = proto.Edge(
             outbound_id=proto.Uuid(value=outbound_id.bytes),
             t=proto.Identifier(value="foo"),
             inbound_id=proto.Uuid(value=inbound_id.bytes),
         )
-        self.assertEqual(EdgeKey.from_message(message), EdgeKey(outbound_id, "foo", inbound_id))
+        self.assertEqual(Edge.from_message(message), Edge(outbound_id, "foo", inbound_id))
 
 class VertexTestCase(unittest.TestCase):
     def test_to_message(self):
@@ -64,77 +42,72 @@ class VertexTestCase(unittest.TestCase):
         )
         self.assertEqual(Vertex.from_message(message), Vertex(id, "foo"))
 
-class VertexQueryTestCase(unittest.TestCase):
-    def test_range(self):
+class QueryTestCase(unittest.TestCase):
+    def test_range_vertex(self):
         query = RangeVertexQuery()
         message = query.to_message()
-        self.assertEqual(message.range.start_id.value, b"")
-        self.assertEqual(message.range.limit, 2 ** 32 - 1)
+        self.assertEqual(message.range_vertex.start_id.value, b"")
+        self.assertEqual(message.range_vertex.limit, 2 ** 32 - 1)
 
-    def test_specific(self):
+    def test_specific_vertex(self):
         id1 = uuid.uuid1()
         id2 = uuid.uuid1()
         id3 = uuid.uuid1()
         query = SpecificVertexQuery(id1, id2, id3)
         message = query.to_message()
-        self.assertEqual(message.specific.ids[0].value, id1.bytes)
-        self.assertEqual(message.specific.ids[1].value, id2.bytes)
-        self.assertEqual(message.specific.ids[2].value, id3.bytes)
+        self.assertEqual(message.specific_vertex.ids[0].value, id1.bytes)
+        self.assertEqual(message.specific_vertex.ids[1].value, id2.bytes)
+        self.assertEqual(message.specific_vertex.ids[2].value, id3.bytes)
 
-    def test_outbound(self):
+    def test_outbound_vertex(self):
         id = uuid.uuid1()
-        query = SpecificVertexQuery(id).outbound().limit(20).t("bar").high(FIXED_DATETIME)
+        query = SpecificVertexQuery(id).outbound().limit(20).t("bar")
         message = query.to_message()
         self.assertIsNotNone(message.pipe.inner)
         self.assertEqual(message.pipe.direction, EdgeDirection.OUTBOUND.value)
         self.assertEqual(message.pipe.t.value, "bar")
-        self.assertEqual(message.pipe.high.ToDatetime(), FIXED_DATETIME)
-        self.assertFalse(message.pipe.HasField("low"))
         self.assertEqual(message.pipe.limit, 20)
         
-    def test_inbound(self):
+    def test_inbound_vertex(self):
         id = uuid.uuid1()
-        query = SpecificVertexQuery(id).inbound().limit(30).t("bar").high(FIXED_DATETIME)
+        query = SpecificVertexQuery(id).inbound().limit(30).t("bar")
         message = query.to_message()
         self.assertIsNotNone(message.pipe.inner)
         self.assertEqual(message.pipe.direction, EdgeDirection.INBOUND.value)
         self.assertEqual(message.pipe.t.value, "bar")
-        self.assertEqual(message.pipe.high.ToDatetime(), FIXED_DATETIME)
-        self.assertFalse(message.pipe.HasField("low"))
         self.assertEqual(message.pipe.limit, 30)
 
-class EdgeQueryTestCase(unittest.TestCase):
-    def test_edges(self):
+    def test_specific_edge(self):
         id1 = uuid.uuid1()
         id2 = uuid.uuid1()
         id3 = uuid.uuid1()
 
         query = SpecificEdgeQuery(
-            EdgeKey(id1, "bar1", id2),
-            EdgeKey(id2, "bar2", id3)
+            Edge(id1, "bar1", id2),
+            Edge(id2, "bar2", id3)
         )
         
         message = query.to_message()
-        self.assertEqual(message.specific.keys[0].outbound_id.value, id1.bytes)
-        self.assertEqual(message.specific.keys[0].t.value, "bar1")
-        self.assertEqual(message.specific.keys[0].inbound_id.value, id2.bytes)
-        self.assertEqual(message.specific.keys[1].outbound_id.value, id2.bytes)
-        self.assertEqual(message.specific.keys[1].t.value, "bar2")
-        self.assertEqual(message.specific.keys[1].inbound_id.value, id3.bytes)
+        self.assertEqual(message.specific_edge.edges[0].outbound_id.value, id1.bytes)
+        self.assertEqual(message.specific_edge.edges[0].t.value, "bar1")
+        self.assertEqual(message.specific_edge.edges[0].inbound_id.value, id2.bytes)
+        self.assertEqual(message.specific_edge.edges[1].outbound_id.value, id2.bytes)
+        self.assertEqual(message.specific_edge.edges[1].t.value, "bar2")
+        self.assertEqual(message.specific_edge.edges[1].inbound_id.value, id3.bytes)
 
-    def test_outbound(self):
+    def test_outbound_edge(self):
         id1 = uuid.uuid1()
         id2 = uuid.uuid1()
-        query = SpecificEdgeQuery(EdgeKey(id1, "bar", id2)).outbound().limit(0)
+        query = SpecificEdgeQuery(Edge(id1, "bar", id2)).outbound().limit(0)
         message = query.to_message()
         self.assertIsNotNone(message.pipe.inner)
         self.assertEqual(message.pipe.direction, EdgeDirection.OUTBOUND.value)
         self.assertEqual(message.pipe.limit, 0)
 
-    def test_inbound_vertices(self):
+    def test_inbound_edge(self):
         id1 = uuid.uuid1()
         id2 = uuid.uuid1()
-        query = SpecificEdgeQuery(EdgeKey(id1, "bar", id2)).inbound()
+        query = SpecificEdgeQuery(Edge(id1, "bar", id2)).inbound()
         message = query.to_message()
         self.assertIsNotNone(message.pipe.inner)
         self.assertEqual(message.pipe.direction, EdgeDirection.INBOUND.value)
@@ -177,36 +150,32 @@ class EdgePropertyTestCase(unittest.TestCase):
         outbound_id = uuid.uuid1()
         inbound_id = uuid.uuid1()
         message = proto.EdgeProperty(
-            key=proto.EdgeKey(
+            edge=proto.Edge(
                 outbound_id=proto.Uuid(value=outbound_id.bytes),
                 t=proto.Identifier(value="foo"),
                 inbound_id=proto.Uuid(value=inbound_id.bytes),
             ),
             value=proto.Json(value=json.dumps("bar"))
         )
-        self.assertEqual(EdgeProperty.from_message(message), EdgeProperty(EdgeKey(outbound_id, "foo", inbound_id), "bar"))
+        self.assertEqual(EdgeProperty.from_message(message), EdgeProperty(Edge(outbound_id, "foo", inbound_id), "bar"))
 
 class EdgePropertiesTestCase(unittest.TestCase):
     def test_from_message(self):
         outbound_id = uuid.uuid1()
         inbound_id = uuid.uuid1()
         ts = proto.google_dot_protobuf_dot_timestamp__pb2.Timestamp()
-        ts.FromDatetime(FIXED_DATETIME)
         message = proto.EdgeProperties(
             edge=proto.Edge(
-                key=proto.EdgeKey(
-                    outbound_id=proto.Uuid(value=outbound_id.bytes),
-                    t=proto.Identifier(value="foo"),
-                    inbound_id=proto.Uuid(value=inbound_id.bytes),
-                ),
-                created_datetime=ts,
+                outbound_id=proto.Uuid(value=outbound_id.bytes),
+                t=proto.Identifier(value="foo"),
+                inbound_id=proto.Uuid(value=inbound_id.bytes),
             ),
             props=[
                 proto.NamedProperty(name=proto.Identifier(value="first"), value=proto.Json(value=json.dumps(True))),
                 proto.NamedProperty(name=proto.Identifier(value="second"), value=proto.Json(value=json.dumps(False))),
             ],
         )
-        edge = Edge(EdgeKey(outbound_id, "foo", inbound_id), FIXED_DATETIME)
+        edge = Edge(outbound_id, "foo", inbound_id)
         self.assertEqual(EdgeProperties.from_message(message), EdgeProperties(edge, [
             NamedProperty("first", True),
             NamedProperty("second", False),
