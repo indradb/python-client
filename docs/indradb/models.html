@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>indradb API documentation</title>
+<title>indradb.models API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,77 +19,540 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Package <code>indradb</code></h1>
+<h1 class="title">Module <code>indradb.models</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import indradb.indradb_pb2 as proto
-import indradb.indradb_pb2_grpc as grpc
+<pre><code class="python">import json
+import uuid
+from enum import Enum
 
-from indradb.client import Client, BulkInserter
-from indradb.models import Edge, Vertex, AllVertexQuery, RangeVertexQuery, \
-    SpecificVertexQuery, VertexWithPropertyPresenceQuery, \
-    VertexWithPropertyValueQuery, AllEdgeQuery, SpecificEdgeQuery, \
-    EdgeWithPropertyPresenceQuery, EdgeWithPropertyValueQuery, PipeQuery, \
-    PipePropertyQuery, PipeWithPropertyPresenceQuery, \
-    PipeWithPropertyValueQuery, IncludeQuery, CountQuery, EdgeDirection, \
-    NamedProperty, VertexProperty, VertexProperties, EdgeProperty, \
-    EdgeProperties
+from indradb import proto
 
-__all__ = [
-    &#34;proto&#34;,
-    &#34;grpc&#34;,
-    &#34;Client&#34;,
-    &#34;BulkInserter&#34;,
-    &#34;Edge&#34;,
-    &#34;Vertex&#34;,
-    &#34;AllVertexQuery&#34;,
-    &#34;RangeVertexQuery&#34;,
-    &#34;SpecificVertexQuery&#34;,
-    &#34;VertexWithPropertyPresenceQuery&#34;,
-    &#34;VertexWithPropertyValueQuery&#34;,
-    &#34;AllEdgeQuery&#34;,
-    &#34;SpecificEdgeQuery&#34;,
-    &#34;EdgeWithPropertyPresenceQuery&#34;,
-    &#34;EdgeWithPropertyValueQuery&#34;,
-    &#34;PipeQuery&#34;,
-    &#34;PipePropertyQuery&#34;,
-    &#34;PipeWithPropertyPresenceQuery&#34;,
-    &#34;PipeWithPropertyValueQuery&#34;,
-    &#34;IncludeQuery&#34;,
-    &#34;CountQuery&#34;,
-    &#34;EdgeDirection&#34;,
-    &#34;NamedProperty&#34;,
-    &#34;VertexProperty&#34;,
-    &#34;VertexProperties&#34;,
-    &#34;EdgeProperty&#34;,
-    &#34;EdgeProperties&#34;,
-]</code></pre>
+MAX_LIMIT = 2 ** 32 - 1
+_SENTINAL = object()
+
+class _BaseModel(object):
+    def __eq__(self, other):
+        for key in self.__slots__:
+            if getattr(self, key) != getattr(other, key, _SENTINAL):
+                return False
+
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+class Edge(_BaseModel):
+    &#34;&#34;&#34;Identifies an edge.&#34;&#34;&#34;
+
+    __slots__ = [&#34;outbound_id&#34;, &#34;t&#34;, &#34;inbound_id&#34;]
+
+    def __init__(self, outbound_id, t, inbound_id):
+        &#34;&#34;&#34;
+        Creates a new edge.
+        
+        `outbound_id` is the vertex UUID from which the edge is outbounding.
+        `t` is the edge type. `inbound_id` is the vertex UUID into which
+        the edge is inbounding.
+        &#34;&#34;&#34;
+
+        self.outbound_id = outbound_id
+        self.t = t
+        self.inbound_id = inbound_id
+
+    def to_message(self):
+        return proto.Edge(
+            outbound_id=proto.Uuid(value=self.outbound_id.bytes),
+            t=proto.Identifier(value=self.t),
+            inbound_id=proto.Uuid(value=self.inbound_id.bytes),
+        )
+
+    @classmethod
+    def from_message(cls, message):
+        return cls(
+            outbound_id=uuid.UUID(bytes=message.outbound_id.value),
+            t=message.t.value,
+            inbound_id=uuid.UUID(bytes=message.inbound_id.value),
+        )
+
+class Vertex(_BaseModel):
+    &#34;&#34;&#34;A vertex, which represents things. Vertices have types and UUIDs.&#34;&#34;&#34;
+
+    __slots__ = [&#34;id&#34;, &#34;t&#34;]
+
+    def __init__(self, id, t):
+        &#34;&#34;&#34;
+        Creates a new vertex.
+
+        `id` is the vertex UUID. `t` is the vertex identifier.
+        &#34;&#34;&#34;
+
+        self.id = id
+        self.t = t
+
+    def to_message(self):
+        return proto.Vertex(
+            id=proto.Uuid(value=self.id.bytes),
+            t=proto.Identifier(value=self.t),
+        )
+
+    @classmethod
+    def from_message(cls, message):
+        return cls(
+            id=uuid.UUID(bytes=message.id.value),
+            t=message.t.value
+        )
+
+class _Query(_BaseModel):
+    def outbound(self):
+        &#34;&#34;&#34;Gets the outbound vertices or edges associated with this query.&#34;&#34;&#34;
+        return PipeQuery(self, EdgeDirection.OUTBOUND)
+
+    def inbound(self):
+        &#34;&#34;&#34;Gets the inbound vertices or edges associated with this query.&#34;&#34;&#34;
+        return PipeQuery(self, EdgeDirection.INBOUND)
+
+    def with_property(self, name):
+        &#34;&#34;&#34;
+        Gets values with a property.
+        
+        # Arguments
+        * `name`: The name of the property.
+        &#34;&#34;&#34;
+        return PipeWithPropertyPresenceQuery(self, name, True)
+
+    def without_property(self, name):
+        &#34;&#34;&#34;
+        Gets values without a property.
+        
+        # Arguments
+        * `name`: The name of the property.
+        &#34;&#34;&#34;
+        return PipeWithPropertyPresenceQuery(self, name, False)
+
+    def with_property_equal_to(self, name, value):
+        &#34;&#34;&#34;
+        Gets values with a property equal to a given value.
+        
+        # Arguments
+        * `name`: The name of the property.
+        * `value`: The value of the property.
+        &#34;&#34;&#34;
+        return PipeWithPropertyValueQuery(self, name, value, True)
+
+    def with_property_not_equal_to(self, name, value):
+        &#34;&#34;&#34;
+        Gets values with a property not equal to a given value.
+        
+        # Arguments
+        * `name`: The name of the property.
+        * `value`: The value of the property.
+        &#34;&#34;&#34;
+        return PipeWithPropertyValueQuery(self, name, value, False)
+
+    def properties(self):
+        &#34;&#34;&#34;Gets the properties associated with the query results.&#34;&#34;&#34;
+        return PipePropertyQuery(self)
+
+    def include(self):
+        &#34;&#34;&#34;
+        Include this query&#39;s output, even if it is an intermediate result.
+        &#34;&#34;&#34;
+        return IncludeQuery(self)
+
+class _CountQuery:
+    def count(self):
+        return CountQuery(self)
+
+class AllVertexQuery(_Query, _CountQuery):
+    &#34;&#34;&#34;Gets all vertices.&#34;&#34;&#34;
+    def to_message(self):
+        return proto.Query(all_vertex=proto.google_dot_protobuf_dot_empty__pb2.Empty())
+
+class RangeVertexQuery(_Query):
+    __slots__ = [&#34;_limit&#34;, &#34;_start_id&#34;, &#34;_t&#34;]
+
+    def __init__(self):
+        self._limit = MAX_LIMIT
+        self._start_id = None
+        self._t = None
+
+    def limit(self, value):
+        self._limit = value
+        return self
+
+    def start_id(self, value):
+        self._start_id = value
+        return self
+
+    def t(self, value):
+        self._t = value
+        return self
+
+    def to_message(self):
+        return proto.Query(
+            range_vertex=proto.RangeVertexQuery(
+                limit=self._limit,
+                t=proto.Identifier(value=self._t) if self._t is not None else None,
+                start_id=proto.Uuid(value=self._start_id.bytes) if self._start_id is not None else None,
+            ),
+        )
+
+class SpecificVertexQuery(_Query):
+    &#34;&#34;&#34;Gets a specific set of vertices.&#34;&#34;&#34;
+    __slots__ = [&#34;_ids&#34;]
+
+    def __init__(self, *ids):
+        self._ids = ids
+
+    def to_message(self):
+        return proto.Query(
+            specific_vertex=proto.SpecificVertexQuery(ids=[proto.Uuid(value=i.bytes) for i in self._ids]),
+        )
+
+class VertexWithPropertyPresenceQuery(_Query):
+    &#34;&#34;&#34;Gets vertices with or without a given property.&#34;&#34;&#34;
+    __slots__ = [&#34;_name&#34;]
+
+    def __init__(self, name):
+        self._name = name
+
+    def to_message(self):
+        return proto.Query(
+            vertex_with_property_presence=proto.VertexWithPropertyPresenceQuery(
+                name=proto.Identifier(value=self._name),
+            ),
+        )
+
+class VertexWithPropertyValueQuery(_Query):
+    &#34;&#34;&#34;Gets vertices with a property equal to a given value.&#34;&#34;&#34;
+    __slots__ = [&#34;_name&#34;, &#34;_value&#34;]
+
+    def __init__(self, _name, _value):
+        self._name = name
+        self._value = value
+
+    def to_message(self):
+        return proto.Query(
+            vertex_with_property_value=proto.VertexWithPropertyValueQuery(
+                name=proto.Identifier(value=self._name),
+                value=json.dumps(self._value),
+            ),
+        )
+
+class AllEdgeQuery(_Query, _CountQuery):
+    &#34;&#34;&#34;Gets all edges.&#34;&#34;&#34;
+    def to_message(self):
+        return proto.Query(all_edge=proto.google_dot_protobuf_dot_empty__pb2.Empty())
+
+class SpecificEdgeQuery(_Query):
+    &#34;&#34;&#34;Gets a specific set of edges.&#34;&#34;&#34;
+    __slots__ = [&#34;_edges&#34;]
+
+    def __init__(self, *edges):
+        self._edges = edges
+
+    def to_message(self):
+        return proto.Query(
+            specific_edge=proto.SpecificEdgeQuery(edges=[e.to_message() for e in self._edges]),
+        )
+
+class EdgeWithPropertyPresenceQuery(_Query):
+    &#34;&#34;&#34;Gets edges with or without a given property.&#34;&#34;&#34;
+    __slots__ = [&#34;_name&#34;]
+
+    def __init__(self, name):
+        self._name = name
+
+    def to_message(self):
+        return proto.Query(
+            edge_with_property_presence=proto.EdgeWithPropertyPresenceQuery(
+                name=proto.Identifier(value=self._name),
+            ),
+        )
+
+class EdgeWithPropertyValueQuery(_Query):
+    &#34;&#34;&#34;Gets edges with a property equal to a given value.&#34;&#34;&#34;
+    __slots__ = [&#34;_name&#34;, &#34;_value&#34;]
+
+    def __init__(self, name, value):
+        self._name = name
+        self._value = value
+
+    def to_message(self):
+        return proto.Query(
+            edge_with_property_value=proto.EdgeWithPropertyValueQuery(
+                name=proto.Identifier(value=self._name),
+                value=json.dumps(self._value),
+            ),
+        )
+
+class PipeQuery(_Query):
+    &#34;&#34;&#34;
+    Gets the vertices associated with edges, or edges associated with
+    vertices.
+    
+    Generally, you shouldn&#39;t need to construct this directly, but rather call
+    `.outbound()` or `.inbound()`.
+    &#34;&#34;&#34;
+    __slots__ = [&#34;_inner&#34;, &#34;_direction&#34;, &#34;_limit&#34;, &#34;_t&#34;]
+
+    def __init__(self, inner, direction):
+        self._inner = inner
+        self._direction = direction
+        self._limit = MAX_LIMIT
+        self._t = None
+
+    def limit(self, value):
+        self._limit = value
+        return self
+
+    def t(self, value):
+        self._t = value
+        return self
+
+    def to_message(self):
+        return proto.Query(
+            pipe=proto.PipeQuery(
+                inner=self._inner.to_message(),
+                direction=self._direction.value,
+                limit=self._limit,
+                t=proto.Identifier(value=self._t) if self._t is not None else None,
+            ),
+        )
+
+class PipePropertyQuery(_Query, _CountQuery):
+    &#34;&#34;&#34;Returns the properties associated with a vertex or edge.&#34;&#34;&#34;
+    __slots__ = [&#34;_inner&#34;, &#34;_name&#34;]
+
+    def __init__(self, inner):
+        self._inner = inner
+        self._name = None
+
+    def name(self, value):
+        self._name = value
+        return self
+
+    def to_message(self):
+        return proto.Query(
+            pipe_property=proto.PipePropertyQuery(
+                inner=self._inner.to_message(),
+                name=proto.Identifier(value=self._name) if self._name is not None else None,
+            )
+        )
+
+class PipeWithPropertyPresenceQuery(_Query):
+    &#34;&#34;&#34;Gets vertices or edges with or without a property.&#34;&#34;&#34;
+    __slots__ = [&#34;_inner&#34;, &#34;_name&#34;, &#34;_exists&#34;]
+
+    def __init__(self, inner, name, exists):
+        self._inner = inner
+        self._name = name
+        self._exists = exists
+
+    def to_message(self):
+        return proto.Query(
+            pipe_with_property_presence=proto.PipeWithPropertyPresenceQuery(
+                inner=self._inner.to_message(),
+                name=proto.Identifier(value=self._name),
+                exists=self._exists,
+            ),
+        )
+
+class PipeWithPropertyValueQuery(_Query):
+    &#34;&#34;&#34;Gets vertices or edges with a property equal to a given value.&#34;&#34;&#34;
+    __slots__ = [&#34;_inner&#34;, &#34;_name&#34;, &#34;_value&#34;, &#34;_equal&#34;]
+
+    def __init__(self, inner, name, value, equal):
+        self._inner = inner
+        self._name = name
+        self._value = value
+        self._equal = equal
+
+    def to_message(self):
+        return proto.Query(
+            pipe_with_property_value=proto.PipeWithPropertyValueQuery(
+                inner=self._inner.to_message(),
+                name=proto.Identifier(value=self._name),
+                value=json.dumps(self._value),
+                equal=self._equal,
+            ),
+        )
+
+class IncludeQuery(_Query):
+    &#34;&#34;&#34;
+    Includes the results of a query in output.
+
+    The outermost part of a query will always be explicitly included. This
+    allows you to also output an intermediate result.
+    &#34;&#34;&#34;
+    __slots__ = [&#34;_inner&#34;]
+
+    def __init__(self, inner):
+        self._inner = inner
+
+    def to_message(self):
+        return proto.Query(
+            include=proto.IncludeQuery(
+                inner=self._inner.to_message(),
+            ),
+        )
+
+class CountQuery:
+    &#34;&#34;&#34;Counts the number of items returned from a query.&#34;&#34;&#34;
+    __slots__ = [&#34;_inner&#34;]
+
+    def __init__(self, inner):
+        self._inner = inner
+
+    def to_message(self):
+        return proto.Query(
+            count=proto.CountQuery(
+                inner=self._inner.to_message(),
+            ),
+        )
+
+class EdgeDirection(Enum):
+    OUTBOUND = proto.OUTBOUND
+    INBOUND = proto.INBOUND
+
+class NamedProperty(_BaseModel):
+    __slots__ = [&#34;name&#34;, &#34;value&#34;]
+
+    def __init__(self, name, value):
+        &#34;&#34;&#34;
+        Creates a new property.
+
+        `name` is the string name of the property, and `value` is its JSON value.
+        &#34;&#34;&#34;
+        self.name = name
+        self.value = value
+
+    @classmethod
+    def from_message(cls, message):
+        return cls(
+            name=message.name.value,
+            value=json.loads(message.value.value),
+        )
+
+class VertexProperty(_BaseModel):
+    &#34;&#34;&#34;
+    Property attached to a vertex
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;id&#34;, &#34;value&#34;]
+
+    def __init__(self, id, value):
+        &#34;&#34;&#34;
+        Creates a new vertex property.
+
+        `id` is the vertex ID that the property is attached to. `value`
+        represents the property value.
+        &#34;&#34;&#34;
+
+        self.id = id
+        self.value = value
+
+    @classmethod
+    def from_message(cls, message):
+        return cls(
+            id=uuid.UUID(bytes=message.id.value),
+            value=json.loads(message.value.value)
+        )
+
+class VertexProperties(_BaseModel):
+    &#34;&#34;&#34;
+    List of properties attached to a vertex.
+    &#34;&#34;&#34;
+    __slots__ = [&#34;vertex&#34;, &#34;props&#34;]
+
+    def __init__(self, vertex, props):
+        &#34;&#34;&#34;
+        Creates a new vertex properties.
+
+        `vertex` is the vertex object, and `props` is a list of `Property`
+        objects.
+        &#34;&#34;&#34;
+        self.vertex = vertex
+        self.props = props
+
+    @classmethod
+    def from_message(cls, message):
+        return cls(
+            vertex=Vertex.from_message(message.vertex),
+            props=[NamedProperty.from_message(p) for p in message.props],
+        )
+
+    def __eq__(self, other):
+        if self.vertex != getattr(other, &#34;vertex&#34;, _SENTINAL):
+            return False
+        other_props = getattr(other, &#34;props&#34;, _SENTINAL)
+        if len(self.props) != len(other_props):
+            return False
+        return all(a == b for a, b in zip(self.props, other.props))
+
+class EdgeProperty(_BaseModel):
+    &#34;&#34;&#34;
+    Property attached to an edge
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;edge&#34;, &#34;value&#34;]
+
+    def __init__(self, edge, value):
+        &#34;&#34;&#34;
+        Creates a new edge property.
+
+        `edge` is the edge that the property is attached to. `value`
+        represents the property value.
+        &#34;&#34;&#34;
+
+        self.edge = edge
+        self.value = value
+
+    @classmethod
+    def from_message(cls, message):
+        return cls(
+            edge=Edge.from_message(message.edge),
+            value=json.loads(message.value.value),
+        )
+
+class EdgeProperties(_BaseModel):
+    &#34;&#34;&#34;
+    List of properties attached to an edge.
+    &#34;&#34;&#34;
+    __slots__ = [&#34;edge&#34;, &#34;props&#34;]
+
+    def __init__(self, edge, props):
+        &#34;&#34;&#34;
+        Creates a new edge properties.
+
+        `edge` is the edge object, and `props` is a list of `Property`
+        objects.
+        &#34;&#34;&#34;
+        self.edge = edge
+        self.props = props
+
+    @classmethod
+    def from_message(cls, message):
+        return cls(
+            edge=Edge.from_message(message.edge),
+            props=[NamedProperty.from_message(p) for p in message.props],
+        )
+
+    def __eq__(self, other):
+        if self.edge != getattr(other, &#34;edge&#34;, _SENTINAL):
+            return False
+        other_props = getattr(other, &#34;props&#34;, _SENTINAL)
+        if len(self.props) != len(other_props):
+            return False
+        return all(a == b for a, b in zip(self.props, other.props))</code></pre>
 </details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
-<dl>
-<dt><code class="name"><a title="indradb.client" href="client.html">indradb.client</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="indradb.indradb_pb2" href="indradb_pb2.html">indradb.indradb_pb2</a></code></dt>
-<dd>
-<div class="desc"><p>Generated protocol buffer code.</p></div>
-</dd>
-<dt><code class="name"><a title="indradb.indradb_pb2_grpc" href="indradb_pb2_grpc.html">indradb.indradb_pb2_grpc</a></code></dt>
-<dd>
-<div class="desc"><p>Client and server classes corresponding to protobuf-defined services.</p></div>
-</dd>
-<dt><code class="name"><a title="indradb.models" href="models.html">indradb.models</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 </section>
 <section>
 </section>
@@ -98,7 +561,7 @@ __all__ = [
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="indradb.AllEdgeQuery"><code class="flex name class">
+<dt id="indradb.models.AllEdgeQuery"><code class="flex name class">
 <span>class <span class="ident">AllEdgeQuery</span></span>
 </code></dt>
 <dd>
@@ -120,7 +583,7 @@ __all__ = [
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.AllEdgeQuery.to_message"><code class="name flex">
+<dt id="indradb.models.AllEdgeQuery.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -135,7 +598,7 @@ __all__ = [
 </dd>
 </dl>
 </dd>
-<dt id="indradb.AllVertexQuery"><code class="flex name class">
+<dt id="indradb.models.AllVertexQuery"><code class="flex name class">
 <span>class <span class="ident">AllVertexQuery</span></span>
 </code></dt>
 <dd>
@@ -157,7 +620,7 @@ __all__ = [
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.AllVertexQuery.to_message"><code class="name flex">
+<dt id="indradb.models.AllVertexQuery.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -172,421 +635,7 @@ __all__ = [
 </dd>
 </dl>
 </dd>
-<dt id="indradb.BulkInserter"><code class="flex name class">
-<span>class <span class="ident">BulkInserter</span></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class BulkInserter:
-    def __init__(self):
-        self._reqs = []
-
-    def _add_req(self, **kwargs):
-        self._reqs.append(proto.BulkInsertItem(**kwargs))
-
-    def vertex(self, vertex):
-        self._add_req(vertex=vertex.to_message())
-        return self
-
-    def edge(self, key):
-        self._add_req(edge=key.to_message())
-        return self
-
-    def vertex_property(self, id, name, value):
-        self._add_req(vertex_property=proto.VertexPropertyBulkInsertItem(
-            id=proto.Uuid(value=id.bytes),
-            name=proto.Identifier(value=name),
-            value=proto.Json(value=json.dumps(value)),
-        ))
-        return self
-
-    def edge_property(self, edge, name, value):
-        self._add_req(edge_property=proto.EdgePropertyBulkInsertItem(
-            edge=edge.to_message(),
-            name=proto.Identifier(value=name),
-            value=proto.Json(value=json.dumps(value)),
-        ))
-        return self
-
-    def execute(self, client):
-        client.stub.BulkInsert(iter(self._reqs))</code></pre>
-</details>
-<h3>Methods</h3>
-<dl>
-<dt id="indradb.BulkInserter.edge"><code class="name flex">
-<span>def <span class="ident">edge</span></span>(<span>self, key)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def edge(self, key):
-    self._add_req(edge=key.to_message())
-    return self</code></pre>
-</details>
-</dd>
-<dt id="indradb.BulkInserter.edge_property"><code class="name flex">
-<span>def <span class="ident">edge_property</span></span>(<span>self, edge, name, value)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def edge_property(self, edge, name, value):
-    self._add_req(edge_property=proto.EdgePropertyBulkInsertItem(
-        edge=edge.to_message(),
-        name=proto.Identifier(value=name),
-        value=proto.Json(value=json.dumps(value)),
-    ))
-    return self</code></pre>
-</details>
-</dd>
-<dt id="indradb.BulkInserter.execute"><code class="name flex">
-<span>def <span class="ident">execute</span></span>(<span>self, client)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def execute(self, client):
-    client.stub.BulkInsert(iter(self._reqs))</code></pre>
-</details>
-</dd>
-<dt id="indradb.BulkInserter.vertex"><code class="name flex">
-<span>def <span class="ident">vertex</span></span>(<span>self, vertex)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def vertex(self, vertex):
-    self._add_req(vertex=vertex.to_message())
-    return self</code></pre>
-</details>
-</dd>
-<dt id="indradb.BulkInserter.vertex_property"><code class="name flex">
-<span>def <span class="ident">vertex_property</span></span>(<span>self, id, name, value)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def vertex_property(self, id, name, value):
-    self._add_req(vertex_property=proto.VertexPropertyBulkInsertItem(
-        id=proto.Uuid(value=id.bytes),
-        name=proto.Identifier(value=name),
-        value=proto.Json(value=json.dumps(value)),
-    ))
-    return self</code></pre>
-</details>
-</dd>
-</dl>
-</dd>
-<dt id="indradb.Client"><code class="flex name class">
-<span>class <span class="ident">Client</span></span>
-<span>(</span><span>host='localhost:27615')</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Represents a connection to IndraDB</p>
-<p>Creates a new client.</p>
-<p><code>host</code> is a string that specifies the server location, in the format
-<code>hostname:port</code>.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Client:
-    &#34;&#34;&#34;Represents a connection to IndraDB&#34;&#34;&#34;
-
-    def __init__(self, host=&#34;localhost:27615&#34;):
-        &#34;&#34;&#34;
-        Creates a new client.
-
-        `host` is a string that specifies the server location, in the format
-        `hostname:port`.
-        &#34;&#34;&#34;
-
-        self.host = host
-        channel = grpc.insecure_channel(host)
-        self.stub = indradb_grpc.IndraDBStub(channel)
-
-    def ping(self):
-        req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
-        self.stub.Ping(req)
-
-    def sync(self):
-        req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
-        self.stub.Sync(req)
-
-    def create_vertex(self, vertex):
-        &#34;&#34;&#34;
-        Creates a new vertex.
-
-        `vertex` specifies the `Vertex` to create.
-        &#34;&#34;&#34;
-        req = vertex.to_message()
-        res = self.stub.CreateVertex(req)
-        return res.created
-
-    def create_vertex_from_type(self, t):
-        &#34;&#34;&#34;
-        Creates a new vertex from a type.
-
-        `t` specifies the new vertex&#39;s type.
-        &#34;&#34;&#34;
-        req = proto.Identifier(value=t)
-        res = self.stub.CreateVertexFromType(req)
-        return uuid.UUID(bytes=res.value)
-
-    def create_edge(self, edge):
-        &#34;&#34;&#34;Creates a new edge.&#34;&#34;&#34;
-        req = edge.to_message()
-        res = self.stub.CreateEdge(req)
-        return res.created
-
-    def get(self, query):
-        &#34;&#34;&#34;Gets values specified by a query.&#34;&#34;&#34;
-        req = query.to_message()
-        res = self.stub.Get(req)
-        for res_chunk in res:
-            variant = res_chunk.WhichOneof(&#34;value&#34;)
-            if variant == &#34;count&#34;:
-                yield res_chunk.count
-            elif variant == &#34;vertices&#34;:
-                yield [Vertex.from_message(item) for item in res_chunk.vertices.vertices]
-            elif variant == &#34;edges&#34;:
-                yield [Edge.from_message(item) for item in res_chunk.edges.edges]
-            elif variant == &#34;vertex_properties&#34;:
-                yield [VertexProperties.from_message(item) for item in res_chunk.vertex_properties.vertex_properties]
-            elif variant == &#34;edge_properties&#34;:
-                yield [EdgeProperties.from_message(item) for item in res_chunk.edge_properties.edge_properties]
-
-    def delete(self, query):
-        &#34;&#34;&#34;Deletes values specified by a query.&#34;&#34;&#34;
-        req = query.to_message()
-        self.stub.Delete(req)
-
-    def set_properties(self, query, name, value):
-        &#34;&#34;&#34;Sets properties.&#34;&#34;&#34;
-        req = proto.SetPropertiesRequest(
-            q=query.to_message(),
-            name=proto.Identifier(value=name),
-            value=proto.Json(value=json.dumps(value)),
-        )
-
-        self.stub.SetProperties(req)
-
-    def index_property(self, name):
-        req = proto.IndexPropertyRequest(name=proto.Identifier(value=name))
-        return self.stub.IndexProperty(req)
-
-    def execute_plugin(self, name, arg):
-        req = proto.ExecutePluginRequest(
-            name=proto.Identifier(value=name),
-            arg=proto.Json(value=json.dumps(arg)),
-        )
-        res = self.stub.IndexProperty(req)
-        return json.loads(res.value.value)</code></pre>
-</details>
-<h3>Methods</h3>
-<dl>
-<dt id="indradb.Client.create_edge"><code class="name flex">
-<span>def <span class="ident">create_edge</span></span>(<span>self, edge)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Creates a new edge.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def create_edge(self, edge):
-    &#34;&#34;&#34;Creates a new edge.&#34;&#34;&#34;
-    req = edge.to_message()
-    res = self.stub.CreateEdge(req)
-    return res.created</code></pre>
-</details>
-</dd>
-<dt id="indradb.Client.create_vertex"><code class="name flex">
-<span>def <span class="ident">create_vertex</span></span>(<span>self, vertex)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Creates a new vertex.</p>
-<p><code>vertex</code> specifies the <code><a title="indradb.Vertex" href="#indradb.Vertex">Vertex</a></code> to create.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def create_vertex(self, vertex):
-    &#34;&#34;&#34;
-    Creates a new vertex.
-
-    `vertex` specifies the `Vertex` to create.
-    &#34;&#34;&#34;
-    req = vertex.to_message()
-    res = self.stub.CreateVertex(req)
-    return res.created</code></pre>
-</details>
-</dd>
-<dt id="indradb.Client.create_vertex_from_type"><code class="name flex">
-<span>def <span class="ident">create_vertex_from_type</span></span>(<span>self, t)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Creates a new vertex from a type.</p>
-<p><code>t</code> specifies the new vertex's type.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def create_vertex_from_type(self, t):
-    &#34;&#34;&#34;
-    Creates a new vertex from a type.
-
-    `t` specifies the new vertex&#39;s type.
-    &#34;&#34;&#34;
-    req = proto.Identifier(value=t)
-    res = self.stub.CreateVertexFromType(req)
-    return uuid.UUID(bytes=res.value)</code></pre>
-</details>
-</dd>
-<dt id="indradb.Client.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self, query)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Deletes values specified by a query.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def delete(self, query):
-    &#34;&#34;&#34;Deletes values specified by a query.&#34;&#34;&#34;
-    req = query.to_message()
-    self.stub.Delete(req)</code></pre>
-</details>
-</dd>
-<dt id="indradb.Client.execute_plugin"><code class="name flex">
-<span>def <span class="ident">execute_plugin</span></span>(<span>self, name, arg)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def execute_plugin(self, name, arg):
-    req = proto.ExecutePluginRequest(
-        name=proto.Identifier(value=name),
-        arg=proto.Json(value=json.dumps(arg)),
-    )
-    res = self.stub.IndexProperty(req)
-    return json.loads(res.value.value)</code></pre>
-</details>
-</dd>
-<dt id="indradb.Client.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>self, query)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Gets values specified by a query.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get(self, query):
-    &#34;&#34;&#34;Gets values specified by a query.&#34;&#34;&#34;
-    req = query.to_message()
-    res = self.stub.Get(req)
-    for res_chunk in res:
-        variant = res_chunk.WhichOneof(&#34;value&#34;)
-        if variant == &#34;count&#34;:
-            yield res_chunk.count
-        elif variant == &#34;vertices&#34;:
-            yield [Vertex.from_message(item) for item in res_chunk.vertices.vertices]
-        elif variant == &#34;edges&#34;:
-            yield [Edge.from_message(item) for item in res_chunk.edges.edges]
-        elif variant == &#34;vertex_properties&#34;:
-            yield [VertexProperties.from_message(item) for item in res_chunk.vertex_properties.vertex_properties]
-        elif variant == &#34;edge_properties&#34;:
-            yield [EdgeProperties.from_message(item) for item in res_chunk.edge_properties.edge_properties]</code></pre>
-</details>
-</dd>
-<dt id="indradb.Client.index_property"><code class="name flex">
-<span>def <span class="ident">index_property</span></span>(<span>self, name)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def index_property(self, name):
-    req = proto.IndexPropertyRequest(name=proto.Identifier(value=name))
-    return self.stub.IndexProperty(req)</code></pre>
-</details>
-</dd>
-<dt id="indradb.Client.ping"><code class="name flex">
-<span>def <span class="ident">ping</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def ping(self):
-    req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
-    self.stub.Ping(req)</code></pre>
-</details>
-</dd>
-<dt id="indradb.Client.set_properties"><code class="name flex">
-<span>def <span class="ident">set_properties</span></span>(<span>self, query, name, value)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Sets properties.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_properties(self, query, name, value):
-    &#34;&#34;&#34;Sets properties.&#34;&#34;&#34;
-    req = proto.SetPropertiesRequest(
-        q=query.to_message(),
-        name=proto.Identifier(value=name),
-        value=proto.Json(value=json.dumps(value)),
-    )
-
-    self.stub.SetProperties(req)</code></pre>
-</details>
-</dd>
-<dt id="indradb.Client.sync"><code class="name flex">
-<span>def <span class="ident">sync</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def sync(self):
-    req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
-    self.stub.Sync(req)</code></pre>
-</details>
-</dd>
-</dl>
-</dd>
-<dt id="indradb.CountQuery"><code class="flex name class">
+<dt id="indradb.models.CountQuery"><code class="flex name class">
 <span>class <span class="ident">CountQuery</span></span>
 <span>(</span><span>inner)</span>
 </code></dt>
@@ -612,7 +661,7 @@ __all__ = [
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.CountQuery.to_message"><code class="name flex">
+<dt id="indradb.models.CountQuery.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -631,7 +680,7 @@ __all__ = [
 </dd>
 </dl>
 </dd>
-<dt id="indradb.Edge"><code class="flex name class">
+<dt id="indradb.models.Edge"><code class="flex name class">
 <span>class <span class="ident">Edge</span></span>
 <span>(</span><span>outbound_id, t, inbound_id)</span>
 </code></dt>
@@ -684,7 +733,7 @@ the edge is inbounding.</p></div>
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="indradb.Edge.from_message"><code class="name flex">
+<dt id="indradb.models.Edge.from_message"><code class="name flex">
 <span>def <span class="ident">from_message</span></span>(<span>message)</span>
 </code></dt>
 <dd>
@@ -705,22 +754,22 @@ def from_message(cls, message):
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="indradb.Edge.inbound_id"><code class="name">var <span class="ident">inbound_id</span></code></dt>
+<dt id="indradb.models.Edge.inbound_id"><code class="name">var <span class="ident">inbound_id</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
-<dt id="indradb.Edge.outbound_id"><code class="name">var <span class="ident">outbound_id</span></code></dt>
+<dt id="indradb.models.Edge.outbound_id"><code class="name">var <span class="ident">outbound_id</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
-<dt id="indradb.Edge.t"><code class="name">var <span class="ident">t</span></code></dt>
+<dt id="indradb.models.Edge.t"><code class="name">var <span class="ident">t</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.Edge.to_message"><code class="name flex">
+<dt id="indradb.models.Edge.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -739,7 +788,7 @@ def from_message(cls, message):
 </dd>
 </dl>
 </dd>
-<dt id="indradb.EdgeDirection"><code class="flex name class">
+<dt id="indradb.models.EdgeDirection"><code class="flex name class">
 <span>class <span class="ident">EdgeDirection</span></span>
 <span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
 </code></dt>
@@ -759,17 +808,17 @@ def from_message(cls, message):
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="indradb.EdgeDirection.INBOUND"><code class="name">var <span class="ident">INBOUND</span></code></dt>
+<dt id="indradb.models.EdgeDirection.INBOUND"><code class="name">var <span class="ident">INBOUND</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="indradb.EdgeDirection.OUTBOUND"><code class="name">var <span class="ident">OUTBOUND</span></code></dt>
+<dt id="indradb.models.EdgeDirection.OUTBOUND"><code class="name">var <span class="ident">OUTBOUND</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 </dd>
-<dt id="indradb.EdgeProperties"><code class="flex name class">
+<dt id="indradb.models.EdgeProperties"><code class="flex name class">
 <span>class <span class="ident">EdgeProperties</span></span>
 <span>(</span><span>edge, props)</span>
 </code></dt>
@@ -819,7 +868,7 @@ objects.</p></div>
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="indradb.EdgeProperties.from_message"><code class="name flex">
+<dt id="indradb.models.EdgeProperties.from_message"><code class="name flex">
 <span>def <span class="ident">from_message</span></span>(<span>message)</span>
 </code></dt>
 <dd>
@@ -839,17 +888,17 @@ def from_message(cls, message):
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="indradb.EdgeProperties.edge"><code class="name">var <span class="ident">edge</span></code></dt>
+<dt id="indradb.models.EdgeProperties.edge"><code class="name">var <span class="ident">edge</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
-<dt id="indradb.EdgeProperties.props"><code class="name">var <span class="ident">props</span></code></dt>
+<dt id="indradb.models.EdgeProperties.props"><code class="name">var <span class="ident">props</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
 </dl>
 </dd>
-<dt id="indradb.EdgeProperty"><code class="flex name class">
+<dt id="indradb.models.EdgeProperty"><code class="flex name class">
 <span>class <span class="ident">EdgeProperty</span></span>
 <span>(</span><span>edge, value)</span>
 </code></dt>
@@ -893,7 +942,7 @@ represents the property value.</p></div>
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="indradb.EdgeProperty.from_message"><code class="name flex">
+<dt id="indradb.models.EdgeProperty.from_message"><code class="name flex">
 <span>def <span class="ident">from_message</span></span>(<span>message)</span>
 </code></dt>
 <dd>
@@ -913,17 +962,17 @@ def from_message(cls, message):
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="indradb.EdgeProperty.edge"><code class="name">var <span class="ident">edge</span></code></dt>
+<dt id="indradb.models.EdgeProperty.edge"><code class="name">var <span class="ident">edge</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
-<dt id="indradb.EdgeProperty.value"><code class="name">var <span class="ident">value</span></code></dt>
+<dt id="indradb.models.EdgeProperty.value"><code class="name">var <span class="ident">value</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
 </dl>
 </dd>
-<dt id="indradb.EdgeWithPropertyPresenceQuery"><code class="flex name class">
+<dt id="indradb.models.EdgeWithPropertyPresenceQuery"><code class="flex name class">
 <span>class <span class="ident">EdgeWithPropertyPresenceQuery</span></span>
 <span>(</span><span>name)</span>
 </code></dt>
@@ -954,7 +1003,7 @@ def from_message(cls, message):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.EdgeWithPropertyPresenceQuery.to_message"><code class="name flex">
+<dt id="indradb.models.EdgeWithPropertyPresenceQuery.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -973,7 +1022,7 @@ def from_message(cls, message):
 </dd>
 </dl>
 </dd>
-<dt id="indradb.EdgeWithPropertyValueQuery"><code class="flex name class">
+<dt id="indradb.models.EdgeWithPropertyValueQuery"><code class="flex name class">
 <span>class <span class="ident">EdgeWithPropertyValueQuery</span></span>
 <span>(</span><span>name, value)</span>
 </code></dt>
@@ -1006,7 +1055,7 @@ def from_message(cls, message):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.EdgeWithPropertyValueQuery.to_message"><code class="name flex">
+<dt id="indradb.models.EdgeWithPropertyValueQuery.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1026,7 +1075,7 @@ def from_message(cls, message):
 </dd>
 </dl>
 </dd>
-<dt id="indradb.IncludeQuery"><code class="flex name class">
+<dt id="indradb.models.IncludeQuery"><code class="flex name class">
 <span>class <span class="ident">IncludeQuery</span></span>
 <span>(</span><span>inner)</span>
 </code></dt>
@@ -1064,7 +1113,7 @@ allows you to also output an intermediate result.</p></div>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.IncludeQuery.to_message"><code class="name flex">
+<dt id="indradb.models.IncludeQuery.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1083,7 +1132,7 @@ allows you to also output an intermediate result.</p></div>
 </dd>
 </dl>
 </dd>
-<dt id="indradb.NamedProperty"><code class="flex name class">
+<dt id="indradb.models.NamedProperty"><code class="flex name class">
 <span>class <span class="ident">NamedProperty</span></span>
 <span>(</span><span>name, value)</span>
 </code></dt>
@@ -1119,7 +1168,7 @@ allows you to also output an intermediate result.</p></div>
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="indradb.NamedProperty.from_message"><code class="name flex">
+<dt id="indradb.models.NamedProperty.from_message"><code class="name flex">
 <span>def <span class="ident">from_message</span></span>(<span>message)</span>
 </code></dt>
 <dd>
@@ -1139,17 +1188,17 @@ def from_message(cls, message):
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="indradb.NamedProperty.name"><code class="name">var <span class="ident">name</span></code></dt>
+<dt id="indradb.models.NamedProperty.name"><code class="name">var <span class="ident">name</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
-<dt id="indradb.NamedProperty.value"><code class="name">var <span class="ident">value</span></code></dt>
+<dt id="indradb.models.NamedProperty.value"><code class="name">var <span class="ident">value</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
 </dl>
 </dd>
-<dt id="indradb.PipePropertyQuery"><code class="flex name class">
+<dt id="indradb.models.PipePropertyQuery"><code class="flex name class">
 <span>class <span class="ident">PipePropertyQuery</span></span>
 <span>(</span><span>inner)</span>
 </code></dt>
@@ -1187,7 +1236,7 @@ def from_message(cls, message):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.PipePropertyQuery.name"><code class="name flex">
+<dt id="indradb.models.PipePropertyQuery.name"><code class="name flex">
 <span>def <span class="ident">name</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
@@ -1201,7 +1250,7 @@ def from_message(cls, message):
     return self</code></pre>
 </details>
 </dd>
-<dt id="indradb.PipePropertyQuery.to_message"><code class="name flex">
+<dt id="indradb.models.PipePropertyQuery.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1221,7 +1270,7 @@ def from_message(cls, message):
 </dd>
 </dl>
 </dd>
-<dt id="indradb.PipeQuery"><code class="flex name class">
+<dt id="indradb.models.PipeQuery"><code class="flex name class">
 <span>class <span class="ident">PipeQuery</span></span>
 <span>(</span><span>inner, direction)</span>
 </code></dt>
@@ -1275,7 +1324,7 @@ vertices.</p>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.PipeQuery.limit"><code class="name flex">
+<dt id="indradb.models.PipeQuery.limit"><code class="name flex">
 <span>def <span class="ident">limit</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
@@ -1289,7 +1338,7 @@ vertices.</p>
     return self</code></pre>
 </details>
 </dd>
-<dt id="indradb.PipeQuery.t"><code class="name flex">
+<dt id="indradb.models.PipeQuery.t"><code class="name flex">
 <span>def <span class="ident">t</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
@@ -1303,7 +1352,7 @@ vertices.</p>
     return self</code></pre>
 </details>
 </dd>
-<dt id="indradb.PipeQuery.to_message"><code class="name flex">
+<dt id="indradb.models.PipeQuery.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1325,7 +1374,7 @@ vertices.</p>
 </dd>
 </dl>
 </dd>
-<dt id="indradb.PipeWithPropertyPresenceQuery"><code class="flex name class">
+<dt id="indradb.models.PipeWithPropertyPresenceQuery"><code class="flex name class">
 <span>class <span class="ident">PipeWithPropertyPresenceQuery</span></span>
 <span>(</span><span>inner, name, exists)</span>
 </code></dt>
@@ -1360,7 +1409,7 @@ vertices.</p>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.PipeWithPropertyPresenceQuery.to_message"><code class="name flex">
+<dt id="indradb.models.PipeWithPropertyPresenceQuery.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1381,7 +1430,7 @@ vertices.</p>
 </dd>
 </dl>
 </dd>
-<dt id="indradb.PipeWithPropertyValueQuery"><code class="flex name class">
+<dt id="indradb.models.PipeWithPropertyValueQuery"><code class="flex name class">
 <span>class <span class="ident">PipeWithPropertyValueQuery</span></span>
 <span>(</span><span>inner, name, value, equal)</span>
 </code></dt>
@@ -1418,7 +1467,7 @@ vertices.</p>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.PipeWithPropertyValueQuery.to_message"><code class="name flex">
+<dt id="indradb.models.PipeWithPropertyValueQuery.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1440,7 +1489,7 @@ vertices.</p>
 </dd>
 </dl>
 </dd>
-<dt id="indradb.RangeVertexQuery"><code class="flex name class">
+<dt id="indradb.models.RangeVertexQuery"><code class="flex name class">
 <span>class <span class="ident">RangeVertexQuery</span></span>
 </code></dt>
 <dd>
@@ -1485,7 +1534,7 @@ vertices.</p>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.RangeVertexQuery.limit"><code class="name flex">
+<dt id="indradb.models.RangeVertexQuery.limit"><code class="name flex">
 <span>def <span class="ident">limit</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
@@ -1499,7 +1548,7 @@ vertices.</p>
     return self</code></pre>
 </details>
 </dd>
-<dt id="indradb.RangeVertexQuery.start_id"><code class="name flex">
+<dt id="indradb.models.RangeVertexQuery.start_id"><code class="name flex">
 <span>def <span class="ident">start_id</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
@@ -1513,7 +1562,7 @@ vertices.</p>
     return self</code></pre>
 </details>
 </dd>
-<dt id="indradb.RangeVertexQuery.t"><code class="name flex">
+<dt id="indradb.models.RangeVertexQuery.t"><code class="name flex">
 <span>def <span class="ident">t</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
@@ -1527,7 +1576,7 @@ vertices.</p>
     return self</code></pre>
 </details>
 </dd>
-<dt id="indradb.RangeVertexQuery.to_message"><code class="name flex">
+<dt id="indradb.models.RangeVertexQuery.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1548,7 +1597,7 @@ vertices.</p>
 </dd>
 </dl>
 </dd>
-<dt id="indradb.SpecificEdgeQuery"><code class="flex name class">
+<dt id="indradb.models.SpecificEdgeQuery"><code class="flex name class">
 <span>class <span class="ident">SpecificEdgeQuery</span></span>
 <span>(</span><span>*edges)</span>
 </code></dt>
@@ -1577,7 +1626,7 @@ vertices.</p>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.SpecificEdgeQuery.to_message"><code class="name flex">
+<dt id="indradb.models.SpecificEdgeQuery.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1594,7 +1643,7 @@ vertices.</p>
 </dd>
 </dl>
 </dd>
-<dt id="indradb.SpecificVertexQuery"><code class="flex name class">
+<dt id="indradb.models.SpecificVertexQuery"><code class="flex name class">
 <span>class <span class="ident">SpecificVertexQuery</span></span>
 <span>(</span><span>*ids)</span>
 </code></dt>
@@ -1623,7 +1672,7 @@ vertices.</p>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.SpecificVertexQuery.to_message"><code class="name flex">
+<dt id="indradb.models.SpecificVertexQuery.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1640,7 +1689,7 @@ vertices.</p>
 </dd>
 </dl>
 </dd>
-<dt id="indradb.Vertex"><code class="flex name class">
+<dt id="indradb.models.Vertex"><code class="flex name class">
 <span>class <span class="ident">Vertex</span></span>
 <span>(</span><span>id, t)</span>
 </code></dt>
@@ -1686,7 +1735,7 @@ vertices.</p>
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="indradb.Vertex.from_message"><code class="name flex">
+<dt id="indradb.models.Vertex.from_message"><code class="name flex">
 <span>def <span class="ident">from_message</span></span>(<span>message)</span>
 </code></dt>
 <dd>
@@ -1706,18 +1755,18 @@ def from_message(cls, message):
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="indradb.Vertex.id"><code class="name">var <span class="ident">id</span></code></dt>
+<dt id="indradb.models.Vertex.id"><code class="name">var <span class="ident">id</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
-<dt id="indradb.Vertex.t"><code class="name">var <span class="ident">t</span></code></dt>
+<dt id="indradb.models.Vertex.t"><code class="name">var <span class="ident">t</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.Vertex.to_message"><code class="name flex">
+<dt id="indradb.models.Vertex.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1735,7 +1784,7 @@ def from_message(cls, message):
 </dd>
 </dl>
 </dd>
-<dt id="indradb.VertexProperties"><code class="flex name class">
+<dt id="indradb.models.VertexProperties"><code class="flex name class">
 <span>class <span class="ident">VertexProperties</span></span>
 <span>(</span><span>vertex, props)</span>
 </code></dt>
@@ -1785,7 +1834,7 @@ objects.</p></div>
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="indradb.VertexProperties.from_message"><code class="name flex">
+<dt id="indradb.models.VertexProperties.from_message"><code class="name flex">
 <span>def <span class="ident">from_message</span></span>(<span>message)</span>
 </code></dt>
 <dd>
@@ -1805,17 +1854,17 @@ def from_message(cls, message):
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="indradb.VertexProperties.props"><code class="name">var <span class="ident">props</span></code></dt>
+<dt id="indradb.models.VertexProperties.props"><code class="name">var <span class="ident">props</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
-<dt id="indradb.VertexProperties.vertex"><code class="name">var <span class="ident">vertex</span></code></dt>
+<dt id="indradb.models.VertexProperties.vertex"><code class="name">var <span class="ident">vertex</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
 </dl>
 </dd>
-<dt id="indradb.VertexProperty"><code class="flex name class">
+<dt id="indradb.models.VertexProperty"><code class="flex name class">
 <span>class <span class="ident">VertexProperty</span></span>
 <span>(</span><span>id, value)</span>
 </code></dt>
@@ -1859,7 +1908,7 @@ represents the property value.</p></div>
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="indradb.VertexProperty.from_message"><code class="name flex">
+<dt id="indradb.models.VertexProperty.from_message"><code class="name flex">
 <span>def <span class="ident">from_message</span></span>(<span>message)</span>
 </code></dt>
 <dd>
@@ -1879,17 +1928,17 @@ def from_message(cls, message):
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="indradb.VertexProperty.id"><code class="name">var <span class="ident">id</span></code></dt>
+<dt id="indradb.models.VertexProperty.id"><code class="name">var <span class="ident">id</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
-<dt id="indradb.VertexProperty.value"><code class="name">var <span class="ident">value</span></code></dt>
+<dt id="indradb.models.VertexProperty.value"><code class="name">var <span class="ident">value</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
 </dl>
 </dd>
-<dt id="indradb.VertexWithPropertyPresenceQuery"><code class="flex name class">
+<dt id="indradb.models.VertexWithPropertyPresenceQuery"><code class="flex name class">
 <span>class <span class="ident">VertexWithPropertyPresenceQuery</span></span>
 <span>(</span><span>name)</span>
 </code></dt>
@@ -1920,7 +1969,7 @@ def from_message(cls, message):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.VertexWithPropertyPresenceQuery.to_message"><code class="name flex">
+<dt id="indradb.models.VertexWithPropertyPresenceQuery.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1939,7 +1988,7 @@ def from_message(cls, message):
 </dd>
 </dl>
 </dd>
-<dt id="indradb.VertexWithPropertyValueQuery"><code class="flex name class">
+<dt id="indradb.models.VertexWithPropertyValueQuery"><code class="flex name class">
 <span>class <span class="ident">VertexWithPropertyValueQuery</span></span>
 <span>(</span><span>_name, _value)</span>
 </code></dt>
@@ -1972,7 +2021,7 @@ def from_message(cls, message):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="indradb.VertexWithPropertyValueQuery.to_message"><code class="name flex">
+<dt id="indradb.models.VertexWithPropertyValueQuery.to_message"><code class="name flex">
 <span>def <span class="ident">to_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2001,201 +2050,173 @@ def from_message(cls, message):
 <ul></ul>
 </div>
 <ul id="index">
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3>Super-module</h3>
 <ul>
-<li><code><a title="indradb.client" href="client.html">indradb.client</a></code></li>
-<li><code><a title="indradb.indradb_pb2" href="indradb_pb2.html">indradb.indradb_pb2</a></code></li>
-<li><code><a title="indradb.indradb_pb2_grpc" href="indradb_pb2_grpc.html">indradb.indradb_pb2_grpc</a></code></li>
-<li><code><a title="indradb.models" href="models.html">indradb.models</a></code></li>
+<li><code><a title="indradb" href="index.html">indradb</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="indradb.AllEdgeQuery" href="#indradb.AllEdgeQuery">AllEdgeQuery</a></code></h4>
+<h4><code><a title="indradb.models.AllEdgeQuery" href="#indradb.models.AllEdgeQuery">AllEdgeQuery</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.AllEdgeQuery.to_message" href="#indradb.AllEdgeQuery.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.AllEdgeQuery.to_message" href="#indradb.models.AllEdgeQuery.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.AllVertexQuery" href="#indradb.AllVertexQuery">AllVertexQuery</a></code></h4>
+<h4><code><a title="indradb.models.AllVertexQuery" href="#indradb.models.AllVertexQuery">AllVertexQuery</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.AllVertexQuery.to_message" href="#indradb.AllVertexQuery.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.AllVertexQuery.to_message" href="#indradb.models.AllVertexQuery.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.BulkInserter" href="#indradb.BulkInserter">BulkInserter</a></code></h4>
+<h4><code><a title="indradb.models.CountQuery" href="#indradb.models.CountQuery">CountQuery</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.BulkInserter.edge" href="#indradb.BulkInserter.edge">edge</a></code></li>
-<li><code><a title="indradb.BulkInserter.edge_property" href="#indradb.BulkInserter.edge_property">edge_property</a></code></li>
-<li><code><a title="indradb.BulkInserter.execute" href="#indradb.BulkInserter.execute">execute</a></code></li>
-<li><code><a title="indradb.BulkInserter.vertex" href="#indradb.BulkInserter.vertex">vertex</a></code></li>
-<li><code><a title="indradb.BulkInserter.vertex_property" href="#indradb.BulkInserter.vertex_property">vertex_property</a></code></li>
+<li><code><a title="indradb.models.CountQuery.to_message" href="#indradb.models.CountQuery.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.Client" href="#indradb.Client">Client</a></code></h4>
+<h4><code><a title="indradb.models.Edge" href="#indradb.models.Edge">Edge</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.Client.create_edge" href="#indradb.Client.create_edge">create_edge</a></code></li>
-<li><code><a title="indradb.Client.create_vertex" href="#indradb.Client.create_vertex">create_vertex</a></code></li>
-<li><code><a title="indradb.Client.create_vertex_from_type" href="#indradb.Client.create_vertex_from_type">create_vertex_from_type</a></code></li>
-<li><code><a title="indradb.Client.delete" href="#indradb.Client.delete">delete</a></code></li>
-<li><code><a title="indradb.Client.execute_plugin" href="#indradb.Client.execute_plugin">execute_plugin</a></code></li>
-<li><code><a title="indradb.Client.get" href="#indradb.Client.get">get</a></code></li>
-<li><code><a title="indradb.Client.index_property" href="#indradb.Client.index_property">index_property</a></code></li>
-<li><code><a title="indradb.Client.ping" href="#indradb.Client.ping">ping</a></code></li>
-<li><code><a title="indradb.Client.set_properties" href="#indradb.Client.set_properties">set_properties</a></code></li>
-<li><code><a title="indradb.Client.sync" href="#indradb.Client.sync">sync</a></code></li>
+<li><code><a title="indradb.models.Edge.from_message" href="#indradb.models.Edge.from_message">from_message</a></code></li>
+<li><code><a title="indradb.models.Edge.inbound_id" href="#indradb.models.Edge.inbound_id">inbound_id</a></code></li>
+<li><code><a title="indradb.models.Edge.outbound_id" href="#indradb.models.Edge.outbound_id">outbound_id</a></code></li>
+<li><code><a title="indradb.models.Edge.t" href="#indradb.models.Edge.t">t</a></code></li>
+<li><code><a title="indradb.models.Edge.to_message" href="#indradb.models.Edge.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.CountQuery" href="#indradb.CountQuery">CountQuery</a></code></h4>
+<h4><code><a title="indradb.models.EdgeDirection" href="#indradb.models.EdgeDirection">EdgeDirection</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.CountQuery.to_message" href="#indradb.CountQuery.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.EdgeDirection.INBOUND" href="#indradb.models.EdgeDirection.INBOUND">INBOUND</a></code></li>
+<li><code><a title="indradb.models.EdgeDirection.OUTBOUND" href="#indradb.models.EdgeDirection.OUTBOUND">OUTBOUND</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.Edge" href="#indradb.Edge">Edge</a></code></h4>
+<h4><code><a title="indradb.models.EdgeProperties" href="#indradb.models.EdgeProperties">EdgeProperties</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.Edge.from_message" href="#indradb.Edge.from_message">from_message</a></code></li>
-<li><code><a title="indradb.Edge.inbound_id" href="#indradb.Edge.inbound_id">inbound_id</a></code></li>
-<li><code><a title="indradb.Edge.outbound_id" href="#indradb.Edge.outbound_id">outbound_id</a></code></li>
-<li><code><a title="indradb.Edge.t" href="#indradb.Edge.t">t</a></code></li>
-<li><code><a title="indradb.Edge.to_message" href="#indradb.Edge.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.EdgeProperties.edge" href="#indradb.models.EdgeProperties.edge">edge</a></code></li>
+<li><code><a title="indradb.models.EdgeProperties.from_message" href="#indradb.models.EdgeProperties.from_message">from_message</a></code></li>
+<li><code><a title="indradb.models.EdgeProperties.props" href="#indradb.models.EdgeProperties.props">props</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.EdgeDirection" href="#indradb.EdgeDirection">EdgeDirection</a></code></h4>
+<h4><code><a title="indradb.models.EdgeProperty" href="#indradb.models.EdgeProperty">EdgeProperty</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.EdgeDirection.INBOUND" href="#indradb.EdgeDirection.INBOUND">INBOUND</a></code></li>
-<li><code><a title="indradb.EdgeDirection.OUTBOUND" href="#indradb.EdgeDirection.OUTBOUND">OUTBOUND</a></code></li>
+<li><code><a title="indradb.models.EdgeProperty.edge" href="#indradb.models.EdgeProperty.edge">edge</a></code></li>
+<li><code><a title="indradb.models.EdgeProperty.from_message" href="#indradb.models.EdgeProperty.from_message">from_message</a></code></li>
+<li><code><a title="indradb.models.EdgeProperty.value" href="#indradb.models.EdgeProperty.value">value</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.EdgeProperties" href="#indradb.EdgeProperties">EdgeProperties</a></code></h4>
+<h4><code><a title="indradb.models.EdgeWithPropertyPresenceQuery" href="#indradb.models.EdgeWithPropertyPresenceQuery">EdgeWithPropertyPresenceQuery</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.EdgeProperties.edge" href="#indradb.EdgeProperties.edge">edge</a></code></li>
-<li><code><a title="indradb.EdgeProperties.from_message" href="#indradb.EdgeProperties.from_message">from_message</a></code></li>
-<li><code><a title="indradb.EdgeProperties.props" href="#indradb.EdgeProperties.props">props</a></code></li>
+<li><code><a title="indradb.models.EdgeWithPropertyPresenceQuery.to_message" href="#indradb.models.EdgeWithPropertyPresenceQuery.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.EdgeProperty" href="#indradb.EdgeProperty">EdgeProperty</a></code></h4>
+<h4><code><a title="indradb.models.EdgeWithPropertyValueQuery" href="#indradb.models.EdgeWithPropertyValueQuery">EdgeWithPropertyValueQuery</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.EdgeProperty.edge" href="#indradb.EdgeProperty.edge">edge</a></code></li>
-<li><code><a title="indradb.EdgeProperty.from_message" href="#indradb.EdgeProperty.from_message">from_message</a></code></li>
-<li><code><a title="indradb.EdgeProperty.value" href="#indradb.EdgeProperty.value">value</a></code></li>
+<li><code><a title="indradb.models.EdgeWithPropertyValueQuery.to_message" href="#indradb.models.EdgeWithPropertyValueQuery.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.EdgeWithPropertyPresenceQuery" href="#indradb.EdgeWithPropertyPresenceQuery">EdgeWithPropertyPresenceQuery</a></code></h4>
+<h4><code><a title="indradb.models.IncludeQuery" href="#indradb.models.IncludeQuery">IncludeQuery</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.EdgeWithPropertyPresenceQuery.to_message" href="#indradb.EdgeWithPropertyPresenceQuery.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.IncludeQuery.to_message" href="#indradb.models.IncludeQuery.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.EdgeWithPropertyValueQuery" href="#indradb.EdgeWithPropertyValueQuery">EdgeWithPropertyValueQuery</a></code></h4>
+<h4><code><a title="indradb.models.NamedProperty" href="#indradb.models.NamedProperty">NamedProperty</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.EdgeWithPropertyValueQuery.to_message" href="#indradb.EdgeWithPropertyValueQuery.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.NamedProperty.from_message" href="#indradb.models.NamedProperty.from_message">from_message</a></code></li>
+<li><code><a title="indradb.models.NamedProperty.name" href="#indradb.models.NamedProperty.name">name</a></code></li>
+<li><code><a title="indradb.models.NamedProperty.value" href="#indradb.models.NamedProperty.value">value</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.IncludeQuery" href="#indradb.IncludeQuery">IncludeQuery</a></code></h4>
+<h4><code><a title="indradb.models.PipePropertyQuery" href="#indradb.models.PipePropertyQuery">PipePropertyQuery</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.IncludeQuery.to_message" href="#indradb.IncludeQuery.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.PipePropertyQuery.name" href="#indradb.models.PipePropertyQuery.name">name</a></code></li>
+<li><code><a title="indradb.models.PipePropertyQuery.to_message" href="#indradb.models.PipePropertyQuery.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.NamedProperty" href="#indradb.NamedProperty">NamedProperty</a></code></h4>
+<h4><code><a title="indradb.models.PipeQuery" href="#indradb.models.PipeQuery">PipeQuery</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.NamedProperty.from_message" href="#indradb.NamedProperty.from_message">from_message</a></code></li>
-<li><code><a title="indradb.NamedProperty.name" href="#indradb.NamedProperty.name">name</a></code></li>
-<li><code><a title="indradb.NamedProperty.value" href="#indradb.NamedProperty.value">value</a></code></li>
+<li><code><a title="indradb.models.PipeQuery.limit" href="#indradb.models.PipeQuery.limit">limit</a></code></li>
+<li><code><a title="indradb.models.PipeQuery.t" href="#indradb.models.PipeQuery.t">t</a></code></li>
+<li><code><a title="indradb.models.PipeQuery.to_message" href="#indradb.models.PipeQuery.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.PipePropertyQuery" href="#indradb.PipePropertyQuery">PipePropertyQuery</a></code></h4>
+<h4><code><a title="indradb.models.PipeWithPropertyPresenceQuery" href="#indradb.models.PipeWithPropertyPresenceQuery">PipeWithPropertyPresenceQuery</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.PipePropertyQuery.name" href="#indradb.PipePropertyQuery.name">name</a></code></li>
-<li><code><a title="indradb.PipePropertyQuery.to_message" href="#indradb.PipePropertyQuery.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.PipeWithPropertyPresenceQuery.to_message" href="#indradb.models.PipeWithPropertyPresenceQuery.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.PipeQuery" href="#indradb.PipeQuery">PipeQuery</a></code></h4>
+<h4><code><a title="indradb.models.PipeWithPropertyValueQuery" href="#indradb.models.PipeWithPropertyValueQuery">PipeWithPropertyValueQuery</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.PipeQuery.limit" href="#indradb.PipeQuery.limit">limit</a></code></li>
-<li><code><a title="indradb.PipeQuery.t" href="#indradb.PipeQuery.t">t</a></code></li>
-<li><code><a title="indradb.PipeQuery.to_message" href="#indradb.PipeQuery.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.PipeWithPropertyValueQuery.to_message" href="#indradb.models.PipeWithPropertyValueQuery.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.PipeWithPropertyPresenceQuery" href="#indradb.PipeWithPropertyPresenceQuery">PipeWithPropertyPresenceQuery</a></code></h4>
+<h4><code><a title="indradb.models.RangeVertexQuery" href="#indradb.models.RangeVertexQuery">RangeVertexQuery</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.PipeWithPropertyPresenceQuery.to_message" href="#indradb.PipeWithPropertyPresenceQuery.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.RangeVertexQuery.limit" href="#indradb.models.RangeVertexQuery.limit">limit</a></code></li>
+<li><code><a title="indradb.models.RangeVertexQuery.start_id" href="#indradb.models.RangeVertexQuery.start_id">start_id</a></code></li>
+<li><code><a title="indradb.models.RangeVertexQuery.t" href="#indradb.models.RangeVertexQuery.t">t</a></code></li>
+<li><code><a title="indradb.models.RangeVertexQuery.to_message" href="#indradb.models.RangeVertexQuery.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.PipeWithPropertyValueQuery" href="#indradb.PipeWithPropertyValueQuery">PipeWithPropertyValueQuery</a></code></h4>
+<h4><code><a title="indradb.models.SpecificEdgeQuery" href="#indradb.models.SpecificEdgeQuery">SpecificEdgeQuery</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.PipeWithPropertyValueQuery.to_message" href="#indradb.PipeWithPropertyValueQuery.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.SpecificEdgeQuery.to_message" href="#indradb.models.SpecificEdgeQuery.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.RangeVertexQuery" href="#indradb.RangeVertexQuery">RangeVertexQuery</a></code></h4>
+<h4><code><a title="indradb.models.SpecificVertexQuery" href="#indradb.models.SpecificVertexQuery">SpecificVertexQuery</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.RangeVertexQuery.limit" href="#indradb.RangeVertexQuery.limit">limit</a></code></li>
-<li><code><a title="indradb.RangeVertexQuery.start_id" href="#indradb.RangeVertexQuery.start_id">start_id</a></code></li>
-<li><code><a title="indradb.RangeVertexQuery.t" href="#indradb.RangeVertexQuery.t">t</a></code></li>
-<li><code><a title="indradb.RangeVertexQuery.to_message" href="#indradb.RangeVertexQuery.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.SpecificVertexQuery.to_message" href="#indradb.models.SpecificVertexQuery.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.SpecificEdgeQuery" href="#indradb.SpecificEdgeQuery">SpecificEdgeQuery</a></code></h4>
+<h4><code><a title="indradb.models.Vertex" href="#indradb.models.Vertex">Vertex</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.SpecificEdgeQuery.to_message" href="#indradb.SpecificEdgeQuery.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.Vertex.from_message" href="#indradb.models.Vertex.from_message">from_message</a></code></li>
+<li><code><a title="indradb.models.Vertex.id" href="#indradb.models.Vertex.id">id</a></code></li>
+<li><code><a title="indradb.models.Vertex.t" href="#indradb.models.Vertex.t">t</a></code></li>
+<li><code><a title="indradb.models.Vertex.to_message" href="#indradb.models.Vertex.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.SpecificVertexQuery" href="#indradb.SpecificVertexQuery">SpecificVertexQuery</a></code></h4>
+<h4><code><a title="indradb.models.VertexProperties" href="#indradb.models.VertexProperties">VertexProperties</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.SpecificVertexQuery.to_message" href="#indradb.SpecificVertexQuery.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.VertexProperties.from_message" href="#indradb.models.VertexProperties.from_message">from_message</a></code></li>
+<li><code><a title="indradb.models.VertexProperties.props" href="#indradb.models.VertexProperties.props">props</a></code></li>
+<li><code><a title="indradb.models.VertexProperties.vertex" href="#indradb.models.VertexProperties.vertex">vertex</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.Vertex" href="#indradb.Vertex">Vertex</a></code></h4>
+<h4><code><a title="indradb.models.VertexProperty" href="#indradb.models.VertexProperty">VertexProperty</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.Vertex.from_message" href="#indradb.Vertex.from_message">from_message</a></code></li>
-<li><code><a title="indradb.Vertex.id" href="#indradb.Vertex.id">id</a></code></li>
-<li><code><a title="indradb.Vertex.t" href="#indradb.Vertex.t">t</a></code></li>
-<li><code><a title="indradb.Vertex.to_message" href="#indradb.Vertex.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.VertexProperty.from_message" href="#indradb.models.VertexProperty.from_message">from_message</a></code></li>
+<li><code><a title="indradb.models.VertexProperty.id" href="#indradb.models.VertexProperty.id">id</a></code></li>
+<li><code><a title="indradb.models.VertexProperty.value" href="#indradb.models.VertexProperty.value">value</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.VertexProperties" href="#indradb.VertexProperties">VertexProperties</a></code></h4>
+<h4><code><a title="indradb.models.VertexWithPropertyPresenceQuery" href="#indradb.models.VertexWithPropertyPresenceQuery">VertexWithPropertyPresenceQuery</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.VertexProperties.from_message" href="#indradb.VertexProperties.from_message">from_message</a></code></li>
-<li><code><a title="indradb.VertexProperties.props" href="#indradb.VertexProperties.props">props</a></code></li>
-<li><code><a title="indradb.VertexProperties.vertex" href="#indradb.VertexProperties.vertex">vertex</a></code></li>
+<li><code><a title="indradb.models.VertexWithPropertyPresenceQuery.to_message" href="#indradb.models.VertexWithPropertyPresenceQuery.to_message">to_message</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="indradb.VertexProperty" href="#indradb.VertexProperty">VertexProperty</a></code></h4>
+<h4><code><a title="indradb.models.VertexWithPropertyValueQuery" href="#indradb.models.VertexWithPropertyValueQuery">VertexWithPropertyValueQuery</a></code></h4>
 <ul class="">
-<li><code><a title="indradb.VertexProperty.from_message" href="#indradb.VertexProperty.from_message">from_message</a></code></li>
-<li><code><a title="indradb.VertexProperty.id" href="#indradb.VertexProperty.id">id</a></code></li>
-<li><code><a title="indradb.VertexProperty.value" href="#indradb.VertexProperty.value">value</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="indradb.VertexWithPropertyPresenceQuery" href="#indradb.VertexWithPropertyPresenceQuery">VertexWithPropertyPresenceQuery</a></code></h4>
-<ul class="">
-<li><code><a title="indradb.VertexWithPropertyPresenceQuery.to_message" href="#indradb.VertexWithPropertyPresenceQuery.to_message">to_message</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="indradb.VertexWithPropertyValueQuery" href="#indradb.VertexWithPropertyValueQuery">VertexWithPropertyValueQuery</a></code></h4>
-<ul class="">
-<li><code><a title="indradb.VertexWithPropertyValueQuery.to_message" href="#indradb.VertexWithPropertyValueQuery.to_message">to_message</a></code></li>
+<li><code><a title="indradb.models.VertexWithPropertyValueQuery.to_message" href="#indradb.models.VertexWithPropertyValueQuery.to_message">to_message</a></code></li>
 </ul>
 </li>
 </ul>
