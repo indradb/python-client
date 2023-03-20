@@ -1000,6 +1000,7 @@ table {
     <li class="mono"><a href="#indradb.Client.delete_edges">delete_edges</a></li>
     <li class="mono"><a href="#indradb.Client.delete_vertex_properties">delete_vertex_properties</a></li>
     <li class="mono"><a href="#indradb.Client.delete_vertices">delete_vertices</a></li>
+    <li class="mono"><a href="#indradb.Client.execute_plugin">execute_plugin</a></li>
     <li class="mono"><a href="#indradb.Client.get_all_edge_properties">get_all_edge_properties</a></li>
     <li class="mono"><a href="#indradb.Client.get_all_vertex_properties">get_all_vertex_properties</a></li>
     <li class="mono"><a href="#indradb.Client.get_edge_count">get_edge_count</a></li>
@@ -1008,9 +1009,11 @@ table {
     <li class="mono"><a href="#indradb.Client.get_vertex_count">get_vertex_count</a></li>
     <li class="mono"><a href="#indradb.Client.get_vertex_properties">get_vertex_properties</a></li>
     <li class="mono"><a href="#indradb.Client.get_vertices">get_vertices</a></li>
+    <li class="mono"><a href="#indradb.Client.index_property">index_property</a></li>
     <li class="mono"><a href="#indradb.Client.ping">ping</a></li>
     <li class="mono"><a href="#indradb.Client.set_edge_properties">set_edge_properties</a></li>
     <li class="mono"><a href="#indradb.Client.set_vertex_properties">set_vertex_properties</a></li>
+    <li class="mono"><a href="#indradb.Client.sync">sync</a></li>
   </ul>
 
         </li>
@@ -1109,6 +1112,10 @@ table {
     <li class="mono"><a href="#indradb.PipeVertexQuery.property">property</a></li>
     <li class="mono"><a href="#indradb.PipeVertexQuery.t">t</a></li>
     <li class="mono"><a href="#indradb.PipeVertexQuery.to_message">to_message</a></li>
+    <li class="mono"><a href="#indradb.PipeVertexQuery.with_property">with_property</a></li>
+    <li class="mono"><a href="#indradb.PipeVertexQuery.with_property_equal_to">with_property_equal_to</a></li>
+    <li class="mono"><a href="#indradb.PipeVertexQuery.with_property_not_equal_to">with_property_not_equal_to</a></li>
+    <li class="mono"><a href="#indradb.PipeVertexQuery.without_property">without_property</a></li>
   </ul>
 
         </li>
@@ -1125,6 +1132,10 @@ table {
     <li class="mono"><a href="#indradb.RangeVertexQuery.start_id">start_id</a></li>
     <li class="mono"><a href="#indradb.RangeVertexQuery.t">t</a></li>
     <li class="mono"><a href="#indradb.RangeVertexQuery.to_message">to_message</a></li>
+    <li class="mono"><a href="#indradb.RangeVertexQuery.with_property">with_property</a></li>
+    <li class="mono"><a href="#indradb.RangeVertexQuery.with_property_equal_to">with_property_equal_to</a></li>
+    <li class="mono"><a href="#indradb.RangeVertexQuery.with_property_not_equal_to">with_property_not_equal_to</a></li>
+    <li class="mono"><a href="#indradb.RangeVertexQuery.without_property">without_property</a></li>
   </ul>
 
         </li>
@@ -1151,33 +1162,10 @@ table {
     <li class="mono"><a href="#indradb.SpecificVertexQuery.outbound">outbound</a></li>
     <li class="mono"><a href="#indradb.SpecificVertexQuery.property">property</a></li>
     <li class="mono"><a href="#indradb.SpecificVertexQuery.to_message">to_message</a></li>
-  </ul>
-
-        </li>
-        <li class="mono">
-        <span class="class_name"><a href="#indradb.Transaction">Transaction</a></span>
-        
-          
-  <ul>
-    <li class="mono"><a href="#indradb.Transaction.__init__">__init__</a></li>
-    <li class="mono"><a href="#indradb.Transaction.create_edge">create_edge</a></li>
-    <li class="mono"><a href="#indradb.Transaction.create_vertex">create_vertex</a></li>
-    <li class="mono"><a href="#indradb.Transaction.create_vertex_from_type">create_vertex_from_type</a></li>
-    <li class="mono"><a href="#indradb.Transaction.delete_edge_properties">delete_edge_properties</a></li>
-    <li class="mono"><a href="#indradb.Transaction.delete_edges">delete_edges</a></li>
-    <li class="mono"><a href="#indradb.Transaction.delete_vertex_properties">delete_vertex_properties</a></li>
-    <li class="mono"><a href="#indradb.Transaction.delete_vertices">delete_vertices</a></li>
-    <li class="mono"><a href="#indradb.Transaction.execute">execute</a></li>
-    <li class="mono"><a href="#indradb.Transaction.get_all_edge_properties">get_all_edge_properties</a></li>
-    <li class="mono"><a href="#indradb.Transaction.get_all_vertex_properties">get_all_vertex_properties</a></li>
-    <li class="mono"><a href="#indradb.Transaction.get_edge_count">get_edge_count</a></li>
-    <li class="mono"><a href="#indradb.Transaction.get_edge_properties">get_edge_properties</a></li>
-    <li class="mono"><a href="#indradb.Transaction.get_edges">get_edges</a></li>
-    <li class="mono"><a href="#indradb.Transaction.get_vertex_count">get_vertex_count</a></li>
-    <li class="mono"><a href="#indradb.Transaction.get_vertex_properties">get_vertex_properties</a></li>
-    <li class="mono"><a href="#indradb.Transaction.get_vertices">get_vertices</a></li>
-    <li class="mono"><a href="#indradb.Transaction.set_edge_properties">set_edge_properties</a></li>
-    <li class="mono"><a href="#indradb.Transaction.set_vertex_properties">set_vertex_properties</a></li>
+    <li class="mono"><a href="#indradb.SpecificVertexQuery.with_property">with_property</a></li>
+    <li class="mono"><a href="#indradb.SpecificVertexQuery.with_property_equal_to">with_property_equal_to</a></li>
+    <li class="mono"><a href="#indradb.SpecificVertexQuery.with_property_not_equal_to">with_property_not_equal_to</a></li>
+    <li class="mono"><a href="#indradb.SpecificVertexQuery.without_property">without_property</a></li>
   </ul>
 
         </li>
@@ -1250,7 +1238,7 @@ table {
     <pre><code>import indradb.indradb_pb2 as proto
 import indradb.indradb_pb2_grpc as grpc
 
-from indradb.client import Client, BulkInserter, Transaction
+from indradb.client import Client, BulkInserter
 from indradb.models import Edge, EdgeKey, Vertex, RangeVertexQuery, SpecificVertexQuery, PipeVertexQuery, \
     VertexPropertyQuery, SpecificEdgeQuery, PipeEdgeQuery, EdgePropertyQuery, EdgeDirection, NamedProperty, \
     VertexProperty, VertexProperties, EdgeProperty, EdgeProperties
@@ -1260,7 +1248,6 @@ __all__ = [
     "grpc",
     "Client",
     "BulkInserter",
-    "Transaction",
     "Edge",
     "EdgeKey",
     "Vertex",
@@ -1313,7 +1300,7 @@ __all__ = [
     def vertex_property(self, id, name, value):
         self._add_req(vertex_property=proto.VertexPropertyBulkInsertItem(
             id=proto.Uuid(value=id.bytes),
-            name=name,
+            name=proto.Identifier(value=name),
             value=proto.Json(value=json.dumps(value)),
         ))
         return self
@@ -1321,7 +1308,7 @@ __all__ = [
     def edge_property(self, key, name, value):
         self._add_req(edge_property=proto.EdgePropertyBulkInsertItem(
             key=key.to_message(),
-            name=name,
+            name=proto.Identifier(value=name),
             value=proto.Json(value=json.dumps(value)),
         ))
         return self
@@ -1397,7 +1384,7 @@ __all__ = [
     <pre><code>def edge_property(self, key, name, value):
     self._add_req(edge_property=proto.EdgePropertyBulkInsertItem(
         key=key.to_message(),
-        name=name,
+        name=proto.Identifier(value=name),
         value=proto.Json(value=json.dumps(value)),
     ))
     return self
@@ -1463,7 +1450,7 @@ __all__ = [
     <pre><code>def vertex_property(self, id, name, value):
     self._add_req(vertex_property=proto.VertexPropertyBulkInsertItem(
         id=proto.Uuid(value=id.bytes),
-        name=name,
+        name=proto.Identifier(value=name),
         value=proto.Json(value=json.dumps(value)),
     ))
     return self
@@ -1500,8 +1487,12 @@ __all__ = [
         self.stub = indradb_grpc.IndraDBStub(channel)
 
     def ping(self):
-        req = indradb_proto.google_dot_protobuf_dot_empty__pb2.Empty()
+        req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
         return self.stub.Ping(req)
+
+    def index_property(self, name):
+        req = proto.IndexPropertyRequest(name=proto.Identifier(value=name))
+        return self.stub.IndexProperty(req)
 
     def create_vertex(self, vertex):
         """
@@ -1509,15 +1500,18 @@ __all__ = [
 
         `vertex` specifies the `Vertex` to create.
         """
-        return next(Transaction().create_vertex(vertex).execute(self))
+        req = vertex.to_message()
+        return self.stub.CreateVertex(req).created
 
-    def create_vertex_from_type(self, type):
+    def create_vertex_from_type(self, t):
         """
         Creates a new vertex from a type.
 
-        `type` specifies the new vertex's type.
+        `t` specifies the new vertex's type.
         """
-        return next(Transaction().create_vertex_from_type(type).execute(self))
+        req = proto.Identifier(value=t)
+        res = self.stub.CreateVertexFromType(req)
+        return uuid.UUID(bytes=res.value)
 
     def get_vertices(self, query):
         """
@@ -1525,7 +1519,9 @@ __all__ = [
 
         `query` specifies the `VertexQuery` to use.
         """
-        return next(Transaction().get_vertices(query).execute(self))
+        req = query.to_message()
+        for res in self.stub.GetVertices(req):
+            yield Vertex.from_message(res)
 
     def delete_vertices(self, query):
         """
@@ -1533,13 +1529,15 @@ __all__ = [
 
         `query` specifies the `VertexQuery` to use.
         """
-        return next(Transaction().delete_vertices(query).execute(self))
+        req = query.to_message()
+        self.stub.DeleteVertices(req)
 
     def get_vertex_count(self):
         """
         Gets the total number of vertices in the datastore.
         """
-        return next(Transaction().get_vertex_count().execute(self))
+        req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
+        return self.stub.GetVertexCount(req).count
 
     def create_edge(self, key):
         """
@@ -1547,7 +1545,8 @@ __all__ = [
 
         `key` is the `EdgeKey` that identifies the edge.
         """
-        return next(Transaction().create_edge(key).execute(self))
+        req = key.to_message()
+        return self.stub.CreateEdge(req).created
 
     def get_edges(self, query):
         """
@@ -1555,7 +1554,9 @@ __all__ = [
 
         `query` specifies the `EdgeQuery` to use.
         """
-        return next(Transaction().get_edges(query).execute(self))
+        req = query.to_message()
+        for res in self.stub.GetEdges(req):
+            yield Edge.from_message(res)
 
     def delete_edges(self, query):
         """
@@ -1563,7 +1564,8 @@ __all__ = [
 
         `query` specifies the `EdgeQuery` to use.
         """
-        return next(Transaction().delete_edges(query).execute(self))
+        req = query.to_message()
+        self.stub.DeleteEdges(req)
 
     def get_edge_count(self, id, t, direction):
         """
@@ -1573,7 +1575,12 @@ __all__ = [
         type of edges to count - set this to `None` if all edges should be
         counted. `direction` specifies the direction of edges to count.
         """
-        return next(Transaction().get_edge_count(id, t, direction).execute(self))
+        req = proto.GetEdgeCountRequest(
+            id=proto.Uuid(value=id.bytes),
+            t=proto.Identifier(value=t) if t is not None else None,
+            direction=direction.value,
+        )
+        return self.stub.GetEdgeCount(req).count
 
     def get_vertex_properties(self, query):
         """
@@ -1581,7 +1588,9 @@ __all__ = [
 
         `query` specifies the vertex properties query to run.
         """
-        return next(Transaction().get_vertex_properties(query).execute(self))
+        req = query.to_message()
+        for res in self.stub.GetVertexProperties(req):
+            yield VertexProperty.from_message(res)
 
     def set_vertex_properties(self, query, value):
         """
@@ -1591,7 +1600,11 @@ __all__ = [
         to set; it must be JSONable (i.e., it should be possible to pass
         `value` into `json.dumps`.)
         """
-        return next(Transaction().set_vertex_properties(query, value).execute(self))
+        req = proto.SetVertexPropertiesRequest(
+            q=query.to_message(),
+            value=proto.Json(value=json.dumps(value)),
+        )
+        self.stub.SetVertexProperties(req)
 
     def delete_vertex_properties(self, query):
         """
@@ -1599,7 +1612,8 @@ __all__ = [
 
         `query` specifies the vertex query to run.
         """
-        return next(Transaction().delete_vertex_properties(query).execute(self))
+        req = query.to_message()
+        self.stub.DeleteVertexProperties(req)
 
     def get_edge_properties(self, query):
         """
@@ -1607,7 +1621,9 @@ __all__ = [
 
         `query` specifies the edge query to run.
         """
-        return next(Transaction().get_edge_properties(query).execute(self))
+        req = query.to_message()
+        for res in self.stub.GetEdgeProperties(req):
+            yield EdgeProperty.from_message(res)
 
     def set_edge_properties(self, query, value):
         """
@@ -1617,7 +1633,11 @@ __all__ = [
         to set; it must be JSONable (i.e., it should be possible to pass
         `value` into `json.dumps`.)
         """
-        return next(Transaction().set_edge_properties(query, value).execute(self))
+        req = proto.SetEdgePropertiesRequest(
+            q=query.to_message(),
+            value=proto.Json(value=json.dumps(value)),
+        )
+        self.stub.SetEdgeProperties(req)
 
     def delete_edge_properties(self, query):
         """
@@ -1625,7 +1645,8 @@ __all__ = [
 
         `query` specifies the edge query to run.
         """
-        return next(Transaction().delete_edge_properties(query).execute(self))
+        req = query.to_message()
+        self.stub.DeleteEdgeProperties(req)
 
     def get_all_vertex_properties(self, query):
         """
@@ -1633,7 +1654,9 @@ __all__ = [
 
         `query` specifies the vertex query to run.
         """
-        return next(Transaction().get_all_vertex_properties(query).execute(self))
+        req = query.to_message()
+        for res in self.stub.GetAllVertexProperties(req):
+            yield VertexProperties.from_message(res)
 
     def get_all_edge_properties(self, query):
         """
@@ -1641,7 +1664,32 @@ __all__ = [
 
         `query` specifies the edge query to run.
         """
-        return next(Transaction().get_all_edge_properties(query).execute(self))
+        req = query.to_message()
+        for res in self.stub.GetAllEdgeProperties(req):
+            yield EdgeProperties.from_message(res)
+
+    def sync(self):
+        """
+        Syncs persisted content. Depending on the datastore implementation,
+        this has different meanings - including potentially being a no-op.
+        """
+        req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
+        self.stub.Sync(req)
+
+    def execute_plugin(self, name, arg):
+        """
+        Executes a plugin and returns back the response from the plugin.
+
+        `name` specifies the plugin name to execute. `arg` specifies the
+        argument to pass in; it must be JSONable (i.e., it should be possible
+        to pass `arg` into `json.dumps`.)
+        """
+        req = proto.ExecutePluginRequest(
+            name=name,
+            arg=proto.Json(value=json.dumps(arg)) if arg is not None else None,
+        )
+        res = self.stub.ExecutePlugin(req)
+        return json.loads(res.value)
 </code></pre>
   </div>
 </div>
@@ -1703,7 +1751,8 @@ __all__ = [
     Creates a new edge.
     `key` is the `EdgeKey` that identifies the edge.
     """
-    return next(Transaction().create_edge(key).execute(self))
+    req = key.to_message()
+    return self.stub.CreateEdge(req).created
 </code></pre>
   </div>
 </div>
@@ -1729,7 +1778,8 @@ __all__ = [
     Creates a new vertex.
     `vertex` specifies the `Vertex` to create.
     """
-    return next(Transaction().create_vertex(vertex).execute(self))
+    req = vertex.to_message()
+    return self.stub.CreateVertex(req).created
 </code></pre>
   </div>
 </div>
@@ -1739,23 +1789,25 @@ __all__ = [
             
   <div class="item">
     <div class="name def" id="indradb.Client.create_vertex_from_type">
-    <p>def <span class="ident">create_vertex_from_type</span>(</p><p>self, type)</p>
+    <p>def <span class="ident">create_vertex_from_type</span>(</p><p>self, t)</p>
     </div>
     
 
     
   
     <div class="desc"><p>Creates a new vertex from a type.</p>
-<p><code>type</code> specifies the new vertex's type.</p></div>
+<p><code>t</code> specifies the new vertex's type.</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Client.create_vertex_from_type', this);">Show source &equiv;</a></p>
   <div id="source-indradb.Client.create_vertex_from_type" class="source">
-    <pre><code>def create_vertex_from_type(self, type):
+    <pre><code>def create_vertex_from_type(self, t):
     """
     Creates a new vertex from a type.
-    `type` specifies the new vertex's type.
+    `t` specifies the new vertex's type.
     """
-    return next(Transaction().create_vertex_from_type(type).execute(self))
+    req = proto.Identifier(value=t)
+    res = self.stub.CreateVertexFromType(req)
+    return uuid.UUID(bytes=res.value)
 </code></pre>
   </div>
 </div>
@@ -1781,7 +1833,8 @@ __all__ = [
     Deletes global properties.
     `query` specifies the edge query to run.
     """
-    return next(Transaction().delete_edge_properties(query).execute(self))
+    req = query.to_message()
+    self.stub.DeleteEdgeProperties(req)
 </code></pre>
   </div>
 </div>
@@ -1807,7 +1860,8 @@ __all__ = [
     Deletes edges by a given query.
     `query` specifies the `EdgeQuery` to use.
     """
-    return next(Transaction().delete_edges(query).execute(self))
+    req = query.to_message()
+    self.stub.DeleteEdges(req)
 </code></pre>
   </div>
 </div>
@@ -1833,7 +1887,8 @@ __all__ = [
     Deletes vertex properties.
     `query` specifies the vertex query to run.
     """
-    return next(Transaction().delete_vertex_properties(query).execute(self))
+    req = query.to_message()
+    self.stub.DeleteVertexProperties(req)
 </code></pre>
   </div>
 </div>
@@ -1859,7 +1914,43 @@ __all__ = [
     Deletes vertices by a given query.
     `query` specifies the `VertexQuery` to use.
     """
-    return next(Transaction().delete_vertices(query).execute(self))
+    req = query.to_message()
+    self.stub.DeleteVertices(req)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.Client.execute_plugin">
+    <p>def <span class="ident">execute_plugin</span>(</p><p>self, name, arg)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Executes a plugin and returns back the response from the plugin.</p>
+<p><code>name</code> specifies the plugin name to execute. <code>arg</code> specifies the
+argument to pass in; it must be JSONable (i.e., it should be possible
+to pass <code>arg</code> into <code>json.dumps</code>.)</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Client.execute_plugin', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Client.execute_plugin" class="source">
+    <pre><code>def execute_plugin(self, name, arg):
+    """
+    Executes a plugin and returns back the response from the plugin.
+    `name` specifies the plugin name to execute. `arg` specifies the
+    argument to pass in; it must be JSONable (i.e., it should be possible
+    to pass `arg` into `json.dumps`.)
+    """
+    req = proto.ExecutePluginRequest(
+        name=name,
+        arg=proto.Json(value=json.dumps(arg)) if arg is not None else None,
+    )
+    res = self.stub.ExecutePlugin(req)
+    return json.loads(res.value)
 </code></pre>
   </div>
 </div>
@@ -1885,7 +1976,9 @@ __all__ = [
     Get all properties associated with the edges from `query.`
     `query` specifies the edge query to run.
     """
-    return next(Transaction().get_all_edge_properties(query).execute(self))
+    req = query.to_message()
+    for res in self.stub.GetAllEdgeProperties(req):
+        yield EdgeProperties.from_message(res)
 </code></pre>
   </div>
 </div>
@@ -1911,7 +2004,9 @@ __all__ = [
     Get all properties associated with the vertices from `query.`
     `query` specifies the vertex query to run.
     """
-    return next(Transaction().get_all_vertex_properties(query).execute(self))
+    req = query.to_message()
+    for res in self.stub.GetAllVertexProperties(req):
+        yield VertexProperties.from_message(res)
 </code></pre>
   </div>
 </div>
@@ -1941,7 +2036,12 @@ counted. <code>direction</code> specifies the direction of edges to count.</p></
     type of edges to count - set this to `None` if all edges should be
     counted. `direction` specifies the direction of edges to count.
     """
-    return next(Transaction().get_edge_count(id, t, direction).execute(self))
+    req = proto.GetEdgeCountRequest(
+        id=proto.Uuid(value=id.bytes),
+        t=proto.Identifier(value=t) if t is not None else None,
+        direction=direction.value,
+    )
+    return self.stub.GetEdgeCount(req).count
 </code></pre>
   </div>
 </div>
@@ -1967,7 +2067,9 @@ counted. <code>direction</code> specifies the direction of edges to count.</p></
     Gets edge properties.
     `query` specifies the edge query to run.
     """
-    return next(Transaction().get_edge_properties(query).execute(self))
+    req = query.to_message()
+    for res in self.stub.GetEdgeProperties(req):
+        yield EdgeProperty.from_message(res)
 </code></pre>
   </div>
 </div>
@@ -1993,7 +2095,9 @@ counted. <code>direction</code> specifies the direction of edges to count.</p></
     Gets edges by a given query.
     `query` specifies the `EdgeQuery` to use.
     """
-    return next(Transaction().get_edges(query).execute(self))
+    req = query.to_message()
+    for res in self.stub.GetEdges(req):
+        yield Edge.from_message(res)
 </code></pre>
   </div>
 </div>
@@ -2017,7 +2121,8 @@ counted. <code>direction</code> specifies the direction of edges to count.</p></
     """
     Gets the total number of vertices in the datastore.
     """
-    return next(Transaction().get_vertex_count().execute(self))
+    req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
+    return self.stub.GetVertexCount(req).count
 </code></pre>
   </div>
 </div>
@@ -2043,7 +2148,9 @@ counted. <code>direction</code> specifies the direction of edges to count.</p></
     Gets vertex properties.
     `query` specifies the vertex properties query to run.
     """
-    return next(Transaction().get_vertex_properties(query).execute(self))
+    req = query.to_message()
+    for res in self.stub.GetVertexProperties(req):
+        yield VertexProperty.from_message(res)
 </code></pre>
   </div>
 </div>
@@ -2069,7 +2176,30 @@ counted. <code>direction</code> specifies the direction of edges to count.</p></
     Gets vertices by a given query.
     `query` specifies the `VertexQuery` to use.
     """
-    return next(Transaction().get_vertices(query).execute(self))
+    req = query.to_message()
+    for res in self.stub.GetVertices(req):
+        yield Vertex.from_message(res)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.Client.index_property">
+    <p>def <span class="ident">index_property</span>(</p><p>self, name)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Client.index_property', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Client.index_property" class="source">
+    <pre><code>def index_property(self, name):
+    req = proto.IndexPropertyRequest(name=proto.Identifier(value=name))
+    return self.stub.IndexProperty(req)
 </code></pre>
   </div>
 </div>
@@ -2089,7 +2219,7 @@ counted. <code>direction</code> specifies the direction of edges to count.</p></
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Client.ping', this);">Show source &equiv;</a></p>
   <div id="source-indradb.Client.ping" class="source">
     <pre><code>def ping(self):
-    req = indradb_proto.google_dot_protobuf_dot_empty__pb2.Empty()
+    req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
     return self.stub.Ping(req)
 </code></pre>
   </div>
@@ -2120,7 +2250,11 @@ to set; it must be JSONable (i.e., it should be possible to pass
     to set; it must be JSONable (i.e., it should be possible to pass
     `value` into `json.dumps`.)
     """
-    return next(Transaction().set_edge_properties(query, value).execute(self))
+    req = proto.SetEdgePropertiesRequest(
+        q=query.to_message(),
+        value=proto.Json(value=json.dumps(value)),
+    )
+    self.stub.SetEdgeProperties(req)
 </code></pre>
   </div>
 </div>
@@ -2150,7 +2284,38 @@ to set; it must be JSONable (i.e., it should be possible to pass
     to set; it must be JSONable (i.e., it should be possible to pass
     `value` into `json.dumps`.)
     """
-    return next(Transaction().set_vertex_properties(query, value).execute(self))
+    req = proto.SetVertexPropertiesRequest(
+        q=query.to_message(),
+        value=proto.Json(value=json.dumps(value)),
+    )
+    self.stub.SetVertexProperties(req)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.Client.sync">
+    <p>def <span class="ident">sync</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Syncs persisted content. Depending on the datastore implementation,
+this has different meanings - including potentially being a no-op.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Client.sync', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.Client.sync" class="source">
+    <pre><code>def sync(self):
+    """
+    Syncs persisted content. Depending on the datastore implementation,
+    this has different meanings - including potentially being a no-op.
+    """
+    req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
+    self.stub.Sync(req)
 </code></pre>
   </div>
 </div>
@@ -2436,7 +2601,7 @@ def from_message(cls, message):
     def to_message(self):
         return proto.EdgeKey(
             outbound_id=proto.Uuid(value=self.outbound_id.bytes),
-            t=proto.Type(value=self.t),
+            t=proto.Identifier(value=self.t),
             inbound_id=proto.Uuid(value=self.inbound_id.bytes),
         )
 
@@ -2508,7 +2673,7 @@ the edge is inbounding.</p></div>
     <pre><code>def to_message(self):
     return proto.EdgeKey(
         outbound_id=proto.Uuid(value=self.outbound_id.bytes),
-        t=proto.Type(value=self.t),
+        t=proto.Identifier(value=self.t),
         inbound_id=proto.Uuid(value=self.inbound_id.bytes),
     )
 </code></pre>
@@ -2838,7 +3003,7 @@ def from_message(cls, message):
     def to_message(self):
         return proto.EdgePropertyQuery(
             inner=self._inner.to_message(),
-            name=self._name,
+            name=proto.Identifier(value=self._name),
         )
 </code></pre>
   </div>
@@ -2890,7 +3055,7 @@ def from_message(cls, message):
     <pre><code>def to_message(self):
     return proto.EdgePropertyQuery(
         inner=self._inner.to_message(),
-        name=self._name,
+        name=proto.Identifier(value=self._name),
     )
 </code></pre>
   </div>
@@ -2923,7 +3088,7 @@ def from_message(cls, message):
     @classmethod
     def from_message(cls, message):
         return cls(
-            name=message.name,
+            name=message.name.value,
             value=json.loads(message.value.value),
         )
 </code></pre>
@@ -3003,7 +3168,7 @@ def from_message(cls, message):
     <pre><code>@classmethod
 def from_message(cls, message):
     return cls(
-        name=message.name,
+        name=message.name.value,
         value=json.loads(message.value.value),
     )
 </code></pre>
@@ -3064,7 +3229,7 @@ def from_message(cls, message):
             pipe=proto.PipeEdgeQuery(
                 inner=self._inner.to_message(),
                 direction=self._direction.value,
-                t=proto.Type(value=self._t) if self._t is not None else None,
+                t=proto.Identifier(value=self._t) if self._t is not None else None,
                 high=high,
                 low=low,
                 limit=self._limit,
@@ -3287,7 +3452,7 @@ def from_message(cls, message):
         pipe=proto.PipeEdgeQuery(
             inner=self._inner.to_message(),
             direction=self._direction.value,
-            t=proto.Type(value=self._t) if self._t is not None else None,
+            t=proto.Identifier(value=self._t) if self._t is not None else None,
             high=high,
             low=low,
             limit=self._limit,
@@ -3332,7 +3497,7 @@ def from_message(cls, message):
                 inner=self._inner.to_message(),
                 direction=self._direction.value,
                 limit=self._limit,
-                t=proto.Type(value=self._t) if self._t is not None else None,
+                t=proto.Identifier(value=self._t) if self._t is not None else None,
             ),
         )
 </code></pre>
@@ -3501,9 +3666,89 @@ def from_message(cls, message):
             inner=self._inner.to_message(),
             direction=self._direction.value,
             limit=self._limit,
-            t=proto.Type(value=self._t) if self._t is not None else None,
+            t=proto.Identifier(value=self._t) if self._t is not None else None,
         ),
     )
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.PipeVertexQuery.with_property">
+    <p>def <span class="ident">with_property</span>(</p><p>self, name)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.PipeVertexQuery.with_property', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.PipeVertexQuery.with_property" class="source">
+    <pre><code>def with_property(self, name):
+    return PipePropertyPresenceVertexQuery(self, name, True)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.PipeVertexQuery.with_property_equal_to">
+    <p>def <span class="ident">with_property_equal_to</span>(</p><p>self, name, value)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.PipeVertexQuery.with_property_equal_to', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.PipeVertexQuery.with_property_equal_to" class="source">
+    <pre><code>def with_property_equal_to(self, name, value):
+    PipePropertyValueVertexQuery(self, name, value, True)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.PipeVertexQuery.with_property_not_equal_to">
+    <p>def <span class="ident">with_property_not_equal_to</span>(</p><p>self, name, value)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.PipeVertexQuery.with_property_not_equal_to', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.PipeVertexQuery.with_property_not_equal_to" class="source">
+    <pre><code>def with_property_not_equal_to(self, name, value):
+    PipePropertyValueVertexQuery(self, name, value, False)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.PipeVertexQuery.without_property">
+    <p>def <span class="ident">without_property</span>(</p><p>self, name)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.PipeVertexQuery.without_property', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.PipeVertexQuery.without_property" class="source">
+    <pre><code>def without_property(self, name):
+    return PipePropertyPresenceVertexQuery(self, name, False)
 </code></pre>
   </div>
 </div>
@@ -3544,7 +3789,7 @@ def from_message(cls, message):
         return proto.VertexQuery(
             range=proto.RangeVertexQuery(
                 limit=self._limit,
-                t=proto.Type(value=self._t) if self._t is not None else None,
+                t=proto.Identifier(value=self._t) if self._t is not None else None,
                 start_id=proto.Uuid(value=self._start_id.bytes) if self._start_id is not None else None,
             ),
         )
@@ -3732,10 +3977,90 @@ def from_message(cls, message):
     return proto.VertexQuery(
         range=proto.RangeVertexQuery(
             limit=self._limit,
-            t=proto.Type(value=self._t) if self._t is not None else None,
+            t=proto.Identifier(value=self._t) if self._t is not None else None,
             start_id=proto.Uuid(value=self._start_id.bytes) if self._start_id is not None else None,
         ),
     )
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.RangeVertexQuery.with_property">
+    <p>def <span class="ident">with_property</span>(</p><p>self, name)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.RangeVertexQuery.with_property', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.RangeVertexQuery.with_property" class="source">
+    <pre><code>def with_property(self, name):
+    return PipePropertyPresenceVertexQuery(self, name, True)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.RangeVertexQuery.with_property_equal_to">
+    <p>def <span class="ident">with_property_equal_to</span>(</p><p>self, name, value)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.RangeVertexQuery.with_property_equal_to', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.RangeVertexQuery.with_property_equal_to" class="source">
+    <pre><code>def with_property_equal_to(self, name, value):
+    PipePropertyValueVertexQuery(self, name, value, True)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.RangeVertexQuery.with_property_not_equal_to">
+    <p>def <span class="ident">with_property_not_equal_to</span>(</p><p>self, name, value)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.RangeVertexQuery.with_property_not_equal_to', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.RangeVertexQuery.with_property_not_equal_to" class="source">
+    <pre><code>def with_property_not_equal_to(self, name, value):
+    PipePropertyValueVertexQuery(self, name, value, False)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="indradb.RangeVertexQuery.without_property">
+    <p>def <span class="ident">without_property</span>(</p><p>self, name)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.RangeVertexQuery.without_property', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.RangeVertexQuery.without_property" class="source">
+    <pre><code>def without_property(self, name):
+    return PipePropertyPresenceVertexQuery(self, name, False)
 </code></pre>
   </div>
 </div>
@@ -4032,233 +4357,20 @@ def from_message(cls, message):
 
   </div>
   
-      </div>
-      </div>
-      
-      <div class="item">
-      <p id="indradb.Transaction" class="name">class <span class="ident">Transaction</span></p>
-      
-  
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction" class="source">
-    <pre><code>class Transaction:
-    def __init__(self):
-        self._next_request_id = 1
-        self._reqs = []
-
-    def _add_req(self, **kwargs):
-        self._reqs.append(proto.TransactionRequest(request_id=self._next_request_id, **kwargs))
-        self._next_request_id += 1
-
-    def create_vertex(self, vertex):
-        """
-        Creates a new vertex.
-
-        `vertex` specifies the `Vertex` to create.
-        """
-        self._add_req(create_vertex=vertex.to_message())
-        return self
-
-    def create_vertex_from_type(self, type):
-        """
-        Creates a new vertex from a type.
-
-        `type` specifies the new vertex's type.
-        """
-        self._add_req(create_vertex_from_type=proto.Type(value=type))
-        return self
-
-    def get_vertices(self, query):
-        """
-        Gets vertices by a given query.
-
-        `query` specifies the `VertexQuery` to use.
-        """
-        self._add_req(get_vertices=query.to_message())
-        return self
-
-    def delete_vertices(self, query):
-        """
-        Deletes vertices by a given query.
-
-        `query` specifies the `VertexQuery` to use.
-        """
-        self._add_req(delete_vertices=query.to_message())
-        return self
-
-    def get_vertex_count(self):
-        """
-        Gets the total number of vertices in the datastore.
-        """
-        self._add_req(get_vertex_count=indradb_proto.google_dot_protobuf_dot_empty__pb2.Empty())
-        return self
-
-    def create_edge(self, key):
-        """
-        Creates a new edge.
-
-        `key` is the `EdgeKey` that identifies the edge.
-        """
-        self._add_req(create_edge=key.to_message())
-        return self
-
-    def get_edges(self, query):
-        """
-        Gets edges by a given query.
-
-        `query` specifies the `EdgeQuery` to use.
-        """
-        self._add_req(get_edges=query.to_message())
-        return self
-
-    def delete_edges(self, query):
-        """
-        Deletes edges by a given query.
-
-        `query` specifies the `EdgeQuery` to use.
-        """
-        self._add_req(delete_edges=query.to_message())
-        return self
-
-    def get_edge_count(self, id, t, direction):
-        """
-        Gets the number of edges related to a vertex.
-
-        `id` specifies the ID of the vertex. `t` specifies which
-        type of edges to count - set this to `None` if all edges should be
-        counted. `direction` specifies the direction of edges to count.
-        """
-        self._add_req(get_edge_count=proto.GetEdgeCountRequest(
-            id=proto.Uuid(value=id.bytes),
-            t=proto.Type(value=t) if t is not None else None,
-            direction=direction.value,
-        ))
-        return self
-
-    def get_vertex_properties(self, query):
-        """
-        Gets vertex properties.
-
-        `query` specifies the vertex properties query to run.
-        """
-        self._add_req(get_vertex_properties=query.to_message())
-        return self
-
-    def set_vertex_properties(self, query, value):
-        """
-        Sets vertex properties.
-
-        `query` specifies the edge query to run. `value` specifies the value
-        to set; it must be JSONable (i.e., it should be possible to pass
-        `value` into `json.dumps`.)
-        """
-        self._add_req(set_vertex_properties=proto.SetVertexPropertiesRequest(
-            q=query.to_message(),
-            value=proto.Json(value=json.dumps(value)),
-        ))
-        return self
-
-    def delete_vertex_properties(self, query):
-        """
-        Deletes vertex properties.
-
-        `query` specifies the vertex query to run.
-        """
-        self._add_req(delete_vertex_properties=query.to_message())
-        return self
-
-    def get_edge_properties(self, query):
-        """
-        Gets edge properties.
-
-        `query` specifies the edge query to run.
-        """
-        self._add_req(get_edge_properties=query.to_message())
-        return self
-
-    def set_edge_properties(self, query, value):
-        """
-        Sets edge properties.
-
-        `query` specifies the edge query to run. `value` specifies the value
-        to set; it must be JSONable (i.e., it should be possible to pass
-        `value` into `json.dumps`.)
-        """
-        self._add_req(set_edge_properties=proto.SetEdgePropertiesRequest(
-            q=query.to_message(),
-            value=proto.Json(value=json.dumps(value)),
-        ))
-        return self
-
-    def delete_edge_properties(self, query):
-        """
-        Deletes global properties.
-
-        `query` specifies the edge query to run.
-        """
-        self._add_req(delete_edge_properties=query.to_message())
-        return self
-
-    def get_all_vertex_properties(self, query):
-        """
-        Get all properties associated with the vertices from `query.`
-
-        `query` specifies the vertex query to run.
-        """
-        self._add_req(get_all_vertex_properties=query.to_message())
-        return self
-
-    def get_all_edge_properties(self, query):
-        """
-        Get all properties associated with the edges from `query.`
-
-        `query` specifies the edge query to run.
-        """
-        self._add_req(get_all_edge_properties=query.to_message())
-        return self
-
-    def execute(self, client):
-        responses = client.stub.Transaction(iter(self._reqs))
-        for req in self._reqs:
-            req_variant = req.WhichOneof("request")
-            if req_variant in TRANSACTION_STREAMING_TYPES:
-                buf = []
-                for res in responses:
-                    if res.HasField("empty"):
-                        break
-                    buf.append(_parse_transaction_response(res))
-                yield buf
-            else:
-                yield _parse_transaction_response(next(responses))
-</code></pre>
-  </div>
-</div>
-
-
-      <div class="class">
-          <h3>Ancestors (in MRO)</h3>
-          <ul class="class_list">
-          <li><a href="#indradb.Transaction">Transaction</a></li>
-          <li>builtins.object</li>
-          </ul>
-          <h3>Static methods</h3>
             
   <div class="item">
-    <div class="name def" id="indradb.Transaction.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self)</p>
+    <div class="name def" id="indradb.SpecificVertexQuery.with_property">
+    <p>def <span class="ident">with_property</span>(</p><p>self, name)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Initialize self.  See help(type(self)) for accurate signature.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.__init__', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.__init__" class="source">
-    <pre><code>def __init__(self):
-    self._next_request_id = 1
-    self._reqs = []
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.SpecificVertexQuery.with_property', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.SpecificVertexQuery.with_property" class="source">
+    <pre><code>def with_property(self, name):
+    return PipePropertyPresenceVertexQuery(self, name, True)
 </code></pre>
   </div>
 </div>
@@ -4267,25 +4379,18 @@ def from_message(cls, message):
   
             
   <div class="item">
-    <div class="name def" id="indradb.Transaction.create_edge">
-    <p>def <span class="ident">create_edge</span>(</p><p>self, key)</p>
+    <div class="name def" id="indradb.SpecificVertexQuery.with_property_equal_to">
+    <p>def <span class="ident">with_property_equal_to</span>(</p><p>self, name, value)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Creates a new edge.</p>
-<p><code>key</code> is the <code>EdgeKey</code> that identifies the edge.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.create_edge', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.create_edge" class="source">
-    <pre><code>def create_edge(self, key):
-    """
-    Creates a new edge.
-    `key` is the `EdgeKey` that identifies the edge.
-    """
-    self._add_req(create_edge=key.to_message())
-    return self
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.SpecificVertexQuery.with_property_equal_to', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.SpecificVertexQuery.with_property_equal_to" class="source">
+    <pre><code>def with_property_equal_to(self, name, value):
+    PipePropertyValueVertexQuery(self, name, value, True)
 </code></pre>
   </div>
 </div>
@@ -4294,25 +4399,18 @@ def from_message(cls, message):
   
             
   <div class="item">
-    <div class="name def" id="indradb.Transaction.create_vertex">
-    <p>def <span class="ident">create_vertex</span>(</p><p>self, vertex)</p>
+    <div class="name def" id="indradb.SpecificVertexQuery.with_property_not_equal_to">
+    <p>def <span class="ident">with_property_not_equal_to</span>(</p><p>self, name, value)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Creates a new vertex.</p>
-<p><code>vertex</code> specifies the <code>Vertex</code> to create.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.create_vertex', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.create_vertex" class="source">
-    <pre><code>def create_vertex(self, vertex):
-    """
-    Creates a new vertex.
-    `vertex` specifies the `Vertex` to create.
-    """
-    self._add_req(create_vertex=vertex.to_message())
-    return self
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.SpecificVertexQuery.with_property_not_equal_to', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.SpecificVertexQuery.with_property_not_equal_to" class="source">
+    <pre><code>def with_property_not_equal_to(self, name, value):
+    PipePropertyValueVertexQuery(self, name, value, False)
 </code></pre>
   </div>
 </div>
@@ -4321,454 +4419,18 @@ def from_message(cls, message):
   
             
   <div class="item">
-    <div class="name def" id="indradb.Transaction.create_vertex_from_type">
-    <p>def <span class="ident">create_vertex_from_type</span>(</p><p>self, type)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Creates a new vertex from a type.</p>
-<p><code>type</code> specifies the new vertex's type.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.create_vertex_from_type', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.create_vertex_from_type" class="source">
-    <pre><code>def create_vertex_from_type(self, type):
-    """
-    Creates a new vertex from a type.
-    `type` specifies the new vertex's type.
-    """
-    self._add_req(create_vertex_from_type=proto.Type(value=type))
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.delete_edge_properties">
-    <p>def <span class="ident">delete_edge_properties</span>(</p><p>self, query)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Deletes global properties.</p>
-<p><code>query</code> specifies the edge query to run.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.delete_edge_properties', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.delete_edge_properties" class="source">
-    <pre><code>def delete_edge_properties(self, query):
-    """
-    Deletes global properties.
-    `query` specifies the edge query to run.
-    """
-    self._add_req(delete_edge_properties=query.to_message())
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.delete_edges">
-    <p>def <span class="ident">delete_edges</span>(</p><p>self, query)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Deletes edges by a given query.</p>
-<p><code>query</code> specifies the <code>EdgeQuery</code> to use.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.delete_edges', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.delete_edges" class="source">
-    <pre><code>def delete_edges(self, query):
-    """
-    Deletes edges by a given query.
-    `query` specifies the `EdgeQuery` to use.
-    """
-    self._add_req(delete_edges=query.to_message())
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.delete_vertex_properties">
-    <p>def <span class="ident">delete_vertex_properties</span>(</p><p>self, query)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Deletes vertex properties.</p>
-<p><code>query</code> specifies the vertex query to run.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.delete_vertex_properties', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.delete_vertex_properties" class="source">
-    <pre><code>def delete_vertex_properties(self, query):
-    """
-    Deletes vertex properties.
-    `query` specifies the vertex query to run.
-    """
-    self._add_req(delete_vertex_properties=query.to_message())
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.delete_vertices">
-    <p>def <span class="ident">delete_vertices</span>(</p><p>self, query)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Deletes vertices by a given query.</p>
-<p><code>query</code> specifies the <code>VertexQuery</code> to use.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.delete_vertices', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.delete_vertices" class="source">
-    <pre><code>def delete_vertices(self, query):
-    """
-    Deletes vertices by a given query.
-    `query` specifies the `VertexQuery` to use.
-    """
-    self._add_req(delete_vertices=query.to_message())
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.execute">
-    <p>def <span class="ident">execute</span>(</p><p>self, client)</p>
+    <div class="name def" id="indradb.SpecificVertexQuery.without_property">
+    <p>def <span class="ident">without_property</span>(</p><p>self, name)</p>
     </div>
     
 
     
   
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.execute', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.execute" class="source">
-    <pre><code>def execute(self, client):
-    responses = client.stub.Transaction(iter(self._reqs))
-    for req in self._reqs:
-        req_variant = req.WhichOneof("request")
-        if req_variant in TRANSACTION_STREAMING_TYPES:
-            buf = []
-            for res in responses:
-                if res.HasField("empty"):
-                    break
-                buf.append(_parse_transaction_response(res))
-            yield buf
-        else:
-            yield _parse_transaction_response(next(responses))
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.get_all_edge_properties">
-    <p>def <span class="ident">get_all_edge_properties</span>(</p><p>self, query)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Get all properties associated with the edges from <code>query.</code></p>
-<p><code>query</code> specifies the edge query to run.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.get_all_edge_properties', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.get_all_edge_properties" class="source">
-    <pre><code>def get_all_edge_properties(self, query):
-    """
-    Get all properties associated with the edges from `query.`
-    `query` specifies the edge query to run.
-    """
-    self._add_req(get_all_edge_properties=query.to_message())
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.get_all_vertex_properties">
-    <p>def <span class="ident">get_all_vertex_properties</span>(</p><p>self, query)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Get all properties associated with the vertices from <code>query.</code></p>
-<p><code>query</code> specifies the vertex query to run.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.get_all_vertex_properties', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.get_all_vertex_properties" class="source">
-    <pre><code>def get_all_vertex_properties(self, query):
-    """
-    Get all properties associated with the vertices from `query.`
-    `query` specifies the vertex query to run.
-    """
-    self._add_req(get_all_vertex_properties=query.to_message())
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.get_edge_count">
-    <p>def <span class="ident">get_edge_count</span>(</p><p>self, id, t, direction)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Gets the number of edges related to a vertex.</p>
-<p><code>id</code> specifies the ID of the vertex. <code>t</code> specifies which
-type of edges to count - set this to <code>None</code> if all edges should be
-counted. <code>direction</code> specifies the direction of edges to count.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.get_edge_count', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.get_edge_count" class="source">
-    <pre><code>def get_edge_count(self, id, t, direction):
-    """
-    Gets the number of edges related to a vertex.
-    `id` specifies the ID of the vertex. `t` specifies which
-    type of edges to count - set this to `None` if all edges should be
-    counted. `direction` specifies the direction of edges to count.
-    """
-    self._add_req(get_edge_count=proto.GetEdgeCountRequest(
-        id=proto.Uuid(value=id.bytes),
-        t=proto.Type(value=t) if t is not None else None,
-        direction=direction.value,
-    ))
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.get_edge_properties">
-    <p>def <span class="ident">get_edge_properties</span>(</p><p>self, query)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Gets edge properties.</p>
-<p><code>query</code> specifies the edge query to run.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.get_edge_properties', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.get_edge_properties" class="source">
-    <pre><code>def get_edge_properties(self, query):
-    """
-    Gets edge properties.
-    `query` specifies the edge query to run.
-    """
-    self._add_req(get_edge_properties=query.to_message())
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.get_edges">
-    <p>def <span class="ident">get_edges</span>(</p><p>self, query)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Gets edges by a given query.</p>
-<p><code>query</code> specifies the <code>EdgeQuery</code> to use.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.get_edges', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.get_edges" class="source">
-    <pre><code>def get_edges(self, query):
-    """
-    Gets edges by a given query.
-    `query` specifies the `EdgeQuery` to use.
-    """
-    self._add_req(get_edges=query.to_message())
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.get_vertex_count">
-    <p>def <span class="ident">get_vertex_count</span>(</p><p>self)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Gets the total number of vertices in the datastore.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.get_vertex_count', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.get_vertex_count" class="source">
-    <pre><code>def get_vertex_count(self):
-    """
-    Gets the total number of vertices in the datastore.
-    """
-    self._add_req(get_vertex_count=indradb_proto.google_dot_protobuf_dot_empty__pb2.Empty())
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.get_vertex_properties">
-    <p>def <span class="ident">get_vertex_properties</span>(</p><p>self, query)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Gets vertex properties.</p>
-<p><code>query</code> specifies the vertex properties query to run.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.get_vertex_properties', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.get_vertex_properties" class="source">
-    <pre><code>def get_vertex_properties(self, query):
-    """
-    Gets vertex properties.
-    `query` specifies the vertex properties query to run.
-    """
-    self._add_req(get_vertex_properties=query.to_message())
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.get_vertices">
-    <p>def <span class="ident">get_vertices</span>(</p><p>self, query)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Gets vertices by a given query.</p>
-<p><code>query</code> specifies the <code>VertexQuery</code> to use.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.get_vertices', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.get_vertices" class="source">
-    <pre><code>def get_vertices(self, query):
-    """
-    Gets vertices by a given query.
-    `query` specifies the `VertexQuery` to use.
-    """
-    self._add_req(get_vertices=query.to_message())
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.set_edge_properties">
-    <p>def <span class="ident">set_edge_properties</span>(</p><p>self, query, value)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Sets edge properties.</p>
-<p><code>query</code> specifies the edge query to run. <code>value</code> specifies the value
-to set; it must be JSONable (i.e., it should be possible to pass
-<code>value</code> into <code>json.dumps</code>.)</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.set_edge_properties', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.set_edge_properties" class="source">
-    <pre><code>def set_edge_properties(self, query, value):
-    """
-    Sets edge properties.
-    `query` specifies the edge query to run. `value` specifies the value
-    to set; it must be JSONable (i.e., it should be possible to pass
-    `value` into `json.dumps`.)
-    """
-    self._add_req(set_edge_properties=proto.SetEdgePropertiesRequest(
-        q=query.to_message(),
-        value=proto.Json(value=json.dumps(value)),
-    ))
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="indradb.Transaction.set_vertex_properties">
-    <p>def <span class="ident">set_vertex_properties</span>(</p><p>self, query, value)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Sets vertex properties.</p>
-<p><code>query</code> specifies the edge query to run. <code>value</code> specifies the value
-to set; it must be JSONable (i.e., it should be possible to pass
-<code>value</code> into <code>json.dumps</code>.)</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Transaction.set_vertex_properties', this);">Show source &equiv;</a></p>
-  <div id="source-indradb.Transaction.set_vertex_properties" class="source">
-    <pre><code>def set_vertex_properties(self, query, value):
-    """
-    Sets vertex properties.
-    `query` specifies the edge query to run. `value` specifies the value
-    to set; it must be JSONable (i.e., it should be possible to pass
-    `value` into `json.dumps`.)
-    """
-    self._add_req(set_vertex_properties=proto.SetVertexPropertiesRequest(
-        q=query.to_message(),
-        value=proto.Json(value=json.dumps(value)),
-    ))
-    return self
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.SpecificVertexQuery.without_property', this);">Show source &equiv;</a></p>
+  <div id="source-indradb.SpecificVertexQuery.without_property" class="source">
+    <pre><code>def without_property(self, name):
+    return PipePropertyPresenceVertexQuery(self, name, False)
 </code></pre>
   </div>
 </div>
@@ -4795,7 +4457,7 @@ to set; it must be JSONable (i.e., it should be possible to pass
         """
         Creates a new vertex.
 
-        `id` is the vertex UUID. `t` is the vertex type.
+        `id` is the vertex UUID. `t` is the vertex identifier.
         """
 
         self.id = id
@@ -4804,7 +4466,7 @@ to set; it must be JSONable (i.e., it should be possible to pass
     def to_message(self):
         return proto.Vertex(
             id=proto.Uuid(value=self.id.bytes),
-            t=proto.Type(value=self.t),
+            t=proto.Identifier(value=self.t),
         )
 
     @classmethod
@@ -4836,14 +4498,14 @@ to set; it must be JSONable (i.e., it should be possible to pass
     
   
     <div class="desc"><p>Creates a new vertex.</p>
-<p><code>id</code> is the vertex UUID. <code>t</code> is the vertex type.</p></div>
+<p><code>id</code> is the vertex UUID. <code>t</code> is the vertex identifier.</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-indradb.Vertex.__init__', this);">Show source &equiv;</a></p>
   <div id="source-indradb.Vertex.__init__" class="source">
     <pre><code>def __init__(self, id, t):
     """
     Creates a new vertex.
-    `id` is the vertex UUID. `t` is the vertex type.
+    `id` is the vertex UUID. `t` is the vertex identifier.
     """
     self.id = id
     self.t = t
@@ -4868,7 +4530,7 @@ to set; it must be JSONable (i.e., it should be possible to pass
     <pre><code>def to_message(self):
     return proto.Vertex(
         id=proto.Uuid(value=self.id.bytes),
-        t=proto.Type(value=self.t),
+        t=proto.Identifier(value=self.t),
     )
 </code></pre>
   </div>
@@ -5186,7 +4848,7 @@ def from_message(cls, message):
     def to_message(self):
         return proto.VertexPropertyQuery(
             inner=self._inner.to_message(),
-            name=self._name,
+            name=proto.Identifier(value=self._name),
         )
 </code></pre>
   </div>
@@ -5238,7 +4900,7 @@ def from_message(cls, message):
     <pre><code>def to_message(self):
     return proto.VertexPropertyQuery(
         inner=self._inner.to_message(),
-        name=self._name,
+        name=proto.Identifier(value=self._name),
     )
 </code></pre>
   </div>
@@ -5254,12 +4916,14 @@ def from_message(cls, message):
       <p class="name"><a href="grpc.m.html">indradb.grpc</a></p>
       
   
+    <div class="desc"><p>Client and server classes corresponding to protobuf-defined services.</p></div>
 
       </div>
       <div class="item">
       <p class="name"><a href="proto.m.html">indradb.proto</a></p>
       
   
+    <div class="desc"><p>Generated protocol buffer code.</p></div>
 
       </div>
   </section>
