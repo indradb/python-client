@@ -3,7 +3,6 @@
 set -ex
 
 # install protobuf
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-brew install protobuf
+sudo apt-get install protobuf-compiler
 # install python deps
 pip install -r requirements.txt
