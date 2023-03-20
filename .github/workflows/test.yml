@@ -31,10 +31,10 @@ jobs:
 
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: '3.8'
 
       - uses: Swatinem/rust-cache@v1
 
       - run: ./scripts/ci.sh
 
-      - run: pip install -r requirements.txt && ./test.py
+      - run: ./test.py
