@@ -25,11 +25,11 @@ class Client:
 
     def ping(self):
         req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
-        return self.stub.Ping(req)
+        self.stub.Ping(req)
 
-    def index_property(self, name):
-        req = proto.IndexPropertyRequest(name=proto.Identifier(value=name))
-        return self.stub.IndexProperty(req)
+    def sync(self):
+        req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
+        self.stub.Sync(req)
 
     def create_vertex(self, vertex):
         """
@@ -38,7 +38,8 @@ class Client:
         `vertex` specifies the `Vertex` to create.
         """
         req = vertex.to_message()
-        return self.stub.CreateVertex(req).created
+        res = self.stub.CreateVertex(req)
+        return res.created
 
     def create_vertex_from_type(self, t):
         """
@@ -50,183 +51,55 @@ class Client:
         res = self.stub.CreateVertexFromType(req)
         return uuid.UUID(bytes=res.value)
 
-    def get_vertices(self, query):
-        """
-        Gets vertices by a given query.
+    def create_edge(self, edge):
+        """Creates a new edge."""
+        req = edge.to_message()
+        res = self.stub.CreateEdge(req)
+        return res.created
 
-        `query` specifies the `VertexQuery` to use.
-        """
+    def get(self, query):
+        """Gets values specified by a query."""
         req = query.to_message()
-        for res in self.stub.GetVertices(req):
-            yield Vertex.from_message(res)
+        res = self.stub.Get(req)
+        for res_chunk in res:
+            variant = res_chunk.WhichOneof("value")
+            if variant == "count":
+                yield res_chunk.count
+            elif variant == "vertices":
+                yield [Vertex.from_message(item) for item in res_chunk.vertices.vertices]
+            elif variant == "edges":
+                yield [Edge.from_message(item) for item in res_chunk.edges.edges]
+            elif variant == "vertex_properties":
+                yield [VertexProperties.from_message(item) for item in res_chunk.vertex_properties.vertex_properties]
+            elif variant == "edge_properties":
+                yield [EdgeProperties.from_message(item) for item in res_chunk.edge_properties.edge_properties]
 
-    def delete_vertices(self, query):
-        """
-        Deletes vertices by a given query.
-
-        `query` specifies the `VertexQuery` to use.
-        """
+    def delete(self, query):
+        """Deletes values specified by a query."""
         req = query.to_message()
-        self.stub.DeleteVertices(req)
+        self.stub.Delete(req)
 
-    def get_vertex_count(self):
-        """
-        Gets the total number of vertices in the datastore.
-        """
-        req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
-        return self.stub.GetVertexCount(req).count
-
-    def create_edge(self, key):
-        """
-        Creates a new edge.
-
-        `key` is the `EdgeKey` that identifies the edge.
-        """
-        req = key.to_message()
-        return self.stub.CreateEdge(req).created
-
-    def get_edges(self, query):
-        """
-        Gets edges by a given query.
-
-        `query` specifies the `EdgeQuery` to use.
-        """
-        req = query.to_message()
-        for res in self.stub.GetEdges(req):
-            yield Edge.from_message(res)
-
-    def delete_edges(self, query):
-        """
-        Deletes edges by a given query.
-
-        `query` specifies the `EdgeQuery` to use.
-        """
-        req = query.to_message()
-        self.stub.DeleteEdges(req)
-
-    def get_edge_count(self, id, t, direction):
-        """
-        Gets the number of edges related to a vertex.
-
-        `id` specifies the ID of the vertex. `t` specifies which
-        type of edges to count - set this to `None` if all edges should be
-        counted. `direction` specifies the direction of edges to count.
-        """
-        req = proto.GetEdgeCountRequest(
-            id=proto.Uuid(value=id.bytes),
-            t=proto.Identifier(value=t) if t is not None else None,
-            direction=direction.value,
-        )
-        return self.stub.GetEdgeCount(req).count
-
-    def get_vertex_properties(self, query):
-        """
-        Gets vertex properties.
-
-        `query` specifies the vertex properties query to run.
-        """
-        req = query.to_message()
-        for res in self.stub.GetVertexProperties(req):
-            yield VertexProperty.from_message(res)
-
-    def set_vertex_properties(self, query, value):
-        """
-        Sets vertex properties.
-
-        `query` specifies the edge query to run. `value` specifies the value
-        to set; it must be JSONable (i.e., it should be possible to pass
-        `value` into `json.dumps`.)
-        """
-        req = proto.SetVertexPropertiesRequest(
+    def set_properties(self, query, name, value):
+        """Sets properties."""
+        req = proto.SetPropertiesRequest(
             q=query.to_message(),
+            name=proto.Identifier(value=name),
             value=proto.Json(value=json.dumps(value)),
         )
-        self.stub.SetVertexProperties(req)
 
-    def delete_vertex_properties(self, query):
-        """
-        Deletes vertex properties.
+        self.stub.SetProperties(req)
 
-        `query` specifies the vertex query to run.
-        """
-        req = query.to_message()
-        self.stub.DeleteVertexProperties(req)
-
-    def get_edge_properties(self, query):
-        """
-        Gets edge properties.
-
-        `query` specifies the edge query to run.
-        """
-        req = query.to_message()
-        for res in self.stub.GetEdgeProperties(req):
-            yield EdgeProperty.from_message(res)
-
-    def set_edge_properties(self, query, value):
-        """
-        Sets edge properties.
-
-        `query` specifies the edge query to run. `value` specifies the value
-        to set; it must be JSONable (i.e., it should be possible to pass
-        `value` into `json.dumps`.)
-        """
-        req = proto.SetEdgePropertiesRequest(
-            q=query.to_message(),
-            value=proto.Json(value=json.dumps(value)),
-        )
-        self.stub.SetEdgeProperties(req)
-
-    def delete_edge_properties(self, query):
-        """
-        Deletes global properties.
-
-        `query` specifies the edge query to run.
-        """
-        req = query.to_message()
-        self.stub.DeleteEdgeProperties(req)
-
-    def get_all_vertex_properties(self, query):
-        """
-        Get all properties associated with the vertices from `query.`
-
-        `query` specifies the vertex query to run.
-        """
-        req = query.to_message()
-        for res in self.stub.GetAllVertexProperties(req):
-            yield VertexProperties.from_message(res)
-
-    def get_all_edge_properties(self, query):
-        """
-        Get all properties associated with the edges from `query.`
-
-        `query` specifies the edge query to run.
-        """
-        req = query.to_message()
-        for res in self.stub.GetAllEdgeProperties(req):
-            yield EdgeProperties.from_message(res)
-
-    def sync(self):
-        """
-        Syncs persisted content. Depending on the datastore implementation,
-        this has different meanings - including potentially being a no-op.
-        """
-        req = proto.google_dot_protobuf_dot_empty__pb2.Empty()
-        self.stub.Sync(req)
+    def index_property(self, name):
+        req = proto.IndexPropertyRequest(name=proto.Identifier(value=name))
+        return self.stub.IndexProperty(req)
 
     def execute_plugin(self, name, arg):
-        """
-        Executes a plugin and returns back the response from the plugin.
-
-        `name` specifies the plugin name to execute. `arg` specifies the
-        argument to pass in; it must be JSONable (i.e., it should be possible
-        to pass `arg` into `json.dumps`.)
-        """
         req = proto.ExecutePluginRequest(
-            name=name,
-            arg=proto.Json(value=json.dumps(arg)) if arg is not None else None,
+            name=proto.Identifier(value=name),
+            arg=proto.Json(value=json.dumps(arg)),
         )
-        res = self.stub.ExecutePlugin(req)
-        return json.loads(res.value)
+        res = self.stub.IndexProperty(req)
+        return json.loads(res.value.value)
 
 class BulkInserter:
     def __init__(self):
@@ -251,9 +124,9 @@ class BulkInserter:
         ))
         return self
 
-    def edge_property(self, key, name, value):
+    def edge_property(self, edge, name, value):
         self._add_req(edge_property=proto.EdgePropertyBulkInsertItem(
-            key=key.to_message(),
+            edge=edge.to_message(),
             name=proto.Identifier(value=name),
             value=proto.Json(value=json.dumps(value)),
         ))

@@ -31,8 +31,8 @@ jobs:
 
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: '3.10'
 
       - uses: Swatinem/rust-cache@v1
 
-      - run: pip install -r requirements.txt && ./test.py
+      - run: sudo apt-get install protobuf-compiler && pip install -r requirements.txt && ./test.py
