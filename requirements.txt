@@ -1,4 +1,4 @@
 pytest
 pdoc3
-grpcio==1.42.0
+grpcio==1.53.0
 grpcio-tools==1.42.0
