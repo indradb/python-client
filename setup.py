@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name = "indradb",
-    version = "3.0.0",
+    version = "3.0.1",
     author = "Yusuf Simonson",
 
     packages = [
