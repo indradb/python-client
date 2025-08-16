@@ -12,14 +12,14 @@ init: venv
 	sed -i -e 's/import indradb_pb2/import indradb.indradb_pb2/g' indradb/indradb_pb2_grpc.py
 
 docs:
-	. venv/bin/activate && python setup.py clean build install
+	. venv/bin/activate && python3 setup.py clean build install
 	. venv/bin/activate && pdoc --html --html-dir ./docs ./indradb
 
 release:
 	git checkout master
 	git push origin master
 	rm -rf build dist
-	python setup.py clean build sdist bdist_wheel
+	python3 setup.py clean build sdist bdist_wheel
 	. venv/bin/activate && twine upload --skip-existing dist/*
 
 test:
